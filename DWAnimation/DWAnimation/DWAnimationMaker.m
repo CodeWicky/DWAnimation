@@ -1,0 +1,734 @@
+//
+//  DWAnimationMaker.m
+//  DWHUD
+//
+//  Created by Wicky on 16/8/20.
+//  Copyright © 2016年 Wicky. All rights reserved.
+//
+
+#import "DWAnimationMaker.h"
+@interface DWAnimationMaker ()
+
+@property (nonatomic ,strong) NSMutableArray * animationsArray;
+
+@property (nonatomic ,assign) CGPoint homePoint;
+@property (nonatomic ,assign) CGPoint destinationPoint;
+@property (nonatomic ,assign) CGFloat homeScale;
+@property (nonatomic ,assign) CGFloat destinationScale;
+@property (nonatomic ,assign) CGFloat homeAngle;
+@property (nonatomic ,assign) CGFloat destinationAngle;
+@property (nonatomic ,assign) RotateAxis rotateAxis;
+@property (nonatomic ,assign) CGFloat homeAlpha;
+@property (nonatomic ,assign) CGFloat destinationAlpha;
+@property (nonatomic ,assign) CGFloat homeCornerR;
+@property (nonatomic ,assign) CGFloat destinationCornerR;
+@property (nonatomic ,assign) CGFloat homeBorderW;
+@property (nonatomic ,assign) CGFloat destinationBorderW;
+@property (nonatomic ,strong) UIColor * homeBorderColor;
+@property (nonatomic ,strong) UIColor * destinationBorderColor;
+@property (nonatomic ,strong) UIColor * homeShadowColor;
+@property (nonatomic ,strong) UIColor * destinationShadowColor;
+@property (nonatomic ,assign) CGSize homeShadowOffset;
+@property (nonatomic ,assign) CGSize destinationShadowOffset;
+@property (nonatomic ,assign) CGFloat homeShadowAlpha;
+@property (nonatomic ,assign) CGFloat destinationShadowAlpha;
+@property (nonatomic ,assign) CGFloat homeShadowRadius;
+@property (nonatomic ,assign) CGFloat destinationShadowRadius;
+@property (nonatomic ,strong) UIBezierPath * homeShadowPath;
+@property (nonatomic ,strong) UIBezierPath * destinationShadowPath;
+@property (nonatomic ,strong) UIImage * homeBgImage;
+@property (nonatomic ,strong) UIImage * destinationBgImage;
+
+@property (nonatomic ,assign) CGFloat startTime;
+@property (nonatomic ,assign) CGFloat animationDuration;
+
+@property (nonatomic ,assign) BOOL move;
+@property (nonatomic ,assign) BOOL scale;
+@property (nonatomic ,assign) BOOL rotate;
+@property (nonatomic ,assign) BOOL alpha;
+@property (nonatomic ,assign) BOOL cornerR;
+@property (nonatomic ,assign) BOOL borderW;
+@property (nonatomic ,assign) BOOL borderC;
+@property (nonatomic ,assign) BOOL shadowC;
+@property (nonatomic ,assign) BOOL shadowO;
+@property (nonatomic ,assign) BOOL shadowA;
+@property (nonatomic ,assign) BOOL shadowR;
+@property (nonatomic ,assign) BOOL shadowP;
+@property (nonatomic ,assign) BOOL bgImage;
+@property (nonatomic ,assign) BOOL needReset;
+
+@end
+
+@implementation DWAnimationMaker
+
+#pragma mark ---接口方法---
+
+///生成组动画
+-(void)make
+{
+    CAAnimationGroup * group = [CAAnimationGroup animation];
+    group.duration = self.totalDuration;
+    group.fillMode = kCAFillModeForwards;
+    group.removedOnCompletion = NO;
+    group.animations = self.animationsArray;
+    group.repeatCount = 1;
+    self.animation = group;
+}
+
+#pragma mark ---构造方法---
+
+///初始化一些默认值
+-(instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.homePoint = CGPointNull;
+        self.destinationPoint = CGPointNull;
+        self.homeScale = MAXFLOAT;
+        self.destinationScale = MAXFLOAT;
+        self.homeAngle = MAXFLOAT;
+        self.destinationAngle = MAXFLOAT;
+        self.rotateAxis = Z;
+        self.homeAlpha = MAXFLOAT;
+        self.destinationAlpha = MAXFLOAT;
+        self.homeCornerR = MAXFLOAT;
+        self.destinationCornerR = MAXFLOAT;
+        self.homeBorderW = MAXFLOAT;
+        self.destinationBorderW = MAXFLOAT;
+        self.homeBorderColor = nil;
+        self.destinationBorderColor = nil;
+        self.homeShadowColor = nil;
+        self.destinationShadowColor = nil;
+        self.homeShadowOffset = CGSizeNull;
+        self.destinationShadowOffset = CGSizeNull;
+        self.homeShadowAlpha = MAXFLOAT;
+        self.destinationShadowAlpha = MAXFLOAT;
+        self.homeShadowRadius = MAXFLOAT;
+        self.destinationShadowRadius = MAXFLOAT;
+        self.homeShadowPath = nil;
+        self.destinationShadowPath = nil;
+        self.homeBgImage = UIImageNull;
+        self.destinationBgImage = UIImageNull;
+    }
+    return self;
+}
+
+#pragma mark ---中间block---
+
+///创建不自动复原的animation实例
+CABasicAnimation *(^CreateSimpleAnimation)(NSString *,CGFloat,CGFloat) = ^(NSString * key,CGFloat beginTime,CGFloat duration)
+{
+    CABasicAnimation * animation = [CABasicAnimation animationWithKeyPath:key];
+    animation.fillMode = kCAFillModeForwards;
+    animation.removedOnCompletion = NO;
+    animation.beginTime += beginTime;
+//    animation.beginTime = beginTime + CACurrentMediaTime();
+    animation.duration = duration;
+    return animation;
+};
+
+///创建移动类动画
+CABasicAnimation *(^MoveAnimation)(CGPoint,CGPoint,CGFloat,CGFloat) = ^(CGPoint originalPoint ,CGPoint destinationPoint ,CGFloat beginTime ,CGFloat duration){
+    CABasicAnimation * move = CreateSimpleAnimation(@"position",beginTime,duration);
+    if(!CGPointIsNull(originalPoint))
+    {
+        move.fromValue = [NSValue valueWithCGPoint:originalPoint];
+    }
+    if(!CGPointIsNull(destinationPoint))
+    {
+        move.toValue = [NSValue valueWithCGPoint:destinationPoint];
+    }
+    return move;
+};
+
+///创建缩放类动画
+CABasicAnimation *(^ScaleAnimation)(CGFloat,CGFloat,CGFloat,CGFloat) = ^(CGFloat originalScale ,CGFloat destinationScale,CGFloat beginTime,CGFloat duration){
+    CABasicAnimation * scale = CreateSimpleAnimation(@"transform.scale",beginTime,duration);
+    if(!CGFloatIsNull(originalScale)){
+        scale.fromValue = @(originalScale);
+    }
+    if(!CGFloatIsNull(destinationScale))
+    {
+        scale.toValue = @(destinationScale);
+    }
+    return scale;
+};
+
+///创建旋转类动画
+CABasicAnimation *(^RotateAnimation)(CGFloat,CGFloat,RotateAxis,CGFloat,CGFloat) = ^(CGFloat originalAngle,CGFloat destinationAngle,RotateAxis rotateAxis,CGFloat beginTime,CGFloat duration)
+{
+    NSString * key = nil;
+    switch (rotateAxis) {
+        case X:
+            key = @"transform.rotation.x";
+            break;
+        case Y:
+            key = @"transform.rotation.y";
+            break;
+        case Z:
+            key = @"transform.rotation.z";
+            break;
+        default:
+            key = @"transform.rotation.z";
+            break;
+    }
+    CABasicAnimation * rotate = CreateSimpleAnimation(key,beginTime,duration);
+    if(!CGFloatIsNull(originalAngle)){
+        rotate.fromValue = @(RadianFromDegree(originalAngle));
+    }
+    if(!CGFloatIsNull(destinationAngle))
+    {
+        rotate.toValue = @(RadianFromDegree(destinationAngle));
+    }
+    return rotate;
+};
+
+///创建透明度动画
+CABasicAnimation *(^AlphaAnimation)(CGFloat,CGFloat,CGFloat,CGFloat) = ^(CGFloat originalAlpha,CGFloat destinationAlpha,CGFloat beginTime,CGFloat duration){
+    CABasicAnimation * alpha = CreateSimpleAnimation(@"opacity",beginTime,duration);
+    if(!CGFloatIsNull(originalAlpha) && (originalAlpha <= 1) && (originalAlpha >= 0)){
+        alpha.fromValue = @(originalAlpha);
+    }
+    if(!CGFloatIsNull(destinationAlpha) && (destinationAlpha <= 1) && (destinationAlpha >= 0)){
+        alpha.toValue = @(destinationAlpha);
+    }
+    return alpha;
+};
+
+///创建圆角动画
+CABasicAnimation *(^CornerRadiusAnimation)(CGFloat,CGFloat,CGFloat,CGFloat) = ^(CGFloat originalCornerR,CGFloat destinationCornerR,CGFloat beginTime,CGFloat duration){
+    CABasicAnimation * cornerR = CreateSimpleAnimation(@"cornerRadius",beginTime,duration);
+    if(!CGFloatIsNull(originalCornerR)){
+        cornerR.fromValue = @(originalCornerR);
+    }
+    if(!CGFloatIsNull(destinationCornerR)){
+        cornerR.toValue = @(destinationCornerR);
+    }
+    return cornerR;
+};
+
+///创建边框宽度动画
+CABasicAnimation *(^BorderWidthAnimation)(CGFloat,CGFloat,CGFloat,CGFloat) = ^(CGFloat originalBorderWidth ,CGFloat destinationBorderWidth,CGFloat beginTime,CGFloat duration){
+    CABasicAnimation * borderW = CreateSimpleAnimation(@"borderWidth",beginTime,duration);
+    if(!CGFloatIsNull(originalBorderWidth)){
+        borderW.fromValue = @(originalBorderWidth);
+    }
+    if(!CGFloatIsNull(destinationBorderWidth))
+    {
+        borderW.toValue = @(destinationBorderWidth);
+    }
+    return borderW;
+};
+
+///创建边框颜色动画
+CABasicAnimation *(^BorderColorAnimation)(UIColor *,UIColor *,CGFloat,CGFloat) = ^(UIColor * originalBorderColor ,UIColor * destinationBorderColor,CGFloat beginTime,CGFloat duration){
+    CABasicAnimation * borderC = CreateSimpleAnimation(@"borderColor",beginTime,duration);
+    if(originalBorderColor){
+        borderC.fromValue = (id)originalBorderColor.CGColor;
+    }
+    if(destinationBorderColor)
+    {
+        borderC.toValue = (id)destinationBorderColor.CGColor;
+    }
+    return borderC;
+};
+
+///创建阴影颜色动画
+CABasicAnimation *(^ShadowColorAnimation)(UIColor *,UIColor *,CGFloat,CGFloat) = ^(UIColor * originalShadowColor ,UIColor * destinationShadowColor,CGFloat beginTime,CGFloat duration){
+    CABasicAnimation * shadowC = CreateSimpleAnimation(@"shadowColor",beginTime,duration);
+    if(originalShadowColor){
+        shadowC.fromValue = (id)originalShadowColor.CGColor;
+    }
+    if(destinationShadowColor)
+    {
+        shadowC.toValue = (id)destinationShadowColor.CGColor;
+    }
+    return shadowC;
+};
+
+///创建阴影偏移量动画
+CABasicAnimation *(^ShadowOffsetAnimation)(CGSize,CGSize,CGFloat,CGFloat) = ^(CGSize originalShadowSize ,CGSize destinationShadowSize,CGFloat beginTime,CGFloat duration){
+    CABasicAnimation * shadowC = CreateSimpleAnimation(@"shadowOffset",beginTime,duration);
+    if(!CGSizeIsNull(originalShadowSize)){
+        shadowC.fromValue = [NSValue valueWithCGSize:originalShadowSize];
+    }
+    if(!CGSizeIsNull(destinationShadowSize))
+    {
+        shadowC.toValue = [NSValue valueWithCGSize:destinationShadowSize];
+    }
+    return shadowC;
+};
+
+///创建阴影透明度动画
+CABasicAnimation *(^ShadowAlphaAnimation)(CGFloat,CGFloat,CGFloat,CGFloat) = ^(CGFloat originalShadowAlpha ,CGFloat destinationShadowAlpha,CGFloat beginTime,CGFloat duration){
+    CABasicAnimation * shadowAlpha = CreateSimpleAnimation(@"shadowOpacity",beginTime,duration);
+    if(!CGFloatIsNull(originalShadowAlpha) && (originalShadowAlpha <= 1) && (originalShadowAlpha >= 0)){
+        shadowAlpha.fromValue = @(originalShadowAlpha);
+    }
+    if(!CGFloatIsNull(destinationShadowAlpha) && (destinationShadowAlpha <= 1) && (destinationShadowAlpha >= 0)){
+        shadowAlpha.toValue = @(destinationShadowAlpha);
+    }
+    return shadowAlpha;
+};
+
+///创建阴影圆角动画
+CABasicAnimation *(^ShadowRadiusAnimation)(CGFloat,CGFloat,CGFloat,CGFloat) = ^(CGFloat originalShadowRadius,CGFloat destinationShadowRadius,CGFloat beginTime,CGFloat duration){
+    CABasicAnimation * shadowRadius = CreateSimpleAnimation(@"shadowRadius",beginTime,duration);
+    if(!CGFloatIsNull(originalShadowRadius)){
+        shadowRadius.fromValue = @(originalShadowRadius);
+    }
+    if(!CGFloatIsNull(destinationShadowRadius)){
+        shadowRadius.toValue = @(destinationShadowRadius);
+    }
+    return shadowRadius;
+};
+
+///创建阴影路径动画
+CABasicAnimation *(^ShadowPathAnimation)(UIView *,UIBezierPath *,UIBezierPath *,CGFloat,CGFloat) = ^(UIView * view,UIBezierPath * originalShadowPath ,UIBezierPath * destinationShadowPath,CGFloat beginTime,CGFloat duration){
+    CABasicAnimation * shadowPath = CreateSimpleAnimation(@"shadowPath",beginTime,duration);
+    if(originalShadowPath){
+        shadowPath.fromValue = (id)originalShadowPath.CGPath;
+    }
+    else
+    {
+        shadowPath.fromValue = (id)UIBezierPathNull(view.bounds.size.width,view.bounds.size.height).CGPath;
+    }
+    if(destinationShadowPath)
+    {
+        shadowPath.toValue = (id)destinationShadowPath.CGPath;
+    }
+    else
+    {
+        shadowPath.toValue = (id)UIBezierPathNull(view.bounds.size.width, view.bounds.size.height).CGPath;
+    }
+    return shadowPath;
+};
+
+///创建阴影背景图动画
+CABasicAnimation *(^BackgroundImageAnimation)(UIImage *,UIImage *,CGFloat,CGFloat) = ^(UIImage * originalBgImage ,UIImage * destinationBgImage,CGFloat beginTime,CGFloat duration){
+    CABasicAnimation * bgImage = CreateSimpleAnimation(@"contents",beginTime,duration);
+    bgImage.fromValue = (id)originalBgImage.CGImage;
+    bgImage.toValue = (id)destinationBgImage.CGImage;
+    return bgImage;
+};
+
+#pragma mark ---工具block---
+
+-(DWAnimationMaker *(^)(CGPoint))moveTo
+{
+    return ^(CGPoint destinationPoint){
+        self.move = YES;
+        self.destinationPoint = destinationPoint;
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(CGPoint))moveFrom
+{
+    return ^(CGPoint homePoint){
+        self.homePoint = homePoint;
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(CGFloat))scaleTo
+{
+    return ^(CGFloat destinationScale){
+        self.scale = YES;
+        self.destinationScale = destinationScale;
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(CGFloat))scaleFrom
+{
+    return ^(CGFloat homeScale){
+        if (homeScale < 0) {
+            homeScale = 0;
+        }
+        self.homeScale = homeScale;
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(CGFloat))rotateTo
+{
+    return ^(CGFloat destinationAngle){
+        self.rotate = YES;
+        self.destinationAngle = destinationAngle;
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(CGFloat))rotateFrom
+{
+    return ^(CGFloat homeAngle){
+        self.homeAngle = homeAngle;
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(RotateAxis))axis
+{
+    return ^(RotateAxis rotateAxis){
+        self.rotateAxis = rotateAxis;
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(CGFloat))alphaTo
+{
+    return ^(CGFloat destinationAlpha){
+        self.alpha = YES;
+        self.destinationAlpha = destinationAlpha;
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(CGFloat))alphaFrom
+{
+    return ^(CGFloat homeAlpha){
+        self.homeAlpha = homeAlpha;
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(CGFloat))cornerRadiusTo
+{
+    return ^(CGFloat destinationCornerR){
+        self.cornerR = YES;
+        self.view.layer.masksToBounds = YES;
+        self.destinationCornerR = destinationCornerR;
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(CGFloat))cornerRadiusFrom
+{
+    return ^(CGFloat homeCornerR){
+        self.homeCornerR = homeCornerR;
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(CGFloat))borderWidthTo
+{
+    return ^(CGFloat destinationBorderW){
+        self.borderW = YES;
+        self.destinationBorderW = destinationBorderW;
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(CGFloat))borderWidthFrom
+{
+    return ^(CGFloat homeBorderW){
+        self.homeBorderW = homeBorderW;
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(UIColor *))borderColorTo
+{
+    return ^(UIColor * destinationBorderColor){
+        self.borderC = YES;
+        self.destinationBorderColor = destinationBorderColor;
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(UIColor *))borderColorFrom
+{
+    return ^(UIColor * homeBorderColor){
+        self.homeBorderColor = homeBorderColor;
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(UIColor *))shadowColorTo
+{
+    return ^(UIColor * destinationShadowColor){
+        self.shadowC = YES;
+        self.destinationShadowColor = destinationShadowColor;
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(UIColor *))shadowColorFrom
+{
+    return ^(UIColor * homeShadowColor){
+        self.homeShadowColor = homeShadowColor;
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(CGSize))shadowOffsetTo
+{
+    return ^(CGSize destinationShadowOffset){
+        self.shadowO = YES;
+        if (CGFloatIsNull(self.destinationShadowAlpha)) {
+            self.view.layer.shadowOpacity = 0.5;
+        }
+        self.destinationShadowOffset = destinationShadowOffset;
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(CGSize))shadowOffsetFrom
+{
+    return ^(CGSize homeShadowOffset){
+        self.homeShadowOffset = homeShadowOffset;
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(CGFloat))shadowAlphaTo
+{
+    return ^(CGFloat destinationShadowAlpha){
+        self.shadowA = YES;
+        self.destinationShadowAlpha = destinationShadowAlpha;
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(CGFloat))shadowAlphaFrom
+{
+    return ^(CGFloat homeShadowAlpha){
+        self.homeShadowAlpha = homeShadowAlpha;
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(CGFloat))shadowRadiusTo
+{
+    return ^(CGFloat destinationShadowRadius){
+        self.shadowR = YES;
+        self.destinationShadowRadius = destinationShadowRadius;
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(CGFloat))shadowRadiusFrom
+{
+    return ^(CGFloat homeShadowRadius){
+        self.homeShadowRadius = homeShadowRadius;
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(UIBezierPath *))shadowPathTo
+{
+    return ^(UIBezierPath * destinationShadowPath){
+        self.shadowP = YES;
+        self.destinationShadowPath = destinationShadowPath;
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(UIBezierPath *))shadowPathFrom
+{
+    return ^(UIBezierPath * homeShadowPath){
+        self.homeShadowPath = homeShadowPath;
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(UIImage *))backgroundImageTo
+{
+    return ^(UIImage * destinationBgImage){
+        self.bgImage = YES;
+        if (destinationBgImage) {
+            self.destinationBgImage = destinationBgImage;
+        }
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(UIImage *))backgroundImageFrom
+{
+    return ^(UIImage * homeBgImage){
+        if (homeBgImage) {
+            self.homeBgImage = homeBgImage;
+        }
+        return self;
+    };
+}
+
+-(DWAnimationMaker *)reset
+{
+    self.needReset = YES;
+    return self;
+}
+
+-(DWAnimationMaker *(^)(CGFloat))duration
+{
+    return ^(CGFloat duration){
+        self.animationDuration = duration;
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(CGFloat))beginTime
+{
+    return ^(CGFloat beginTime){
+        self.startTime = beginTime;
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)())install
+{
+    return ^{
+        if (self.needReset) {
+            [self.animationsArray addObject:MoveAnimation(CGPointNull,self.view.center,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:ScaleAnimation(MAXFLOAT,1,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:RotateAnimation(MAXFLOAT,0,X,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:RotateAnimation(MAXFLOAT,0,Y,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:RotateAnimation(MAXFLOAT,0,Z,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:AlphaAnimation(MAXFLOAT,1,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:CornerRadiusAnimation(MAXFLOAT,1,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:BorderWidthAnimation(MAXFLOAT,0 ,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:BorderColorAnimation(nil,[UIColor clearColor],self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:ShadowColorAnimation(nil,[UIColor clearColor],self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:ShadowOffsetAnimation(CGSizeNull,CGSizeZero,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:ShadowAlphaAnimation(MAXFLOAT,0,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:ShadowRadiusAnimation(MAXFLOAT,0.5,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:ShadowPathAnimation(self.view,nil,nil,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:BackgroundImageAnimation(UIImageNull,UIImageNull,self.startTime,self.animationDuration)];
+            self.needReset = NO;
+            self.scale = NO;
+            self.rotate = NO;
+            self.move = NO;
+            self.alpha = NO;
+            self.cornerR = NO;
+            self.borderW = NO;
+            self.borderC = NO;
+            self.shadowC = NO;
+            self.shadowO = NO;
+            self.shadowA = NO;
+            self.shadowR = NO;
+            self.shadowP = NO;
+            self.bgImage = NO;
+            self.homePoint = CGPointNull;
+            self.destinationPoint = CGPointNull;
+            self.homeScale = MAXFLOAT;
+            self.destinationScale = MAXFLOAT;
+            self.homeAngle = MAXFLOAT;
+            self.destinationAngle = MAXFLOAT;
+            self.homeAlpha = MAXFLOAT;
+            self.destinationAlpha = MAXFLOAT;
+            self.homeCornerR = MAXFLOAT;
+            self.destinationCornerR = MAXFLOAT;
+            self.homeBorderW = MAXFLOAT;
+            self.destinationBorderW = MAXFLOAT;
+            self.homeBorderColor = nil;
+            self.destinationBorderColor = nil;
+            self.homeShadowColor = nil;
+            self.destinationShadowColor = nil;
+            self.homeShadowOffset = CGSizeNull;
+            self.destinationShadowOffset = CGSizeNull;
+            self.homeShadowAlpha = MAXFLOAT;
+            self.destinationShadowAlpha = MAXFLOAT;
+            self.homeShadowRadius = MAXFLOAT;
+            self.destinationShadowRadius = MAXFLOAT;
+            self.homeShadowPath = nil;
+            self.destinationShadowPath = nil;
+            self.homeBgImage = UIImageNull;
+            self.destinationBgImage = UIImageNull;
+        }
+        if (self.move) {
+            [self.animationsArray addObject:MoveAnimation(self.homePoint,self.destinationPoint,self.startTime,self.animationDuration)];
+            self.move = NO;
+            self.homePoint = CGPointNull;
+            self.destinationPoint = CGPointNull;
+        }
+        if (self.scale) {
+            [self.animationsArray addObject:ScaleAnimation(self.homeScale,self.destinationScale,self.startTime,self.animationDuration)];
+            self.scale = NO;
+            self.homeScale = MAXFLOAT;
+            self.destinationScale = MAXFLOAT;
+        }
+        if (self.rotate) {
+            [self.animationsArray addObject:RotateAnimation(self.homeAngle,self.destinationAngle,self.rotateAxis,self.startTime,self.animationDuration)];
+            self.rotate = NO;
+            self.homeAngle = MAXFLOAT;
+            self.destinationAngle = MAXFLOAT;
+            self.rotateAxis = Z;
+        }
+        if (self.alpha) {
+            [self.animationsArray addObject:AlphaAnimation(self.homeAlpha,self.destinationAlpha,self.startTime,self.animationDuration)];
+            self.alpha = NO;
+            self.homeAlpha = MAXFLOAT;
+            self.destinationAlpha = MAXFLOAT;
+        }
+        if (self.cornerR) {
+            [self.animationsArray addObject:CornerRadiusAnimation(self.homeCornerR,self.destinationCornerR,self.startTime,self.animationDuration)];
+            self.cornerR = NO;
+            self.homeCornerR = MAXFLOAT;
+            self.destinationCornerR = MAXFLOAT;
+        }
+        if (self.borderW) {
+            [self.animationsArray addObject:BorderWidthAnimation(self.homeBorderW,self.destinationBorderW,self.startTime,self.animationDuration)];
+            self.borderW = NO;
+            self.homeBorderW = MAXFLOAT;
+            self.destinationBorderW = MAXFLOAT;
+        }
+        if (self.borderC) {
+            [self.animationsArray addObject:BorderColorAnimation(self.homeBorderColor,self.destinationBorderColor,self.startTime,self.animationDuration)];
+            self.borderC = NO;
+            self.homeBorderColor = nil;
+            self.destinationBorderColor = nil;
+        }
+        if (self.shadowC) {
+            [self.animationsArray addObject:ShadowColorAnimation(self.homeShadowColor,self.destinationShadowColor,self.startTime,self.animationDuration)];
+            self.shadowC = NO;
+            self.homeShadowColor = nil;
+            self.destinationShadowColor = nil;
+        }
+        if (self.shadowO) {
+            [self.animationsArray addObject:ShadowOffsetAnimation(self.homeShadowOffset,self.destinationShadowOffset,self.startTime,self.animationDuration)];
+            self.shadowO = NO;
+            self.homeShadowOffset = CGSizeNull;
+            self.destinationShadowOffset = CGSizeNull;
+        }
+        if (self.shadowA) {
+            [self.animationsArray addObject:ShadowAlphaAnimation(self.homeShadowAlpha,self.destinationShadowAlpha,self.startTime,self.animationDuration)];
+            self.shadowA = NO;
+            self.homeShadowAlpha = MAXFLOAT;
+            self.destinationShadowAlpha = MAXFLOAT;
+        }
+        if (self.shadowR) {
+            [self.animationsArray addObject:ShadowRadiusAnimation(self.homeShadowRadius,self.destinationShadowRadius,self.startTime,self.animationDuration)];
+            self.shadowR = NO;
+            self.homeShadowRadius = MAXFLOAT;
+            self.destinationShadowRadius = MAXFLOAT;
+        }
+        if (self.shadowP) {
+            [self.animationsArray addObject:ShadowPathAnimation(self.view,self.homeShadowPath,self.destinationShadowPath,self.startTime,self.animationDuration)];
+            self.shadowP = NO;
+            self.homeShadowPath = nil;
+            self.destinationShadowPath = nil;
+        }
+        if (self.bgImage) {
+            [self.animationsArray addObject:BackgroundImageAnimation(self.homeBgImage,self.destinationBgImage,self.startTime,self.animationDuration)];
+            self.bgImage = NO;
+            self.homeBgImage = UIImageNull;
+            self.destinationBgImage = UIImageNull;
+        }
+        self.totalDuration = MAX(self.totalDuration, self.startTime + self.animationDuration);
+        self.startTime = 0;
+        self.animationDuration = 0;
+        return self;
+    };
+}
+
+#pragma mark ---setter、getter---
+-(NSMutableArray *)animationsArray
+{
+    if (!_animationsArray) {
+        _animationsArray = [NSMutableArray array];
+    }
+    return _animationsArray;
+}
+
+@end
