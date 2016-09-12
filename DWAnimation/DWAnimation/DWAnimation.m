@@ -266,6 +266,8 @@
     animation.beginTime += beginTime;
     animation.removedOnCompletion = NO;
     animation.fillMode = kCAFillModeForwards;
+    animation.calculationMode = kCAAnimationCubicPaced;
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAAnimationLinear];
     animation.path = bezierPath.CGPath;
     if (autoRotate) {
         animation.rotationMode = kCAAnimationRotateAuto;
