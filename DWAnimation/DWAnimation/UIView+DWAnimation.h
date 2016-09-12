@@ -77,11 +77,13 @@
  beginTime          动画延时时长
  duration           动画时长
  bezierPath         运动轨迹，不可为nil
+ autoRotate         跟随路径自动旋转
  */
 -(DWAnimation *)dw_CreateAnimationWithAnimationKey:(NSString *)animationKey
-                           beginTime:(CGFloat)beginTime
-                            duration:(CGFloat)duration
-                          bezierPath:(UIBezierPath *)bezierPath;
+                                         beginTime:(CGFloat)beginTime
+                                          duration:(CGFloat)duration
+                                        bezierPath:(UIBezierPath *)bezierPath
+                                        autoRotate:(BOOL)autoRotate;
 
 ///为自身创建弧线动画
 /*

@@ -35,9 +35,9 @@
     return [[DWAnimation alloc] initAnimationWithView:self animationType:animationType animationKey:animationKey beginTime:beginTime values:values timeIntervals:timeIntervals transition:transition];
 }
 
--(DWAnimation *)dw_CreateAnimationWithAnimationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration bezierPath:(UIBezierPath *)bezierPath
+-(DWAnimation *)dw_CreateAnimationWithAnimationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration bezierPath:(UIBezierPath *)bezierPath autoRotate:(BOOL)autoRotate
 {
-    return [[DWAnimation alloc] initAnimationWithView:self animationKey:animationKey beginTime:beginTime duration:duration bezierPath:bezierPath];
+    return [[DWAnimation alloc] initAnimationWithView:self animationKey:animationKey beginTime:beginTime duration:duration bezierPath:bezierPath autoRotate:autoRotate];
 }
 
 -(DWAnimation *)dw_CreateAnimationWithAnimationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration arcCenter:(CGPoint)center radius:(CGFloat)radius startAngle:(CGFloat)startAngle endAngle:(CGFloat)endAngle clockwise:(BOOL)clockwise autoRotate:(BOOL)autoRotate

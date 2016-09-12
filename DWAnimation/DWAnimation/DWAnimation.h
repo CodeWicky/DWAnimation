@@ -66,6 +66,10 @@
  
  version 1.0.12
  修复shadowPath动画播放结束后点击崩溃问题
+ 
+ version 1.0.13
+ 贝塞尔曲线动画添加是否自动旋转接口
+ 优化弧线动画自动旋转逻辑
  */
 
 #import <UIKit/UIKit.h>
@@ -165,12 +169,14 @@
  beginTime          动画延时时长
  duration           动画时长
  bezierPath         运动轨迹，不可为nil
+ autoRotate         跟随路径自动旋转
  */
 -(instancetype)initAnimationWithView:(UIView *)view
                         animationKey:(NSString *)animationKey
                            beginTime:(CGFloat)beginTime
                             duration:(CGFloat)duration
-                          bezierPath:(UIBezierPath *)bezierPath;
+                          bezierPath:(UIBezierPath *)bezierPath
+                          autoRotate:(BOOL)autoRotate;
 
 ///创建弧线动画
 /*

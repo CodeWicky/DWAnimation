@@ -47,7 +47,7 @@
     DWAnimation * arcAnimation = [[DWAnimation alloc] initAnimationWithView:redView animationKey:@"arcAnimation" beginTime:0 duration:1 arcCenter:CGPointMake(self.view.center.x, self.view.center.y - 300) radius:400 startAngle:180 endAngle:200 clockwise:YES autoRotate:YES];
     arcAnimation.repeatCount = 2;
     //
-    DWAnimation * bezierAnimation = [redView dw_CreateAnimationWithAnimationKey:@"bezierAnimation" beginTime:0 duration:2 bezierPath:[UIBezierPath bezierPathWithArcCenter:CGPointMake(self.view.center.x, self.view.center.y - 300) radius:400 startAngle:RadianFromDegree(110) endAngle:RadianFromDegree(70) clockwise:NO]];
+    DWAnimation * bezierAnimation = [redView dw_CreateAnimationWithAnimationKey:@"bezierAnimation" beginTime:0 duration:2 bezierPath:[UIBezierPath bezierPathWithArcCenter:CGPointMake(self.view.center.x, self.view.center.y - 300) radius:400 startAngle:RadianFromDegree(110) endAngle:RadianFromDegree(70) clockwise:NO] autoRotate:NO];
     bezierAnimation.repeatCount = 2;
     DWAnimation * rotateAnimation = [[DWAnimation alloc] initAnimationWithView:redView animationKey:@"rotate" animationCreater:^(DWAnimationMaker *maker) {
         maker.rotateFrom(20).rotateTo(-20).duration(2).install();

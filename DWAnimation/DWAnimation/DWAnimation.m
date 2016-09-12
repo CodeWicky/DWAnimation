@@ -259,7 +259,7 @@
 
 ///以贝尔塞曲线创建移动动画
 -(instancetype)initAnimationWithView:(UIView *)view animationKey:(NSString *)animationKey
-                           beginTime:(CGFloat)beginTime duration:(CGFloat)duration bezierPath:(UIBezierPath *)bezierPath
+                           beginTime:(CGFloat)beginTime duration:(CGFloat)duration bezierPath:(UIBezierPath *)bezierPath autoRotate:(BOOL)autoRotate
 {
     CAKeyframeAnimation * animation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
     animation.duration = duration;
@@ -267,6 +267,9 @@
     animation.removedOnCompletion = NO;
     animation.fillMode = kCAFillModeForwards;
     animation.path = bezierPath.CGPath;
+    if (autoRotate) {
+        animation.rotationMode = kCAAnimationRotateAuto;
+    }
     return [[DWAnimation alloc] initAnimationWithView:view beginTime:0  duration:(beginTime + duration) animationKey:animationKey animations:@[animation]];
 }
 
@@ -274,16 +277,7 @@
 -(instancetype)initAnimationWithView:(UIView *)view animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration arcCenter:(CGPoint)center radius:(CGFloat)radius startAngle:(CGFloat)startAngle endAngle:(CGFloat)endAngle clockwise:(BOOL)clockwise autoRotate:(BOOL)autoRotate
 {
     UIBezierPath * path = [UIBezierPath bezierPathWithArcCenter:center radius:radius startAngle:RadianFromDegree(startAngle - 90) endAngle:RadianFromDegree(endAngle - 90) clockwise:clockwise];
-    DWAnimation * arcAnimation = [[DWAnimation alloc] initAnimationWithView:view animationKey:animationKey beginTime:beginTime duration:duration bezierPath:path];
-    if (!autoRotate) {
-        return arcAnimation;
-    }
-    DWAnimation * rotateAnimation = [[DWAnimation alloc] initAnimationWithView:view animationKey:@"autoRotate" animationCreater:^(DWAnimationMaker *maker) {
-        maker.rotateFrom(startAngle - 180).rotateTo(endAngle - 180).beginTime(beginTime).duration(duration).install();
-    }];
-    DWAnimation * combine = [arcAnimation combineWithAnimation:rotateAnimation];
-    
-    return [[DWAnimation alloc] initAnimationWithView:view beginTime:0 duration:combine.duration animationKey:animationKey animations:combine.animation.animations];
+    return [[DWAnimation alloc] initAnimationWithView:view animationKey:animationKey beginTime:beginTime duration:duration bezierPath:path autoRotate:autoRotate];
 }
 
 ///创建震荡动画

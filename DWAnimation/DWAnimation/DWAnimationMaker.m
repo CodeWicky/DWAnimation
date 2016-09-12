@@ -122,7 +122,6 @@ CABasicAnimation *(^CreateSimpleAnimation)(NSString *,CGFloat,CGFloat) = ^(NSStr
     animation.fillMode = kCAFillModeForwards;
     animation.removedOnCompletion = NO;
     animation.beginTime += beginTime;
-//    animation.beginTime = beginTime + CACurrentMediaTime();
     animation.duration = duration;
     return animation;
 };
