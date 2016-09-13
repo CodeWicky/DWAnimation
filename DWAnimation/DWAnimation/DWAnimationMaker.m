@@ -68,6 +68,7 @@
 {
     CAAnimationGroup * group = [CAAnimationGroup animation];
     group.duration = self.totalDuration;
+    group.timingFunction = [CAMediaTimingFunction functionWithName:kCAAnimationLinear];
     group.fillMode = kCAFillModeForwards;
     group.removedOnCompletion = NO;
     group.animations = self.animationsArray;
@@ -119,6 +120,7 @@
 CABasicAnimation *(^CreateSimpleAnimation)(NSString *,CGFloat,CGFloat) = ^(NSString * key,CGFloat beginTime,CGFloat duration)
 {
     CABasicAnimation * animation = [CABasicAnimation animationWithKeyPath:key];
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAAnimationLinear];
     animation.fillMode = kCAFillModeForwards;
     animation.removedOnCompletion = NO;
     animation.beginTime += beginTime;

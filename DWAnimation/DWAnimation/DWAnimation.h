@@ -73,6 +73,9 @@
  
  version 1.0.14
  修复贝塞尔曲线动画使用拼接的贝塞尔曲线中间停顿bug
+ 
+ version 1.0.15
+ 添加所有动画节奏均为线性模式
  */
 
 #import <UIKit/UIKit.h>

@@ -57,6 +57,7 @@
             animation.beginTime += beginTime;
         }
         CAAnimationGroup * group = [CAAnimationGroup animation];
+        group.timingFunction = [CAMediaTimingFunction functionWithName:kCAAnimationLinear];
         group.removedOnCompletion = NO;
         group.fillMode = kCAFillModeForwards;
         group.duration = duration + beginTime;
