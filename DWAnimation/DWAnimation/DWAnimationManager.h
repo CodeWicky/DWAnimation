@@ -28,5 +28,5 @@
 /*
  animations     以DWAnimation对象组成的数组
  */
-+(void)startAnimations:(__kindof NSArray<DWAnimation *> *)animations playMode:(DWAnimationPlayMode)playMode; 
++(void)startAnimations:(__kindof NSArray<DWAnimation *> *)animations playMode:(DWAnimationPlayMode)playMode;
 @end

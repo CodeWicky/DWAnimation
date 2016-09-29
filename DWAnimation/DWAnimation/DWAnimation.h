@@ -76,6 +76,9 @@
  
  version 1.0.15
  添加所有动画节奏均为线性模式
+ 
+ version 1.0.16
+ 添加多状态动画及震荡动画对背景色动画的支持
  */
 
 #import <UIKit/UIKit.h>
@@ -119,7 +122,7 @@
 
 #pragma mark ---动画构造方法---
 
-///以block形式创建动画(移动，缩放，旋转，透明度，圆角，边框宽度，边框颜色，阴影颜色，阴影偏移量，阴影透明度，阴影路径，阴影圆角，背景图)
+///以block形式创建动画(移动，缩放，旋转，透明度，圆角，边框宽度，边框颜色，阴影颜色，阴影偏移量，阴影透明度，阴影路径，阴影圆角，背景图，背景色)
 /*
  view               将要展示动画的view，不可为nil
  animationKey       动画的标识，可为nil
@@ -152,13 +155,13 @@
  timeIntervals      动画每两个相邻状态间的时间间隔数组
  transition         各个动画状态节点间是否平滑过渡
  
- 注：    
-        animationType的默认属性为DWAnimationTypeMove
-        values中第一个数据为动画的初始状态，之后的数据为状
-        态节点。timeIntervals是当前状态节点距上一节点的时
-        间间隔。如：timeIntervals的第一个数据为第一个状态
-        节点距初始状态的时间间隔。故timeIntervals数组元素
-        个数应该比values元素个数少1。若参数不正确，则返回nil。
+ 注：
+ animationType的默认属性为DWAnimationTypeMove
+ values中第一个数据为动画的初始状态，之后的数据为状
+ 态节点。timeIntervals是当前状态节点距上一节点的时
+ 间间隔。如：timeIntervals的第一个数据为第一个状态
+ 节点距初始状态的时间间隔。故timeIntervals数组元素
+ 个数应该比values元素个数少1。若参数不正确，则返回nil。
  */
 -(instancetype)initAnimationWithView:(UIView *)view
                        animationType:(DWAnimationType)animationType

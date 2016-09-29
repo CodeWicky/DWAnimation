@@ -121,7 +121,7 @@
                 type = @"cornerRadius";
                 break;
             }
-                case DWAnimationTypeBorderColor:
+            case DWAnimationTypeBorderColor:
             {
                 if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([UIColor class])]) {
                     return nil;
@@ -137,7 +137,7 @@
                 type = @"borderColor";
                 break;
             }
-                case DWAnimationTypeBorderWidth:
+            case DWAnimationTypeBorderWidth:
             {
                 if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSNumber class])]) {
                     return nil;
@@ -145,7 +145,7 @@
                 type = @"borderWidth";
                 break;
             }
-                case DWAnimationTypeShadowColor:
+            case DWAnimationTypeShadowColor:
             {
                 if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([UIColor class])]) {
                     return nil;
@@ -161,7 +161,7 @@
                 type = @"shadowColor";
                 break;
             }
-                case DWAnimationTypeShadowAlpha:
+            case DWAnimationTypeShadowAlpha:
             {
                 if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSNumber class])]) {
                     return nil;
@@ -169,7 +169,7 @@
                 type = @"shadowOpacity";
                 break;
             }
-                case DWAnimationTypeShadowOffset:
+            case DWAnimationTypeShadowOffset:
             {
                 if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSValue class])]) {
                     return nil;
@@ -180,7 +180,7 @@
                 type = @"shadowOffset";
                 break;
             }
-                case DWAnimationTypeShadowCornerRadius:
+            case DWAnimationTypeShadowCornerRadius:
             {
                 if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSNumber class])]) {
                     return nil;
@@ -191,7 +191,7 @@
                 type = @"shadowRadius";
                 break;
             }
-                case DWAnimationTypeShadowPath:
+            case DWAnimationTypeShadowPath:
             {
                 if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([UIBezierPath class])]) {
                     return nil;
@@ -207,7 +207,7 @@
                 type = @"shadowPath";
                 break;
             }
-                case DWAnimationTypeBackgroundImage:
+            case DWAnimationTypeBackgroundImage:
             {
                 if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([UIImage class])]) {
                     return nil;
@@ -217,8 +217,20 @@
                     [arr addObject:(id)image.CGImage];
                 }
                 values = [NSArray arrayWithArray:arr];
-                type = @"transform.rotation";
                 type = @"contents";
+                break;
+            }
+            case DWAnimationTypeBackgroundColor:
+            {
+                if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([UIColor class])]) {
+                    return nil;
+                }
+                NSMutableArray * arr = [NSMutableArray array];
+                for (UIColor * color in values) {
+                    [arr addObject:(id)color.CGColor];
+                }
+                values = [NSArray arrayWithArray:arr];
+                type = @"backgroundColor";
                 break;
             }
             default:
@@ -336,6 +348,9 @@
         case DWAnimationSpringTypeBackgroundImage:
             key = @"contents";
             break;
+        case DWAnimationSpringTypeBackgroundColor:
+            key = @"backgroundColor";
+            break;
         default:
             key = @"position";
             break;
@@ -355,7 +370,7 @@
     if ((springingType == DWAnimationSpringTypeRotate || springingType == DWAnimationSpringTypeScale || springingType == DWAnimationSpringTypeAlpha || springingType == DWAnimationSpringTypeCornerRadius || springingType == DWAnimationSpringTypeBorderWidth || springingType == DWAnimationSpringTypeShadowAlpha || springingType == DWAnimationSpringTypeShadowCornerRadius) && ((![toValue isKindOfClass:[NSNumber class]]) || ((fromValue) && (![fromValue isKindOfClass:[NSNumber class]])))){
         return nil;
     }
-    if ((springingType == DWAnimationSpringTypeBorderColor || springingType== DWAnimationSpringTypeShadowColor)  && ((![toValue isKindOfClass:[UIColor class]]) || ((fromValue) && (![fromValue isKindOfClass:[UIColor class]])))){
+    if ((springingType == DWAnimationSpringTypeBorderColor || springingType== DWAnimationSpringTypeShadowColor || springingType == DWAnimationSpringTypeBackgroundColor)  && ((![toValue isKindOfClass:[UIColor class]]) || ((fromValue) && (![fromValue isKindOfClass:[UIColor class]])))){
         return nil;
     }
     if ((springingType == DWAnimationSpringTypeShadowPath)  && ((![toValue isKindOfClass:[UIBezierPath class]]) || ((fromValue) && (![fromValue isKindOfClass:[UIBezierPath class]])))) {
@@ -409,7 +424,7 @@
                 animation.fromValue = fromValue;
             }
         }
-        else if (springingType == DWAnimationSpringTypeBorderColor || springingType== DWAnimationSpringTypeShadowColor)
+        else if (springingType == DWAnimationSpringTypeBorderColor || springingType== DWAnimationSpringTypeShadowColor || springingType == DWAnimationSpringTypeBackgroundColor)
         {
             UIColor * color = (UIColor *)fromValue;
             animation.fromValue = (id)color.CGColor;
@@ -478,7 +493,7 @@
             return nil;
         }
     }
-    else if (springingType == DWAnimationSpringTypeBorderColor || springingType== DWAnimationSpringTypeShadowColor)
+    else if (springingType == DWAnimationSpringTypeBorderColor || springingType== DWAnimationSpringTypeShadowColor || springingType == DWAnimationSpringTypeBackgroundColor)
     {
         UIColor * color = (UIColor *)toValue;
         animation.toValue = (id)color.CGColor;
@@ -659,7 +674,7 @@
 
 ///判断数组中元素是否均为某种类型
 +(BOOL)allObjectsInArray:(NSArray *)array
-                 isKindClass:(NSString *)string
+             isKindClass:(NSString *)string
 {
     for (id object in array) {
         BOOL result = [object isKindOfClass:NSClassFromString(string)];

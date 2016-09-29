@@ -27,7 +27,7 @@
 @class DWAnimationMaker;
 @interface UIView (DWAnimation)
 
-///以block形式为自身创建动画(移动，缩放，旋转，透明度，圆角，边框宽度，边框颜色，阴影颜色，阴影偏移量，阴影透明度，阴影路径，阴影圆角，背景图)
+///以block形式为自身创建动画(移动，缩放，旋转，透明度，圆角，边框宽度，边框颜色，阴影颜色，阴影偏移量，阴影透明度，阴影路径，阴影圆角，背景图，背景色)
 /*
  animationKey       动画的标识，可为nil
  animationCreater   创建动画的回调Block
@@ -43,8 +43,8 @@
  */
 -(DWAnimation *)dw_CreateAnimationWithBeginTime:(CGFloat)beginTime
                                        duration:(CGFloat)duration
-                                  animationKey:(NSString *)animationKey
-                                    animations:(__kindof NSArray<CAAnimation *> *)animations;
+                                   animationKey:(NSString *)animationKey
+                                     animations:(__kindof NSArray<CAAnimation *> *)animations;
 
 ///以多个状态及时间间隔为自身创建连续动画
 /*

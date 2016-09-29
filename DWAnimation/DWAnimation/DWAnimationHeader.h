@@ -32,7 +32,8 @@ typedef NS_ENUM(NSInteger , DWAnimationType) {
     DWAnimationTypeShadowAlpha,///阴影透明度动画
     DWAnimationTypeShadowCornerRadius,///阴影圆角动画
     DWAnimationTypeShadowPath,///阴影路径动画
-    DWAnimationTypeBackgroundImage///背景图动画
+    DWAnimationTypeBackgroundImage,///背景图动画
+    DWAnimationTypeBackgroundColor///背景色动画
 };
 
 typedef NS_ENUM(NSInteger ,DWAnimationSpringType) {
@@ -48,7 +49,8 @@ typedef NS_ENUM(NSInteger ,DWAnimationSpringType) {
     DWAnimationSpringTypeShadowAlpha,///阴影透明度震荡动画
     DWAnimationSpringTypeShadowCornerRadius,///阴影圆角震荡动画
     DWAnimationSpringTypeShadowPath,///阴影路径震荡动画
-    DWAnimationSpringTypeBackgroundImage///背景图震荡动画
+    DWAnimationSpringTypeBackgroundImage,///背景图震荡动画
+    DWAnimationSpringTypeBackgroundColor///背景色震荡动画
 };
 
 typedef NS_ENUM(NSInteger ,DWAnimationStatus) {
@@ -57,7 +59,6 @@ typedef NS_ENUM(NSInteger ,DWAnimationStatus) {
     DWAnimationStatusSuspend,///暂停状态
     DWAnimationStatusFinished,///播放完成状态
     DWAnimationStatusRemoved///移除状态
-//    DWAnimationStatusCycle///循环状态
 };
 
 ///动画播放完成通知

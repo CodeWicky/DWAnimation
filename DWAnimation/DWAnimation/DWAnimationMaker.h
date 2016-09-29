@@ -32,6 +32,10 @@
  添加边框相关动画api
  添加阴影相关动画api
  添加背景图片动画api
+ 
+ version 1.0.6
+ 添加背景颜色动画api
+ 优化恢复动画逻辑
  */
 
 #import <UIKit/UIKit.h>
@@ -131,6 +135,12 @@
 
 ///初始背景图，背景图动画非必须实现方法，参数可为nil，若不实现默认当前UIImageNull为初始背景图
 @property (nonatomic ,copy) DWAnimationMaker * (^backgroundImageFrom)(UIImage *);
+
+///终止背景色，背景色动画必须实现方法，参数必须为非nil
+@property (nonatomic ,copy) DWAnimationMaker * (^backgroundColorTo)(UIColor *);
+
+///初始背景色，背景色动画非必须实现方法，参数可为nil，若不实现默认当前背景颜色为初始颜色
+@property (nonatomic ,copy) DWAnimationMaker * (^backgroundColorFrom)(UIColor *);
 
 ///恢复原状
 @property (nonatomic ,strong) DWAnimationMaker * reset;

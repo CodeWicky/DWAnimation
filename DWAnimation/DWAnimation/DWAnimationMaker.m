@@ -39,6 +39,9 @@
 @property (nonatomic ,strong) UIImage * homeBgImage;
 @property (nonatomic ,strong) UIImage * destinationBgImage;
 
+@property (nonatomic ,strong) UIColor * homeBgColor;
+@property (nonatomic ,strong) UIColor * destinationBgColor;
+
 @property (nonatomic ,assign) CGFloat startTime;
 @property (nonatomic ,assign) CGFloat animationDuration;
 
@@ -55,6 +58,7 @@
 @property (nonatomic ,assign) BOOL shadowR;
 @property (nonatomic ,assign) BOOL shadowP;
 @property (nonatomic ,assign) BOOL bgImage;
+@property (nonatomic ,assign) BOOL bgColor;
 @property (nonatomic ,assign) BOOL needReset;
 
 @end
@@ -110,6 +114,8 @@
         self.destinationShadowPath = nil;
         self.homeBgImage = UIImageNull;
         self.destinationBgImage = UIImageNull;
+        self.homeBgColor = nil;
+        self.destinationBgColor = nil;
     }
     return self;
 }
@@ -311,6 +317,14 @@ CABasicAnimation *(^BackgroundImageAnimation)(UIImage *,UIImage *,CGFloat,CGFloa
     bgImage.fromValue = (id)originalBgImage.CGImage;
     bgImage.toValue = (id)destinationBgImage.CGImage;
     return bgImage;
+};
+
+///创建背景色动画
+CABasicAnimation *(^BackgroundColorAnimation)(UIColor *,UIColor *,CGFloat,CGFloat) = ^(UIColor * originalBGColor,UIColor * destinationBGColor,CGFloat beginTime,CGFloat duration){
+    CABasicAnimation * bgColor = CreateSimpleAnimation(@"backgroundColor",beginTime,duration);
+    bgColor.fromValue = (id)originalBGColor.CGColor;
+    bgColor.toValue = (id)destinationBGColor.CGColor;
+    return bgColor;
 };
 
 #pragma mark ---工具block---
@@ -555,6 +569,27 @@ CABasicAnimation *(^BackgroundImageAnimation)(UIImage *,UIImage *,CGFloat,CGFloa
     };
 }
 
+-(DWAnimationMaker *(^)(UIColor *))backgroundColorTo
+{
+    return ^(UIColor * destinationBgColor){
+        self.bgColor = YES;
+        if (destinationBgColor) {
+            self.destinationBgColor = destinationBgColor;
+        }
+        return self;
+    };
+}
+
+-(DWAnimationMaker *(^)(UIColor *))backgroundColorFrom
+{
+    return ^(UIColor * homeBgColor){
+        if (homeBgColor) {
+            self.homeBgColor = homeBgColor;
+        }
+        return self;
+    };
+}
+
 -(DWAnimationMaker *)reset
 {
     self.needReset = YES;
@@ -586,16 +621,17 @@ CABasicAnimation *(^BackgroundImageAnimation)(UIImage *,UIImage *,CGFloat,CGFloa
             [self.animationsArray addObject:RotateAnimation(MAXFLOAT,0,X,self.startTime,self.animationDuration)];
             [self.animationsArray addObject:RotateAnimation(MAXFLOAT,0,Y,self.startTime,self.animationDuration)];
             [self.animationsArray addObject:RotateAnimation(MAXFLOAT,0,Z,self.startTime,self.animationDuration)];
-            [self.animationsArray addObject:AlphaAnimation(MAXFLOAT,1,self.startTime,self.animationDuration)];
-            [self.animationsArray addObject:CornerRadiusAnimation(MAXFLOAT,1,self.startTime,self.animationDuration)];
-            [self.animationsArray addObject:BorderWidthAnimation(MAXFLOAT,0 ,self.startTime,self.animationDuration)];
-            [self.animationsArray addObject:BorderColorAnimation(nil,[UIColor clearColor],self.startTime,self.animationDuration)];
-            [self.animationsArray addObject:ShadowColorAnimation(nil,[UIColor clearColor],self.startTime,self.animationDuration)];
-            [self.animationsArray addObject:ShadowOffsetAnimation(CGSizeNull,CGSizeZero,self.startTime,self.animationDuration)];
-            [self.animationsArray addObject:ShadowAlphaAnimation(MAXFLOAT,0,self.startTime,self.animationDuration)];
-            [self.animationsArray addObject:ShadowRadiusAnimation(MAXFLOAT,0.5,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:AlphaAnimation(MAXFLOAT,self.view.layer.opacity,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:CornerRadiusAnimation(MAXFLOAT,self.view.layer.cornerRadius,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:BorderWidthAnimation(MAXFLOAT,self.view.layer.borderWidth ,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:BorderColorAnimation(nil,[UIColor colorWithCGColor:self.view.layer.borderColor],self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:ShadowColorAnimation(nil,[UIColor colorWithCGColor:self.view.layer.shadowColor],self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:ShadowOffsetAnimation(CGSizeNull,self.view.layer.shadowOffset,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:ShadowAlphaAnimation(MAXFLOAT,self.view.layer.shadowOpacity,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:ShadowRadiusAnimation(MAXFLOAT,self.view.layer.shadowRadius,self.startTime,self.animationDuration)];
             [self.animationsArray addObject:ShadowPathAnimation(self.view,nil,nil,self.startTime,self.animationDuration)];
-            [self.animationsArray addObject:BackgroundImageAnimation(UIImageNull,UIImageNull,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:BackgroundImageAnimation(UIImageNull,[UIImage imageWithCGImage:(CGImageRef)self.view.layer.contents],self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:BackgroundColorAnimation(nil,self.view.backgroundColor,self.startTime,self.animationDuration)];
             self.needReset = NO;
             self.scale = NO;
             self.rotate = NO;
@@ -610,6 +646,7 @@ CABasicAnimation *(^BackgroundImageAnimation)(UIImage *,UIImage *,CGFloat,CGFloa
             self.shadowR = NO;
             self.shadowP = NO;
             self.bgImage = NO;
+            self.bgColor = NO;
             self.homePoint = CGPointNull;
             self.destinationPoint = CGPointNull;
             self.homeScale = MAXFLOAT;
@@ -636,6 +673,8 @@ CABasicAnimation *(^BackgroundImageAnimation)(UIImage *,UIImage *,CGFloat,CGFloa
             self.destinationShadowPath = nil;
             self.homeBgImage = UIImageNull;
             self.destinationBgImage = UIImageNull;
+            self.homeBgColor = nil;
+            self.destinationBgColor = nil;
         }
         if (self.move) {
             [self.animationsArray addObject:MoveAnimation(self.homePoint,self.destinationPoint,self.startTime,self.animationDuration)];
@@ -715,6 +754,12 @@ CABasicAnimation *(^BackgroundImageAnimation)(UIImage *,UIImage *,CGFloat,CGFloa
             self.bgImage = NO;
             self.homeBgImage = UIImageNull;
             self.destinationBgImage = UIImageNull;
+        }
+        if (self.bgColor) {
+            [self.animationsArray addObject:BackgroundColorAnimation(self.homeBgColor,self.destinationBgColor,self.startTime,self.animationDuration)];
+            self.bgColor = NO;
+            self.homeBgColor = nil;
+            self.destinationBgColor = nil;
         }
         self.totalDuration = MAX(self.totalDuration, self.startTime + self.animationDuration);
         self.startTime = 0;
