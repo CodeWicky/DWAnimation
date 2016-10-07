@@ -629,137 +629,80 @@ CABasicAnimation *(^BackgroundColorAnimation)(UIColor *,UIColor *,CGFloat,CGFloa
             [self.animationsArray addObject:ShadowOffsetAnimation(CGSizeNull,self.view.layer.shadowOffset,self.startTime,self.animationDuration)];
             [self.animationsArray addObject:ShadowAlphaAnimation(MAXFLOAT,self.view.layer.shadowOpacity,self.startTime,self.animationDuration)];
             [self.animationsArray addObject:ShadowRadiusAnimation(MAXFLOAT,self.view.layer.shadowRadius,self.startTime,self.animationDuration)];
-            [self.animationsArray addObject:ShadowPathAnimation(self.view,nil,nil,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:ShadowPathAnimation(self.view,nil,self.view.layer.shadowPath?[UIBezierPath bezierPathWithCGPath:self.view.layer.shadowPath]:nil,self.startTime,self.animationDuration)];
             [self.animationsArray addObject:BackgroundImageAnimation(UIImageNull,[UIImage imageWithCGImage:(CGImageRef)self.view.layer.contents],self.startTime,self.animationDuration)];
             [self.animationsArray addObject:BackgroundColorAnimation(nil,self.view.backgroundColor,self.startTime,self.animationDuration)];
             self.needReset = NO;
-            self.scale = NO;
-            self.rotate = NO;
-            self.move = NO;
-            self.alpha = NO;
-            self.cornerR = NO;
-            self.borderW = NO;
-            self.borderC = NO;
-            self.shadowC = NO;
-            self.shadowO = NO;
-            self.shadowA = NO;
-            self.shadowR = NO;
-            self.shadowP = NO;
-            self.bgImage = NO;
-            self.bgColor = NO;
-            self.homePoint = CGPointNull;
-            self.destinationPoint = CGPointNull;
-            self.homeScale = MAXFLOAT;
-            self.destinationScale = MAXFLOAT;
-            self.homeAngle = MAXFLOAT;
-            self.destinationAngle = MAXFLOAT;
-            self.homeAlpha = MAXFLOAT;
-            self.destinationAlpha = MAXFLOAT;
-            self.homeCornerR = MAXFLOAT;
-            self.destinationCornerR = MAXFLOAT;
-            self.homeBorderW = MAXFLOAT;
-            self.destinationBorderW = MAXFLOAT;
-            self.homeBorderColor = nil;
-            self.destinationBorderColor = nil;
-            self.homeShadowColor = nil;
-            self.destinationShadowColor = nil;
-            self.homeShadowOffset = CGSizeNull;
-            self.destinationShadowOffset = CGSizeNull;
-            self.homeShadowAlpha = MAXFLOAT;
-            self.destinationShadowAlpha = MAXFLOAT;
-            self.homeShadowRadius = MAXFLOAT;
-            self.destinationShadowRadius = MAXFLOAT;
-            self.homeShadowPath = nil;
-            self.destinationShadowPath = nil;
-            self.homeBgImage = UIImageNull;
-            self.destinationBgImage = UIImageNull;
-            self.homeBgColor = nil;
-            self.destinationBgColor = nil;
+            [self resetMovePara];
+            [self resetScalePara];
+            [self resetRotatePara];
+            [self resetAlphaPara];
+            [self resetCornerRPara];
+            [self resetBorderWPara];
+            [self resetBorderCPara];
+            [self resetShadowCPara];
+            [self resetShadowOPara];
+            [self resetShadowAPara];
+            [self resetShadowRPara];
+            [self resetShadowPPara];
+            [self resetBgImagePara];
+            [self resetBgColorPara];
         }
         if (self.move) {
             [self.animationsArray addObject:MoveAnimation(self.homePoint,self.destinationPoint,self.startTime,self.animationDuration)];
-            self.move = NO;
-            self.homePoint = CGPointNull;
-            self.destinationPoint = CGPointNull;
+            [self resetMovePara];
         }
         if (self.scale) {
             [self.animationsArray addObject:ScaleAnimation(self.homeScale,self.destinationScale,self.startTime,self.animationDuration)];
-            self.scale = NO;
-            self.homeScale = MAXFLOAT;
-            self.destinationScale = MAXFLOAT;
+            [self resetScalePara];
         }
         if (self.rotate) {
             [self.animationsArray addObject:RotateAnimation(self.homeAngle,self.destinationAngle,self.rotateAxis,self.startTime,self.animationDuration)];
-            self.rotate = NO;
-            self.homeAngle = MAXFLOAT;
-            self.destinationAngle = MAXFLOAT;
-            self.rotateAxis = Z;
+            [self resetRotatePara];
         }
         if (self.alpha) {
             [self.animationsArray addObject:AlphaAnimation(self.homeAlpha,self.destinationAlpha,self.startTime,self.animationDuration)];
-            self.alpha = NO;
-            self.homeAlpha = MAXFLOAT;
-            self.destinationAlpha = MAXFLOAT;
+            [self resetAlphaPara];
         }
         if (self.cornerR) {
             [self.animationsArray addObject:CornerRadiusAnimation(self.homeCornerR,self.destinationCornerR,self.startTime,self.animationDuration)];
-            self.cornerR = NO;
-            self.homeCornerR = MAXFLOAT;
-            self.destinationCornerR = MAXFLOAT;
+            [self resetCornerRPara];
         }
         if (self.borderW) {
             [self.animationsArray addObject:BorderWidthAnimation(self.homeBorderW,self.destinationBorderW,self.startTime,self.animationDuration)];
-            self.borderW = NO;
-            self.homeBorderW = MAXFLOAT;
-            self.destinationBorderW = MAXFLOAT;
+            [self resetBorderWPara];
         }
         if (self.borderC) {
             [self.animationsArray addObject:BorderColorAnimation(self.homeBorderColor,self.destinationBorderColor,self.startTime,self.animationDuration)];
-            self.borderC = NO;
-            self.homeBorderColor = nil;
-            self.destinationBorderColor = nil;
+            [self resetBorderCPara];
         }
         if (self.shadowC) {
             [self.animationsArray addObject:ShadowColorAnimation(self.homeShadowColor,self.destinationShadowColor,self.startTime,self.animationDuration)];
-            self.shadowC = NO;
-            self.homeShadowColor = nil;
-            self.destinationShadowColor = nil;
+            [self resetShadowCPara];
         }
         if (self.shadowO) {
             [self.animationsArray addObject:ShadowOffsetAnimation(self.homeShadowOffset,self.destinationShadowOffset,self.startTime,self.animationDuration)];
-            self.shadowO = NO;
-            self.homeShadowOffset = CGSizeNull;
-            self.destinationShadowOffset = CGSizeNull;
+            [self resetShadowOPara];
         }
         if (self.shadowA) {
             [self.animationsArray addObject:ShadowAlphaAnimation(self.homeShadowAlpha,self.destinationShadowAlpha,self.startTime,self.animationDuration)];
-            self.shadowA = NO;
-            self.homeShadowAlpha = MAXFLOAT;
-            self.destinationShadowAlpha = MAXFLOAT;
+            [self resetShadowAPara];
         }
         if (self.shadowR) {
             [self.animationsArray addObject:ShadowRadiusAnimation(self.homeShadowRadius,self.destinationShadowRadius,self.startTime,self.animationDuration)];
-            self.shadowR = NO;
-            self.homeShadowRadius = MAXFLOAT;
-            self.destinationShadowRadius = MAXFLOAT;
+            [self resetShadowRPara];
         }
         if (self.shadowP) {
             [self.animationsArray addObject:ShadowPathAnimation(self.view,self.homeShadowPath,self.destinationShadowPath,self.startTime,self.animationDuration)];
-            self.shadowP = NO;
-            self.homeShadowPath = nil;
-            self.destinationShadowPath = nil;
+            [self resetShadowPPara];
         }
         if (self.bgImage) {
             [self.animationsArray addObject:BackgroundImageAnimation(self.homeBgImage,self.destinationBgImage,self.startTime,self.animationDuration)];
-            self.bgImage = NO;
-            self.homeBgImage = UIImageNull;
-            self.destinationBgImage = UIImageNull;
+            [self resetBgImagePara];
         }
         if (self.bgColor) {
             [self.animationsArray addObject:BackgroundColorAnimation(self.homeBgColor,self.destinationBgColor,self.startTime,self.animationDuration)];
-            self.bgColor = NO;
-            self.homeBgColor = nil;
-            self.destinationBgColor = nil;
+            [self resetBgColorPara];
         }
         self.totalDuration = MAX(self.totalDuration, self.startTime + self.animationDuration);
         self.startTime = 0;
@@ -768,6 +711,104 @@ CABasicAnimation *(^BackgroundColorAnimation)(UIColor *,UIColor *,CGFloat,CGFloa
     };
 }
 
+-(void)resetMovePara
+{
+    self.move = NO;
+    self.homePoint = CGPointNull;
+    self.destinationPoint = CGPointNull;
+}
+
+-(void)resetScalePara
+{
+    self.scale = NO;
+    self.homeScale = MAXFLOAT;
+    self.destinationScale = MAXFLOAT;
+}
+
+-(void)resetRotatePara
+{
+    self.rotate = NO;
+    self.homeAngle = MAXFLOAT;
+    self.destinationAngle = MAXFLOAT;
+    self.rotateAxis = Z;
+}
+
+-(void)resetAlphaPara
+{
+    self.alpha = NO;
+    self.homeAlpha = MAXFLOAT;
+    self.destinationAlpha = MAXFLOAT;
+}
+
+-(void)resetCornerRPara
+{
+    self.cornerR = NO;
+    self.homeCornerR = MAXFLOAT;
+    self.destinationCornerR = MAXFLOAT;
+}
+
+-(void)resetBorderWPara
+{
+    self.borderW = NO;
+    self.homeBorderW = MAXFLOAT;
+    self.destinationBorderW = MAXFLOAT;
+}
+
+-(void)resetBorderCPara
+{
+    self.borderC = NO;
+    self.homeBorderColor = nil;
+    self.destinationBorderColor = nil;
+}
+
+-(void)resetShadowCPara
+{
+    self.shadowC = NO;
+    self.homeShadowColor = nil;
+    self.destinationShadowColor = nil;
+}
+
+-(void)resetShadowOPara
+{
+    self.shadowO = NO;
+    self.homeShadowOffset = CGSizeNull;
+    self.destinationShadowOffset = CGSizeNull;
+}
+
+-(void)resetShadowAPara
+{
+    self.shadowA = NO;
+    self.homeShadowAlpha = MAXFLOAT;
+    self.destinationShadowAlpha = MAXFLOAT;
+}
+
+-(void)resetShadowRPara
+{
+    self.shadowR = NO;
+    self.homeShadowRadius = MAXFLOAT;
+    self.destinationShadowRadius = MAXFLOAT;
+}
+
+-(void)resetShadowPPara
+{
+    self.shadowP = NO;
+    self.homeShadowPath = nil;
+    self.destinationShadowPath = nil;
+}
+
+-(void)resetBgImagePara
+{
+    self.bgImage = NO;
+    self.homeBgImage = UIImageNull;
+    self.destinationBgImage = UIImageNull;
+}
+
+-(void)resetBgColorPara
+{
+    self.bgColor = NO;
+    self.homeBgColor = nil;
+    self.destinationBgColor = nil;
+}
 #pragma mark ---setter、getter---
 -(NSMutableArray *)animationsArray
 {

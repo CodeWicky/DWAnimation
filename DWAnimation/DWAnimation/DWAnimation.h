@@ -79,6 +79,9 @@
  
  version 1.0.16
  添加多状态动画及震荡动画对背景色动画的支持
+ 
+ version 1.0.17
+ 优化恢复动画阴影路径逻辑及恢复代码整合
  */
 
 #import <UIKit/UIKit.h>
@@ -225,7 +228,7 @@
  damping            阻尼系数：影响震荡停止速度，需大于0。想实现默认效果请传10。
  initialVelocity    初始速度：可正可负，负则先做反向运动，随后正向。想实现默认效果请传0。
  
- 注：fromValue与toValue，除DWAnimationSpringTypeMove应为NSValue类型外，其他均应为NSNumber类型数据
+ 注：fromValue与toValue，均为UIKit中对象类型，如NSValue/NSNumber/UIColor/UIBezierPath/UIImage。
  */
 -(instancetype)initAnimationWitnView:(UIView *)view
                         animationKey:(NSString *)animationKey
