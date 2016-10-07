@@ -34,11 +34,11 @@
     NSMutableArray * arr = [NSMutableArray array];
     NSMutableDictionary * dic = [NSMutableDictionary dictionary];
     for (DWAnimation * animation in animations) {
-        UIView * view = animation.view;
-        if (![arr containsObject:view]) {
-            [arr addObject:view];
+        CALayer * layer = animation.layer;
+        if (![arr containsObject:layer]) {
+            [arr addObject:layer];
         }
-        NSString * key = [NSString stringWithFormat:@"%ld",[arr indexOfObject:view]];
+        NSString * key = [NSString stringWithFormat:@"%ld",[arr indexOfObject:layer]];
         NSMutableArray * array = dic[key];
         if (!array) {
             array = [NSMutableArray array];

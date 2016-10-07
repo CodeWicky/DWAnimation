@@ -17,6 +17,7 @@
 		9B1C2A031D7EC5240029663B /* DWAnimationMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B1C29FD1D7EC5240029663B /* DWAnimationMaker.m */; };
 		9B1C2A041D7EC5240029663B /* DWAnimationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B1C29FF1D7EC5240029663B /* DWAnimationManager.m */; };
 		9B1C2A051D7EC5240029663B /* UIView+DWAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B1C2A011D7EC5240029663B /* UIView+DWAnimation.m */; };
+		9B428C8E1DA81A28008AAFE1 /* CALayer+DWAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B428C8D1DA81A28008AAFE1 /* CALayer+DWAnimation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,8 @@
 		9B1C29FF1D7EC5240029663B /* DWAnimationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWAnimationManager.m; sourceTree = "<group>"; };
 		9B1C2A001D7EC5240029663B /* UIView+DWAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+DWAnimation.h"; sourceTree = "<group>"; };
 		9B1C2A011D7EC5240029663B /* UIView+DWAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+DWAnimation.m"; sourceTree = "<group>"; };
+		9B428C8C1DA81A28008AAFE1 /* CALayer+DWAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+DWAnimation.h"; sourceTree = "<group>"; };
+		9B428C8D1DA81A28008AAFE1 /* CALayer+DWAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+DWAnimation.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +104,8 @@
 				9B1C29FB1D7EC5240029663B /* DWAnimationHeader.h */,
 				9B1C29FC1D7EC5240029663B /* DWAnimationMaker.h */,
 				9B1C29FD1D7EC5240029663B /* DWAnimationMaker.m */,
+				9B428C8C1DA81A28008AAFE1 /* CALayer+DWAnimation.h */,
+				9B428C8D1DA81A28008AAFE1 /* CALayer+DWAnimation.m */,
 				9B1C29FE1D7EC5240029663B /* DWAnimationManager.h */,
 				9B1C29FF1D7EC5240029663B /* DWAnimationManager.m */,
 				9B1C2A001D7EC5240029663B /* UIView+DWAnimation.h */,
@@ -187,6 +192,7 @@
 				9B1C29E31D7EC4C70029663B /* main.m in Sources */,
 				9B1C2A021D7EC5240029663B /* DWAnimation.m in Sources */,
 				9B1C2A041D7EC5240029663B /* DWAnimationManager.m in Sources */,
+				9B428C8E1DA81A28008AAFE1 /* CALayer+DWAnimation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -335,6 +341,7 @@
 				9B1C29F71D7EC4C70029663B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

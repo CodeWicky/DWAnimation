@@ -36,6 +36,9 @@
  version 1.0.6
  添加背景颜色动画api
  优化恢复动画逻辑
+ 
+ version 1.1.0
+ 更改所有api中参数将UIView对象改为更加广泛适合的CALayer对象
  */
 
 #import <UIKit/UIKit.h>
@@ -142,7 +145,7 @@
 ///初始背景色，背景色动画非必须实现方法，参数可为nil，若不实现默认当前背景颜色为初始颜色
 @property (nonatomic ,copy) DWAnimationMaker * (^backgroundColorFrom)(UIColor *);
 
-///恢复原状
+///恢复原状（注：特殊属性动画不在恢复动画范围内，请自行恢复。）
 @property (nonatomic ,strong) DWAnimationMaker * reset;
 
 ///动画时长，所有动画必须实现方法，否则默认动画时长为0
@@ -156,7 +159,7 @@
 
 #pragma mark ---中间属性---
 @property (nonatomic ,strong) CAAnimationGroup * animation;
-@property (nonatomic ,strong) UIView * view;
+@property (nonatomic ,strong) CALayer * layer;
 @property (nonatomic ,assign) CGFloat totalDuration;
 
 #pragma mark ---中间方法---

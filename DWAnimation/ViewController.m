@@ -32,7 +32,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(finish:) name:DWAnimationPlayFinishNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(start:) name:DWAnimationPlayStartNotification object:nil];
     
-    DWAnimation * springAnimation1 = [[DWAnimation alloc] initAnimationWitnView:redView animationKey:@"springAnimationMove" springingType:(DWAnimationSpringTypeMove) beginTime:0 fromValue:[NSValue valueWithCGPoint:CGPointMake(redView.center.x, - redView.frame.size.height * 0.5)] toValue:[NSValue valueWithCGPoint:self.view.center] mass:1 stiffness:100 damping:10 initialVelocity:0];
+    DWAnimation * springAnimation1 = [[DWAnimation alloc] initAnimationWitnLayer:redView.layer animationKey:@"springAnimationMove" springingType:(DWAnimationSpringTypeMove) beginTime:0 fromValue:[NSValue valueWithCGPoint:CGPointMake(redView.center.x, - redView.frame.size.height * 0.5)] toValue:[NSValue valueWithCGPoint:self.view.center] mass:1 stiffness:100 damping:10 initialVelocity:0];
     springAnimation1.repeatCount = 2;
     //    springAnimation1.beginTime = 2;
     //        [springAnimation1 start];
@@ -44,12 +44,12 @@
         maker.moveTo(CGPointMake(self.view.center.x, self.view.center.y + 100)).duration(2).install();
     }];
     //    [moveAnimation start];
-    DWAnimation * arcAnimation = [[DWAnimation alloc] initAnimationWithView:redView animationKey:@"arcAnimation" beginTime:0 duration:1 arcCenter:CGPointMake(self.view.center.x, self.view.center.y - 300) radius:400 startAngle:180 endAngle:200 clockwise:YES autoRotate:YES];
+    DWAnimation * arcAnimation = [[DWAnimation alloc] initAnimationWithLayer:redView.layer animationKey:@"arcAnimation" beginTime:0 duration:1 arcCenter:CGPointMake(self.view.center.x, self.view.center.y - 300) radius:400 startAngle:180 endAngle:200 clockwise:YES autoRotate:YES];
     arcAnimation.repeatCount = 2;
     //
     DWAnimation * bezierAnimation = [redView dw_CreateAnimationWithAnimationKey:@"bezierAnimation" beginTime:0 duration:2 bezierPath:[UIBezierPath bezierPathWithArcCenter:CGPointMake(self.view.center.x, self.view.center.y - 300) radius:400 startAngle:RadianFromDegree(110) endAngle:RadianFromDegree(70) clockwise:NO] autoRotate:NO];
     bezierAnimation.repeatCount = 2;
-    DWAnimation * rotateAnimation = [[DWAnimation alloc] initAnimationWithView:redView animationKey:@"rotate" animationCreater:^(DWAnimationMaker *maker) {
+    DWAnimation * rotateAnimation = [[DWAnimation alloc] initAnimationWithLayer:redView.layer animationKey:@"rotate" animationCreater:^(DWAnimationMaker *maker) {
         maker.rotateFrom(20).rotateTo(-20).duration(2).install();
     }];
     //
@@ -64,7 +64,7 @@
     
     //    [addAnimation start];
     
-    DWAnimation * multiAnimation = [[DWAnimation alloc] initAnimationWithView:redView animationType:(DWAnimationTypeMove) animationKey:@"multiAnimation" beginTime:0 values:@[[NSValue valueWithCGPoint:self.view.center],[NSValue valueWithCGPoint:CGPointMake(self.view.center.x, self.view.center.y - 100)],[NSValue valueWithCGPoint:CGPointMake(self.view.center.x - 100, self.view.center.y + 100)],[NSValue valueWithCGPoint:CGPointMake(self.view.center.x + 100, self.view.center.y)],[NSValue valueWithCGPoint:CGPointMake(self.view.center.x - 100, self.view.center.y)],[NSValue valueWithCGPoint:CGPointMake(self.view.center.x + 100, self.view.center.y + 100)],[NSValue valueWithCGPoint:CGPointMake(self.view.center.x, self.view.center.y - 100)]] timeIntervals:@[@1,@2,@2,@2,@2,@2] transition:NO];
+    DWAnimation * multiAnimation = [[DWAnimation alloc] initAnimationWithLayer:redView.layer animationType:(DWAnimationTypeMove) animationKey:@"multiAnimation" beginTime:0 values:@[[NSValue valueWithCGPoint:self.view.center],[NSValue valueWithCGPoint:CGPointMake(self.view.center.x, self.view.center.y - 100)],[NSValue valueWithCGPoint:CGPointMake(self.view.center.x - 100, self.view.center.y + 100)],[NSValue valueWithCGPoint:CGPointMake(self.view.center.x + 100, self.view.center.y)],[NSValue valueWithCGPoint:CGPointMake(self.view.center.x - 100, self.view.center.y)],[NSValue valueWithCGPoint:CGPointMake(self.view.center.x + 100, self.view.center.y + 100)],[NSValue valueWithCGPoint:CGPointMake(self.view.center.x, self.view.center.y - 100)]] timeIntervals:@[@1,@2,@2,@2,@2,@2] transition:NO];
     //    [multiAnimation start];
     //
     CABasicAnimation * basicAnimation1 = [CABasicAnimation animationWithKeyPath:@"transform.rotation.x"];
@@ -78,15 +78,15 @@
     basicAnimation2.fillMode = kCAFillModeForwards;
     basicAnimation2.duration = 2;
     basicAnimation2.toValue = @(RadianFromDegree(180));
-    DWAnimation * arrAnimation = [[DWAnimation alloc] initAnimationWithView:redView beginTime:2 duration:2 animationKey:@"arrAnimation" animations:@[basicAnimation1,basicAnimation2]];
+    DWAnimation * arrAnimation = [[DWAnimation alloc] initAnimationWithLayer:redView.layer beginTime:2 duration:2 animationKey:@"arrAnimation" animations:@[basicAnimation1,basicAnimation2]];
     //    [arrAnimation start];
     //
-    DWAnimation * longSentence = [[DWAnimation alloc] initAnimationWithView:redView animationKey:@"longSentence" animationCreater:^(DWAnimationMaker *maker) {
+    DWAnimation * longSentence = [[DWAnimation alloc] initAnimationWithLayer:redView.layer animationKey:@"longSentence" animationCreater:^(DWAnimationMaker *maker) {
         maker.moveTo(self.view.center).cornerRadiusTo(50).scaleTo(2).alphaTo(0).duration(2).install();
     }];
     //    [longSentence start];
     
-    DWAnimation * shortSentence = [[DWAnimation alloc] initAnimationWithView:redView animationKey:@"shortSentence" animationCreater:^(DWAnimationMaker *maker) {
+    DWAnimation * shortSentence = [[DWAnimation alloc] initAnimationWithLayer:redView.layer animationKey:@"shortSentence" animationCreater:^(DWAnimationMaker *maker) {
         maker.reset.duration(2).install();
         maker.alphaFrom(0.5).alphaTo(1).beginTime(2).duration(2).install();
         maker.rotateTo(90).axis(Y).beginTime(2).duration(2).install();
@@ -94,7 +94,9 @@
         maker.moveTo(CGPointMake(self.view.center.x + 200, self.view.center.y)).alphaTo(0).beginTime(6).duration(2).install();
     }];
     
-    self.arr = @[springAnimation,moveAnimation,arcAnimation,addAnimation,multiAnimation,arrAnimation,longSentence,shortSentence];
+    DWAnimation * reset = [redView.layer dw_CreateResetAnimationWithBeginTime:0 duration:2];
+    
+    self.arr = @[springAnimation,moveAnimation,arcAnimation,addAnimation,multiAnimation,arrAnimation,longSentence,shortSentence,reset];
 }
 
 -(void)finish:(NSNotification *)notice

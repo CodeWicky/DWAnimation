@@ -82,6 +82,10 @@
  
  version 1.0.17
  优化恢复动画阴影路径逻辑及恢复代码整合
+ 
+ version 1.1.0
+ 更改所有api中参数将UIView对象改为更加广泛适合的CALayer对象
+ 添加特殊属性动画api，支持为CALayer及其子类中所有支持动画的属性生成动画。
  */
 
 #import <UIKit/UIKit.h>
@@ -89,6 +93,7 @@
 #import "DWAnimationMaker.h"
 #import "DWAnimationManager.h"
 #import "UIView+DWAnimation.h"
+#import "CALayer+DWAnimation.h"
 @class DWAnimationMaker;
 @interface DWAnimation : NSObject
 
@@ -109,8 +114,8 @@
 ///动画标识
 @property (nonatomic ,copy) NSString * animationKey;
 
-///展示动画的view
-@property (nonatomic ,strong) UIView * view;
+///展示动画的layer
+@property (nonatomic ,strong) CALayer * layer;
 
 ///动画状态
 @property (nonatomic ,assign) DWAnimationStatus status;
@@ -127,30 +132,30 @@
 
 ///以block形式创建动画(移动，缩放，旋转，透明度，圆角，边框宽度，边框颜色，阴影颜色，阴影偏移量，阴影透明度，阴影路径，阴影圆角，背景图，背景色)
 /*
- view               将要展示动画的view，不可为nil
+ layer              将要展示动画的layer，不可为nil
  animationKey       动画的标识，可为nil
  animationCreater   创建动画的回调Block
  */
--(instancetype)initAnimationWithView:(UIView *)view
-                        animationKey:(NSString *)animationKey
-                    animationCreater:(void(^)(DWAnimationMaker * maker))animationCreater;
+-(instancetype)initAnimationWithLayer:(CALayer *)layer
+                         animationKey:(NSString *)animationKey
+                     animationCreater:(void(^)(DWAnimationMaker * maker))animationCreater;
 
 ///以数组形式创建动画
 /*
- view               将要展示动画的view，不可为nil
+ layer              将要展示动画的layer，不可为nil
  duration           动画时长
  animationKey       动画的标识，可为nil
  animations         动画数组，由CAAnimation及其派生类组成
  */
--(instancetype)initAnimationWithView:(UIView *)view
-                           beginTime:(CGFloat)beginTime
-                            duration:(CGFloat)duration
-                        animationKey:(NSString *)animationKey
-                          animations:(__kindof NSArray<CAAnimation *> *)animations;
+-(instancetype)initAnimationWithLayer:(CALayer *)layer
+                            beginTime:(CGFloat)beginTime
+                             duration:(CGFloat)duration
+                         animationKey:(NSString *)animationKey
+                           animations:(__kindof NSArray<CAAnimation *> *)animations;
 
 ///以多个状态及时间间隔创建连续动画
 /*
- view               将要展示动画的view，不可为nil
+ layer              将要展示动画的layer，不可为nil
  animationType      创建的动画类型
  animationKey       动画的标识
  beginTime          动画延迟时间
@@ -166,33 +171,33 @@
  节点距初始状态的时间间隔。故timeIntervals数组元素
  个数应该比values元素个数少1。若参数不正确，则返回nil。
  */
--(instancetype)initAnimationWithView:(UIView *)view
-                       animationType:(DWAnimationType)animationType
-                        animationKey:(NSString *)animationKey
-                           beginTime:(CGFloat)beginTime
-                              values:(NSArray *)values
-                       timeIntervals:(NSArray *)timeIntervals
-                          transition:(BOOL)transition;
+-(instancetype)initAnimationWithLayer:(CALayer *)layer
+                        animationType:(DWAnimationType)animationType
+                         animationKey:(NSString *)animationKey
+                            beginTime:(CGFloat)beginTime
+                               values:(NSArray *)values
+                        timeIntervals:(NSArray *)timeIntervals
+                           transition:(BOOL)transition;
 
 ///以贝塞尔曲线创建移动动画
 /*
- view               将要展示动画的view，不可为nil
+ layer              将要展示动画的layer，不可为nil
  animationKey       动画的标识，可为nil
  beginTime          动画延时时长
  duration           动画时长
  bezierPath         运动轨迹，不可为nil
  autoRotate         跟随路径自动旋转
  */
--(instancetype)initAnimationWithView:(UIView *)view
-                        animationKey:(NSString *)animationKey
-                           beginTime:(CGFloat)beginTime
-                            duration:(CGFloat)duration
-                          bezierPath:(UIBezierPath *)bezierPath
-                          autoRotate:(BOOL)autoRotate;
+-(instancetype)initAnimationWithLayer:(CALayer *)layer
+                         animationKey:(NSString *)animationKey
+                            beginTime:(CGFloat)beginTime
+                             duration:(CGFloat)duration
+                           bezierPath:(UIBezierPath *)bezierPath
+                           autoRotate:(BOOL)autoRotate;
 
 ///创建弧线动画
 /*
- view               将要展示动画的view，不可为nil
+ layer              将要展示动画的layer，不可为nil
  animationKey       动画的标识，可为nil
  beginTime          动画延时时长
  duration           动画时长
@@ -203,22 +208,22 @@
  clockwise          是否为顺时针
  autoRotate         是否跟随弧线自动旋转
  */
--(instancetype)initAnimationWithView:(UIView *)view
-                        animationKey:(NSString *)animationKey
-                           beginTime:(CGFloat)beginTime
-                            duration:(CGFloat)duration
-                           arcCenter:(CGPoint)center
-                              radius:(CGFloat)radius
-                          startAngle:(CGFloat)startAngle
-                            endAngle:(CGFloat)endAngle
-                           clockwise:(BOOL)clockwise
-                          autoRotate:(BOOL)autoRotate;
+-(instancetype)initAnimationWithLayer:(CALayer *)layer
+                         animationKey:(NSString *)animationKey
+                            beginTime:(CGFloat)beginTime
+                             duration:(CGFloat)duration
+                            arcCenter:(CGPoint)center
+                               radius:(CGFloat)radius
+                           startAngle:(CGFloat)startAngle
+                             endAngle:(CGFloat)endAngle
+                            clockwise:(BOOL)clockwise
+                           autoRotate:(BOOL)autoRotate;
 
 ///创建震荡动画
 /*
  即改变属性有震荡效果
  
- view               将要展示动画的view，不可为nil
+ layer              将要展示动画的layer，不可为nil
  animationKey       动画的标识，可为nil
  beginTime          动画延时时长
  fromValue          起始值：可以为动画类型所对应的空类型。若为空，则默认当前状态为初始状态
@@ -230,17 +235,43 @@
  
  注：fromValue与toValue，均为UIKit中对象类型，如NSValue/NSNumber/UIColor/UIBezierPath/UIImage。
  */
--(instancetype)initAnimationWitnView:(UIView *)view
-                        animationKey:(NSString *)animationKey
-                       springingType:(DWAnimationSpringType)springingType
-                           beginTime:(CGFloat)beginTime
-                           fromValue:(id)fromValue
-                             toValue:(id)toValue
-                                mass:(CGFloat)mass
-                           stiffness:(CGFloat)stiffness
-                             damping:(CGFloat)damping
-                     initialVelocity:(CGFloat)initialVelocity;
+-(instancetype)initAnimationWitnLayer:(CALayer *)layer
+                         animationKey:(NSString *)animationKey
+                        springingType:(DWAnimationSpringType)springingType
+                            beginTime:(CGFloat)beginTime
+                            fromValue:(id)fromValue
+                              toValue:(id)toValue
+                                 mass:(CGFloat)mass
+                            stiffness:(CGFloat)stiffness
+                              damping:(CGFloat)damping
+                      initialVelocity:(CGFloat)initialVelocity;
 
+///创建特殊属性动画
+/*
+ 即为指定属性（包括CALayer及其子类所有支持动画的属性）添加动画
+ 
+ layer              将要展示动画的layer，不可为nil
+ animationKey       动画的标识，可为nil
+ keyPath            将要添加动画的属性名
+ beginTime          动画延时时长
+ fromValue          起始值：可以为动画类型所对应的空类型。若为空，则默认当前状态为初始状态
+ toValue            终止值：不可为nil
+ duration           动画时长
+ timingFunctionName 动画节奏模式，可选值：@"linear", @"easeIn", @"easeOut" ,
+ @"easeInEaseOut" 和 @"default"。也可使用其对应的常量形式，如kCAMediaTimingFunctionLinear
+ 
+ 注：
+ 1.fromValue与toValue，均为UIKit中对象类型，如NSValue/NSNumber/UIColor/UIBezierPath/UIImage等等对应的对象类型。
+ 2.本方法创建的非CALayer属性动画不可用恢复动画自动恢复，请自行恢复
+ */
+-(instancetype)initAnimationWithLayer:(CALayer *)layer
+                         animationKey:(NSString *)animationKey
+                              keyPath:(NSString *)keyPath
+                            beginTime:(CGFloat)beginTime
+                            fromValue:(id)fromValue
+                              toValue:(id)toValue
+                             duration:(CGFloat)duration
+                   timingFunctionName:(NSString *)timingFunctionName;
 #pragma mark ---动画控制方法---
 
 ///开始播放动画
@@ -287,9 +318,12 @@
 +(DWAnimation *)combineAnimationsInArray:(__kindof NSArray<DWAnimation *> *)animations;
 
 ///创建恢复原状的动画
-+(DWAnimation *)createResetAnimationWithView:(UIView *)view
-                                   beginTime:(CGFloat)beginTime
-                                    duration:(CGFloat)duration;
+/*
+ 注：特殊属性动画不在恢复动画范围内，请自行恢复。
+ */
++(DWAnimation *)createResetAnimationWithLayer:(CALayer *)layer
+                                    beginTime:(CGFloat)beginTime
+                                     duration:(CGFloat)duration;
 
 ///为以贝塞尔曲线创建的移动动画添加时间间隔
 /*

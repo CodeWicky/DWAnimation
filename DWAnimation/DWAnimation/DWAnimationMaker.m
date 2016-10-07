@@ -291,14 +291,14 @@ CABasicAnimation *(^ShadowRadiusAnimation)(CGFloat,CGFloat,CGFloat,CGFloat) = ^(
 };
 
 ///创建阴影路径动画
-CABasicAnimation *(^ShadowPathAnimation)(UIView *,UIBezierPath *,UIBezierPath *,CGFloat,CGFloat) = ^(UIView * view,UIBezierPath * originalShadowPath ,UIBezierPath * destinationShadowPath,CGFloat beginTime,CGFloat duration){
+CABasicAnimation *(^ShadowPathAnimation)(CALayer *,UIBezierPath *,UIBezierPath *,CGFloat,CGFloat) = ^(CALayer * layer,UIBezierPath * originalShadowPath ,UIBezierPath * destinationShadowPath,CGFloat beginTime,CGFloat duration){
     CABasicAnimation * shadowPath = CreateSimpleAnimation(@"shadowPath",beginTime,duration);
     if(originalShadowPath){
         shadowPath.fromValue = (id)originalShadowPath.CGPath;
     }
     else
     {
-        shadowPath.fromValue = (id)UIBezierPathNull(view.bounds.size.width,view.bounds.size.height).CGPath;
+        shadowPath.fromValue = (id)UIBezierPathNull(layer.bounds.size.width,layer.bounds.size.height).CGPath;
     }
     if(destinationShadowPath)
     {
@@ -306,7 +306,7 @@ CABasicAnimation *(^ShadowPathAnimation)(UIView *,UIBezierPath *,UIBezierPath *,
     }
     else
     {
-        shadowPath.toValue = (id)UIBezierPathNull(view.bounds.size.width, view.bounds.size.height).CGPath;
+        shadowPath.toValue = (id)UIBezierPathNull(layer.bounds.size.width, layer.bounds.size.height).CGPath;
     }
     return shadowPath;
 };
@@ -412,7 +412,7 @@ CABasicAnimation *(^BackgroundColorAnimation)(UIColor *,UIColor *,CGFloat,CGFloa
 {
     return ^(CGFloat destinationCornerR){
         self.cornerR = YES;
-        self.view.layer.masksToBounds = YES;
+        self.layer.masksToBounds = YES;
         self.destinationCornerR = destinationCornerR;
         return self;
     };
@@ -482,7 +482,7 @@ CABasicAnimation *(^BackgroundColorAnimation)(UIColor *,UIColor *,CGFloat,CGFloa
     return ^(CGSize destinationShadowOffset){
         self.shadowO = YES;
         if (CGFloatIsNull(self.destinationShadowAlpha)) {
-            self.view.layer.shadowOpacity = 0.5;
+            self.layer.shadowOpacity = 0.5;
         }
         self.destinationShadowOffset = destinationShadowOffset;
         return self;
@@ -616,22 +616,22 @@ CABasicAnimation *(^BackgroundColorAnimation)(UIColor *,UIColor *,CGFloat,CGFloa
 {
     return ^{
         if (self.needReset) {
-            [self.animationsArray addObject:MoveAnimation(CGPointNull,self.view.center,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:MoveAnimation(CGPointNull,self.layer.position,self.startTime,self.animationDuration)];
             [self.animationsArray addObject:ScaleAnimation(MAXFLOAT,1,self.startTime,self.animationDuration)];
             [self.animationsArray addObject:RotateAnimation(MAXFLOAT,0,X,self.startTime,self.animationDuration)];
             [self.animationsArray addObject:RotateAnimation(MAXFLOAT,0,Y,self.startTime,self.animationDuration)];
             [self.animationsArray addObject:RotateAnimation(MAXFLOAT,0,Z,self.startTime,self.animationDuration)];
-            [self.animationsArray addObject:AlphaAnimation(MAXFLOAT,self.view.layer.opacity,self.startTime,self.animationDuration)];
-            [self.animationsArray addObject:CornerRadiusAnimation(MAXFLOAT,self.view.layer.cornerRadius,self.startTime,self.animationDuration)];
-            [self.animationsArray addObject:BorderWidthAnimation(MAXFLOAT,self.view.layer.borderWidth ,self.startTime,self.animationDuration)];
-            [self.animationsArray addObject:BorderColorAnimation(nil,[UIColor colorWithCGColor:self.view.layer.borderColor],self.startTime,self.animationDuration)];
-            [self.animationsArray addObject:ShadowColorAnimation(nil,[UIColor colorWithCGColor:self.view.layer.shadowColor],self.startTime,self.animationDuration)];
-            [self.animationsArray addObject:ShadowOffsetAnimation(CGSizeNull,self.view.layer.shadowOffset,self.startTime,self.animationDuration)];
-            [self.animationsArray addObject:ShadowAlphaAnimation(MAXFLOAT,self.view.layer.shadowOpacity,self.startTime,self.animationDuration)];
-            [self.animationsArray addObject:ShadowRadiusAnimation(MAXFLOAT,self.view.layer.shadowRadius,self.startTime,self.animationDuration)];
-            [self.animationsArray addObject:ShadowPathAnimation(self.view,nil,self.view.layer.shadowPath?[UIBezierPath bezierPathWithCGPath:self.view.layer.shadowPath]:nil,self.startTime,self.animationDuration)];
-            [self.animationsArray addObject:BackgroundImageAnimation(UIImageNull,[UIImage imageWithCGImage:(CGImageRef)self.view.layer.contents],self.startTime,self.animationDuration)];
-            [self.animationsArray addObject:BackgroundColorAnimation(nil,self.view.backgroundColor,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:AlphaAnimation(MAXFLOAT,self.layer.opacity,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:CornerRadiusAnimation(MAXFLOAT,self.layer.cornerRadius,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:BorderWidthAnimation(MAXFLOAT,self.layer.borderWidth ,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:BorderColorAnimation(nil,[UIColor colorWithCGColor:self.layer.borderColor],self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:ShadowColorAnimation(nil,[UIColor colorWithCGColor:self.layer.shadowColor],self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:ShadowOffsetAnimation(CGSizeNull,self.layer.shadowOffset,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:ShadowAlphaAnimation(MAXFLOAT,self.layer.shadowOpacity,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:ShadowRadiusAnimation(MAXFLOAT,self.layer.shadowRadius,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:ShadowPathAnimation(self.layer,nil,self.layer.shadowPath?[UIBezierPath bezierPathWithCGPath:self.layer.shadowPath]:nil,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:BackgroundImageAnimation(UIImageNull,[UIImage imageWithCGImage:(CGImageRef)self.layer.contents],self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:BackgroundColorAnimation(nil,[UIColor colorWithCGColor:self.layer.backgroundColor],self.startTime,self.animationDuration)];
             self.needReset = NO;
             [self resetMovePara];
             [self resetScalePara];
@@ -693,7 +693,7 @@ CABasicAnimation *(^BackgroundColorAnimation)(UIColor *,UIColor *,CGFloat,CGFloa
             [self resetShadowRPara];
         }
         if (self.shadowP) {
-            [self.animationsArray addObject:ShadowPathAnimation(self.view,self.homeShadowPath,self.destinationShadowPath,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:ShadowPathAnimation(self.layer,self.homeShadowPath,self.destinationShadowPath,self.startTime,self.animationDuration)];
             [self resetShadowPPara];
         }
         if (self.bgImage) {

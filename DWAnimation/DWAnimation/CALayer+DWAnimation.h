@@ -1,30 +1,21 @@
 //
-//  UIView+DWAnimation.h
-//  DWHUD
+//  CALayer+DWAnimation.h
+//  DWAnimation
 //
-//  Created by Wicky on 16/8/22.
+//  Created by Wicky on 16/10/8.
 //  Copyright © 2016年 Wicky. All rights reserved.
 //
-
 /*
- UIView (DWAnimation)
+ CALayer (DWAnimation)
  
- 简介：基于DWAnimation和DWAnimationManager的UIView扩展
+ 简介：基于DWAnimation和DWAnimationManager的CALayer扩展
  
- version 1.0.0
- 提供UIView扩展动画方法
- 
- version 1.0.1
- DWAnimation相关api补充
- 
- version 1.0.2
- 补充震荡动画api
+ version 1.0.0 提供CALayer扩展动画方法
  */
-
-#import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 @class DWAnimation;
 @class DWAnimationMaker;
-@interface UIView (DWAnimation)
+@interface CALayer (DWAnimation)
 
 ///以block形式为自身创建动画(移动，缩放，旋转，透明度，圆角，边框宽度，边框颜色，阴影颜色，阴影偏移量，阴影透明度，阴影路径，阴影圆角，背景图，背景色)
 /*
@@ -151,12 +142,12 @@
  2.本方法创建的非CALayer属性动画不可用恢复动画自动恢复，请自行恢复
  */
 -(DWAnimation *)dw_CreateAnimationWithAnimationKey:(NSString *)animationKey
-                                    keyPath:(NSString *)keyPath
-                                  beginTime:(CGFloat)beginTime
-                                  fromValue:(id)fromValue
-                                    toValue:(id)toValue
-                                   duration:(CGFloat)duration
-                         timingFunctionName:(NSString *)timingFunctionName;
+                                           keyPath:(NSString *)keyPath
+                                         beginTime:(CGFloat)beginTime
+                                         fromValue:(id)fromValue
+                                           toValue:(id)toValue
+                                          duration:(CGFloat)duration
+                                timingFunctionName:(NSString *)timingFunctionName;
 
 ///恢复动画
 /*
