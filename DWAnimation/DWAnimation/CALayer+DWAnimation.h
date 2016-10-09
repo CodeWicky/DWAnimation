@@ -18,7 +18,7 @@
 @interface CALayer (DWAnimation)
 
 ///以block形式为自身创建动画(移动，缩放，旋转，透明度，圆角，边框宽度，边框颜色，阴影颜色，阴影偏移量，阴影透明度，阴影路径，阴影圆角，背景图，背景色)
-/*
+/**
  animationKey       动画的标识，可为nil
  animationCreater   创建动画的回调Block
  */
@@ -26,7 +26,7 @@
                          animationCreater:(void(^)(DWAnimationMaker * maker))animationCreater;
 
 ///以数组形式为自身创建动画
-/*
+/**
  duration           动画时长
  animationKey       动画的标识，可为nil
  animations         动画数组，由CAAnimation及其派生类组成
@@ -37,7 +37,7 @@
                                      animations:(__kindof NSArray<CAAnimation *> *)animations;
 
 ///以多个状态及时间间隔为自身创建连续动画
-/*
+/**
  animationType      创建的动画类型
  animationKey       动画的标识
  beginTime          动画延迟时间
@@ -62,7 +62,7 @@
 
 
 ///以贝塞尔曲线为自身创建移动动画
-/*
+/**
  animationKey       动画的标识，可为nil
  beginTime          动画延时时长
  duration           动画时长
@@ -76,7 +76,7 @@
                                         autoRotate:(BOOL)autoRotate;
 
 ///为自身创建弧线动画
-/*
+/**
  animationKey       动画的标识，可为nil
  beginTime          动画延时时长
  duration           动画时长
@@ -98,10 +98,9 @@
                                         autoRotate:(BOOL)autoRotate;
 
 ///为自身创建震荡动画
-/*
+/**
  即改变属性有震荡效果
  
- view               将要展示动画的view，不可为nil
  animationKey       动画的标识，可为nil
  beginTime          动画延时时长
  fromValue          起始值：可为nil或MAXFLOAT或CGPointNull的对象形态，若为nil或MAXFLOAT或CGPointNull的对象形态，则以当前状态作为初始状态
@@ -124,10 +123,9 @@
                                    initialVelocity:(CGFloat)initialVelocity;
 
 ///创建特殊属性动画
-/*
+/**
  即为指定属性（包括CALayer及其子类所有支持动画的属性）添加动画
  
- layer              将要展示动画的layer，不可为nil
  animationKey       动画的标识，可为nil
  keyPath            将要添加动画的属性名
  beginTime          动画延时时长

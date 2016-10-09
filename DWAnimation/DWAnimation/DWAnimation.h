@@ -121,17 +121,17 @@
 @property (nonatomic ,assign) DWAnimationStatus status;
 
 ///动画播放次数
-/*
- repeatCount        数值设为负数，为无限播放
+/**
+ repeatCount        数值设为MAXFLOAT，为无限播放
  repeatCount        数值设为0，不播放
  repeatCount        数值设为正数，播放次数
  */
-@property (nonatomic ,assign) NSInteger repeatCount;
+@property (nonatomic ,assign) CGFloat repeatCount;
 
 #pragma mark ---动画构造方法---
 
 ///以block形式创建动画(移动，缩放，旋转，透明度，圆角，边框宽度，边框颜色，阴影颜色，阴影偏移量，阴影透明度，阴影路径，阴影圆角，背景图，背景色)
-/*
+/**
  layer              将要展示动画的layer，不可为nil
  animationKey       动画的标识，可为nil
  animationCreater   创建动画的回调Block
@@ -141,7 +141,7 @@
                      animationCreater:(void(^)(DWAnimationMaker * maker))animationCreater;
 
 ///以数组形式创建动画
-/*
+/**
  layer              将要展示动画的layer，不可为nil
  duration           动画时长
  animationKey       动画的标识，可为nil
@@ -154,7 +154,7 @@
                            animations:(__kindof NSArray<CAAnimation *> *)animations;
 
 ///以多个状态及时间间隔创建连续动画
-/*
+/**
  layer              将要展示动画的layer，不可为nil
  animationType      创建的动画类型
  animationKey       动画的标识
@@ -180,7 +180,7 @@
                            transition:(BOOL)transition;
 
 ///以贝塞尔曲线创建移动动画
-/*
+/**
  layer              将要展示动画的layer，不可为nil
  animationKey       动画的标识，可为nil
  beginTime          动画延时时长
@@ -196,7 +196,7 @@
                            autoRotate:(BOOL)autoRotate;
 
 ///创建弧线动画
-/*
+/**
  layer              将要展示动画的layer，不可为nil
  animationKey       动画的标识，可为nil
  beginTime          动画延时时长
@@ -220,7 +220,7 @@
                            autoRotate:(BOOL)autoRotate;
 
 ///创建震荡动画
-/*
+/**
  即改变属性有震荡效果
  
  layer              将要展示动画的layer，不可为nil
@@ -247,7 +247,7 @@
                       initialVelocity:(CGFloat)initialVelocity;
 
 ///创建特殊属性动画
-/*
+/**
  即为指定属性（包括CALayer及其子类所有支持动画的属性）添加动画
  
  layer              将要展示动画的layer，不可为nil
@@ -284,7 +284,7 @@
 -(void)resume;
 
 ///移除动画
-/*
+/**
  若要移除，请确保初始化时animationKey正确
  移除仅移除调用移除方法的动画实例，将返回动画的上一状态
  */
@@ -293,20 +293,20 @@
 #pragma mark ---动画编辑方法---
 
 ///拼接动画，在当前动画后拼接动画
-/*
+/**
  注：拼接动画会改变调用对象及添加对象的beginTime，且具有累计效应。
  故参与添加动画后，仅返回的动画实例具有正确动画效果，调用对象和添加均不能正确展示。
  */
 -(DWAnimation *)addAnimation:(DWAnimation *)animation;
 
 ///按顺序拼接数组中的所有动画
-/*
+/**
  注：本方法调用-addAnimation:,故仅返回值具有正确展示效果
  */
 +(DWAnimation *)createAnimationWithAnimations:(__kindof NSArray<DWAnimation *> *)animations;
 
 ///并发组合两个动画
-/*
+/**
  注：组合后两动画并发执行
  若两动画中有相同动画属性且执行时间相同，则后者动作覆盖前者动作
  组合的动画的view应该为同一对象，否则返回自身
@@ -318,7 +318,7 @@
 +(DWAnimation *)combineAnimationsInArray:(__kindof NSArray<DWAnimation *> *)animations;
 
 ///创建恢复原状的动画
-/*
+/**
  注：特殊属性动画不在恢复动画范围内，请自行恢复。
  */
 +(DWAnimation *)createResetAnimationWithLayer:(CALayer *)layer
@@ -326,7 +326,7 @@
                                      duration:(CGFloat)duration;
 
 ///为以贝塞尔曲线创建的移动动画添加时间间隔
-/*
+/**
  keyTimes      时间间隔
  
  注：

@@ -724,7 +724,7 @@
     self.animation.beginTime += beginTime;
 }
 
--(void)setRepeatCount:(NSInteger)repeatCount
+-(void)setRepeatCount:(CGFloat)repeatCount
 {
     _repeatCount = repeatCount;
     self.animation.repeatCount = repeatCount;
