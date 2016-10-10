@@ -70,6 +70,17 @@
 ///生成组动画
 -(void)make
 {
+    [self.animationsArray sortUsingComparator:^NSComparisonResult(CABasicAnimation * ani1, CABasicAnimation * ani2) {
+        if (ani1.beginTime > ani2.beginTime) {
+            return NSOrderedDescending;
+        }else if (ani1.beginTime < ani2.beginTime)
+        {
+            return NSOrderedAscending;
+        }else
+        {
+            return NSOrderedSame;
+        }
+    }];
     CAAnimationGroup * group = [CAAnimationGroup animation];
     group.duration = self.totalDuration;
     group.timingFunction = [CAMediaTimingFunction functionWithName:kCAAnimationLinear];

@@ -86,6 +86,10 @@
  version 1.1.0
  更改所有api中参数将UIView对象改为更加广泛适合的CALayer对象
  添加特殊属性动画api，支持为CALayer及其子类中所有支持动画的属性生成动画。
+ 
+ version 1.1.1
+ 由于动画组animationGroup中需按beginTime顺序传入animations数组，故修改所有相关代码，其中包括以数组形式生成动画、以block形式生成动画、组合一组动画。
+ 添加动画节奏设置选项，支持修改动画节奏。
  */
 
 #import <UIKit/UIKit.h>
@@ -116,6 +120,9 @@
 
 ///展示动画的layer
 @property (nonatomic ,strong) CALayer * layer;
+
+///动画节奏类型名
+@property (nonatomic ,copy) NSString * timingFunctionName;
 
 ///动画状态
 @property (nonatomic ,assign) DWAnimationStatus status;

@@ -39,6 +39,9 @@
  
  version 1.1.0
  更改所有api中参数将UIView对象改为更加广泛适合的CALayer对象
+ 
+ version 1.1.1
+ 按照需求修改make方法将数组进行排序。
  */
 
 #import <UIKit/UIKit.h>

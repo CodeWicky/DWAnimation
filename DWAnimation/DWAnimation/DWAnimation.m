@@ -53,6 +53,17 @@
         self.duration = duration + beginTime;
         self.animationKey = animationKey;
         self.status = DWAnimationStatusReadyToShow;
+        NSArray * arr = [animations sortedArrayUsingComparator:^NSComparisonResult(CAAnimation * ani1, CAAnimation * ani2) {
+            if (ani1.beginTime > ani2.beginTime) {
+                return NSOrderedDescending;
+            }else if (ani1.beginTime < ani2.beginTime)
+            {
+                return NSOrderedAscending;
+            }else
+            {
+                return NSOrderedSame;
+            }
+        }];
         for (CAAnimation * animation in animations) {
             animation.beginTime += beginTime;
         }
@@ -61,7 +72,7 @@
         group.removedOnCompletion = NO;
         group.fillMode = kCAFillModeForwards;
         group.duration = duration + beginTime;
-        group.animations = animations;
+        group.animations = arr;
         group.repeatCount = 1;
         self.animation = group;
     }
@@ -613,6 +624,19 @@
         return animations.firstObject;
     }
     NSMutableArray * mArr = animations.mutableCopy;
+    [mArr sortUsingComparator:^NSComparisonResult(DWAnimation * ani1, DWAnimation * ani2) {
+        CGFloat begin1 = ani1.animation.beginTime;
+        CGFloat begin2 = ani2.animation.beginTime;
+        if (begin1 > begin2) {
+            return NSOrderedDescending;
+        }else if (begin1 < begin2)
+        {
+            return NSOrderedAscending;
+        }else
+        {
+            return NSOrderedSame;
+        }
+    }];
     DWAnimation * animation = [mArr[0] addAnimation:mArr[1]];
     [mArr removeObjectAtIndex:0];
     [mArr removeObjectAtIndex:0];
@@ -729,5 +753,11 @@
     _repeatCount = repeatCount;
     self.animation.repeatCount = repeatCount;
     self.duration = self.animation.duration * repeatCount + self.beginTime;
+}
+
+-(void)setTimingFunctionName:(NSString *)timingFunctionName
+{
+    _timingFunctionName = timingFunctionName;
+    self.animation.timingFunction = [CAMediaTimingFunction functionWithName:timingFunctionName];
 }
 @end
