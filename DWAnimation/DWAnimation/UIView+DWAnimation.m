@@ -15,15 +15,15 @@
     return [[DWAnimation alloc] initAnimationWithLayer:self.layer animationKey:animationKey animationCreater:animationCreater];
 }
 
--(DWAnimation *)dw_CreateAnimationWithBeginTime:(CGFloat)beginTime
-                                       duration:(CGFloat)duration
-                                   animationKey:(NSString *)animationKey
-                                     animations:(__kindof NSArray<CAAnimation *> *)animations
+-(DWAnimation *)dw_CreateAnimationWithAnimationKey:(NSString *)animationKey
+                                         beginTime:(CGFloat)beginTime
+                                          duration:(CGFloat)duration
+                                        animations:(__kindof NSArray<CAAnimation *> *)animations
 {
-    return [[DWAnimation alloc] initAnimationWithLayer:self.layer beginTime:beginTime duration:duration animationKey:animationKey animations:animations];
+    return [[DWAnimation alloc] initAnimationWithLayer:self.layer animationKey:animationKey beginTime:beginTime duration:duration animations:animations];
 }
 
--(DWAnimation *)dw_CreateAnimationWithanimationType:(DWAnimationType)animationType
+-(DWAnimation *)dw_CreateAnimationWithAnimationType:(DWAnimationType)animationType
                                        animationKey:(NSString *)animationKey
                                           beginTime:(CGFloat)beginTime
                                              values:(NSArray *)values
@@ -45,21 +45,21 @@
 
 -(DWAnimation *)dw_CreateAnimationWithAnimationKey:(NSString *)animationKey springingType:(DWAnimationSpringType)springingType beginTime:(CGFloat)beginTime fromValue:(id)fromValue toValue:(id)toValue mass:(CGFloat)mass stiffness:(CGFloat)stiffness damping:(CGFloat)damping initialVelocity:(CGFloat)initialVelocity
 {
-    return [[DWAnimation alloc] initAnimationWitnLayer:self.layer animationKey:animationKey springingType:springingType beginTime:beginTime fromValue:fromValue toValue:toValue mass:mass stiffness:stiffness damping:damping initialVelocity:initialVelocity];
+    return [[DWAnimation alloc] initAnimationWithLayer:self.layer animationKey:animationKey springingType:springingType beginTime:beginTime fromValue:fromValue toValue:toValue mass:mass stiffness:stiffness damping:damping initialVelocity:initialVelocity];
 }
 
--(DWAnimation *)dw_CreateAnimationWithAnimationKey:(NSString *)animationKey keyPath:(NSString *)keyPath beginTime:(CGFloat)beginTime fromValue:(id)fromValue toValue:(id)toValue duration:(CGFloat)duration timingFunctionName:(NSString *)timingFunctionName
+-(DWAnimation *)dw_CreateAnimationWithKeyPath:(NSString *)keyPath animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration fromValue:(id)fromValue toValue:(id)toValue timingFunctionName:(NSString *)timingFunctionName
 {
-    return [[DWAnimation alloc] initAnimationWithLayer:self.layer animationKey:animationKey keyPath:keyPath beginTime:beginTime fromValue:fromValue toValue:toValue duration:duration timingFunctionName:timingFunctionName];
+    return [[DWAnimation alloc] initAnimationWithLayer:self.layer keyPath:keyPath animationKey:animationKey beginTime:beginTime duration:duration fromValue:fromValue toValue:toValue timingFunctionName:timingFunctionName];
+}
+
+-(DWAnimation *)dw_CreateResetAnimationWithAnimationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration
+{
+    return [DWAnimation createResetAnimationWithLayer:self.layer animationKey:animationKey beginTime:beginTime duration:duration];
 }
 
 +(void)dw_StartAnimations:(__kindof NSArray<DWAnimation *> *)animations playMode:(DWAnimationPlayMode)playMode
 {
     [DWAnimationManager startAnimations:animations playMode:playMode];
-}
-
--(DWAnimation *)dw_CreateResetAnimationWithBeginTime:(CGFloat)beginTime duration:(CGFloat)duration
-{
-    return [DWAnimation createResetAnimationWithLayer:self.layer beginTime:beginTime duration:duration];
 }
 @end

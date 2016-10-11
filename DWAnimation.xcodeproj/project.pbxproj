@@ -140,7 +140,7 @@
 		9B1C29D61D7EC4C70029663B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = Wicky;
 				TargetAttributes = {
 					9B1C29DD1D7EC4C70029663B = {

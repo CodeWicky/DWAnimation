@@ -32,13 +32,13 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(finish:) name:DWAnimationPlayFinishNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(start:) name:DWAnimationPlayStartNotification object:nil];
     
-    DWAnimation * springAnimation1 = [[DWAnimation alloc] initAnimationWitnLayer:redView.layer animationKey:@"springAnimationMove" springingType:(DWAnimationSpringTypeMove) beginTime:0 fromValue:[NSValue valueWithCGPoint:CGPointMake(redView.center.x, - redView.frame.size.height * 0.5)] toValue:[NSValue valueWithCGPoint:self.view.center] mass:1 stiffness:100 damping:10 initialVelocity:0];
+    DWAnimation * springAnimation1 = [[DWAnimation alloc] initAnimationWithLayer:redView.layer animationKey:@"springAnimationMove" springingType:(DWAnimationSpringTypeMove) beginTime:0 fromValue:[NSValue valueWithCGPoint:CGPointMake(redView.center.x, - redView.frame.size.height * 0.5)] toValue:[NSValue valueWithCGPoint:self.view.center] mass:1 stiffness:100 damping:10 initialVelocity:0];
     springAnimation1.repeatCount = 2;
     //    springAnimation1.beginTime = 2;
     //        [springAnimation1 start];
     DWAnimation * springAnimation2 = [redView dw_CreateAnimationWithAnimationKey:@"springAnimationScale" springingType:(DWAnimationSpringTypeScale) beginTime:0 fromValue:@0 toValue:@1 mass:2 stiffness:100 damping:10 initialVelocity:0];
     //
-    DWAnimation * springAnimation = [springAnimation1 combineWithAnimation:springAnimation2];
+    DWAnimation * springAnimation = [springAnimation1 combineWithAnimation:springAnimation2 animationKey:nil];
     //
     DWAnimation * moveAnimation = [redView dw_CreateAnimationWithKey:@"moveAnimation" animationCreater:^(DWAnimationMaker *maker) {
         maker.moveTo(CGPointMake(self.view.center.x, self.view.center.y + 100)).duration(2).install();
@@ -55,12 +55,12 @@
     //
     //
     rotateAnimation.beginTime = 2;
-    DWAnimation * combineAnimation = [bezierAnimation combineWithAnimation:rotateAnimation];
+    DWAnimation * combineAnimation = [bezierAnimation combineWithAnimation:rotateAnimation animationKey:nil];
     //    [combineAnimation start];
     //
-    DWAnimation * resetAnimation = [redView dw_CreateResetAnimationWithBeginTime:0 duration:2];
+    DWAnimation * resetAnimation = [redView dw_CreateResetAnimationWithAnimationKey:nil beginTime:0 duration:2];
     //
-    DWAnimation * addAnimation = [combineAnimation addAnimation:resetAnimation];
+    DWAnimation * addAnimation = [combineAnimation addAnimation:resetAnimation animationKey:nil];
     
     //    [addAnimation start];
     
@@ -78,7 +78,7 @@
     basicAnimation2.fillMode = kCAFillModeForwards;
     basicAnimation2.duration = 2;
     basicAnimation2.toValue = @(RadianFromDegree(180));
-    DWAnimation * arrAnimation = [[DWAnimation alloc] initAnimationWithLayer:redView.layer beginTime:2 duration:2 animationKey:@"arrAnimation" animations:@[basicAnimation1,basicAnimation2]];
+    DWAnimation * arrAnimation = [[DWAnimation alloc] initAnimationWithLayer:redView.layer animationKey:@"arrAnimation" beginTime:2 duration:2 animations:@[basicAnimation1,basicAnimation2]];
     //    [arrAnimation start];
     //
     DWAnimation * longSentence = [[DWAnimation alloc] initAnimationWithLayer:redView.layer animationKey:@"longSentence" animationCreater:^(DWAnimationMaker *maker) {
@@ -94,7 +94,7 @@
         maker.moveTo(CGPointMake(self.view.center.x + 200, self.view.center.y)).alphaTo(0).beginTime(6).duration(2).install();
     }];
     
-    DWAnimation * reset = [redView.layer dw_CreateResetAnimationWithBeginTime:0 duration:2];
+    DWAnimation * reset = [redView.layer dw_CreateResetAnimationWithAnimationKey:nil beginTime:0 duration:2];
     
     self.arr = @[springAnimation,moveAnimation,arcAnimation,addAnimation,multiAnimation,arrAnimation,longSentence,shortSentence,reset];
 }

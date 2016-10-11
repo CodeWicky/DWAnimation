@@ -43,10 +43,10 @@
  animationKey       动画的标识，可为nil
  animations         动画数组，由CAAnimation及其派生类组成
  */
--(DWAnimation *)dw_CreateAnimationWithBeginTime:(CGFloat)beginTime
-                                       duration:(CGFloat)duration
-                                   animationKey:(NSString *)animationKey
-                                     animations:(__kindof NSArray<CAAnimation *> *)animations;
+-(DWAnimation *)dw_CreateAnimationWithAnimationKey:(NSString *)animationKey
+                                         beginTime:(CGFloat)beginTime
+                                          duration:(CGFloat)duration
+                                        animations:(__kindof NSArray<CAAnimation *> *)animations;
 
 ///以多个状态及时间间隔为自身创建连续动画
 /**
@@ -65,7 +65,7 @@
  节点距初始状态的时间间隔。故timeIntervals数组元素
  个数应该比values元素个数少1。若参数不正确，则返回nil。
  */
--(DWAnimation *)dw_CreateAnimationWithanimationType:(DWAnimationType)animationType
+-(DWAnimation *)dw_CreateAnimationWithAnimationType:(DWAnimationType)animationType
                                        animationKey:(NSString *)animationKey
                                           beginTime:(CGFloat)beginTime
                                              values:(NSArray *)values
@@ -151,23 +151,25 @@
  1.fromValue与toValue，均为UIKit中对象类型，如NSValue/NSNumber/UIColor/UIBezierPath/UIImage等等对应的对象类型。
  2.本方法创建的非CALayer属性动画不可用恢复动画自动恢复，请自行恢复
  */
--(DWAnimation *)dw_CreateAnimationWithAnimationKey:(NSString *)animationKey
-                                    keyPath:(NSString *)keyPath
-                                  beginTime:(CGFloat)beginTime
-                                  fromValue:(id)fromValue
-                                    toValue:(id)toValue
-                                   duration:(CGFloat)duration
-                         timingFunctionName:(NSString *)timingFunctionName;
+-(DWAnimation *)dw_CreateAnimationWithKeyPath:(NSString *)keyPath
+                                 animationKey:(NSString *)animationKey
+                                    beginTime:(CGFloat)beginTime
+                                     duration:(CGFloat)duration
+                                    fromValue:(id)fromValue
+                                      toValue:(id)toValue
+                           timingFunctionName:(NSString *)timingFunctionName;
 
 ///恢复动画
 /**
+ animationKey   动画的标识，可为nil
  beginTime      动画延迟时间
  duration       动画时长
  
  注：特殊属性动画不在恢复动画范围内，请自行恢复。
  */
--(DWAnimation *)dw_CreateResetAnimationWithBeginTime:(CGFloat)beginTime
-                                            duration:(CGFloat)duration;
+-(DWAnimation *)dw_CreateResetAnimationWithAnimationKey:(NSString *)animationKey
+                                              beginTime:(CGFloat)beginTime
+                                               duration:(CGFloat)duration;
 
 ///按顺序执行一组动画
 /**

@@ -47,7 +47,7 @@
         [array addObject:animation];
     }
     for (NSMutableArray * arrValue in dic.allValues) {
-        [[DWAnimation createAnimationWithAnimations:arrValue] start];
+        [[DWAnimation createAnimationWithAnimations:arrValue animationKey:nil] start];
     }
 }
 
