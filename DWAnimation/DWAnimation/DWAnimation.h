@@ -139,6 +139,9 @@
  */
 @property (nonatomic ,assign) CGFloat repeatCount;
 
+///动画完成回调
+@property (nonatomic ,copy) void (^completion) (DWAnimation *);
+
 #pragma mark ---动画构造方法---
 
 ///以block形式创建动画(移动，缩放，旋转，透明度，圆角，边框宽度，边框颜色，阴影颜色，阴影偏移量，阴影透明度，阴影路径，阴影圆角，背景图，背景色)

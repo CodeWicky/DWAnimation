@@ -748,6 +748,9 @@
 -(void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
     self.status = DWAnimationStatusFinished;
+    if (self.completion) {
+        self.completion(self);
+    }
     [[NSNotificationCenter defaultCenter] postNotificationName:DWAnimationPlayFinishNotification object:@{@"animation":self,@"finished":@(flag)}];
 }
 

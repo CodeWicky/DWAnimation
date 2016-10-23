@@ -95,7 +95,9 @@
     }];
     
     DWAnimation * reset = [redView.layer dw_CreateResetAnimationWithAnimationKey:nil beginTime:0 duration:2];
-    
+    reset.completion = ^(DWAnimation * ani){
+        NSLog(@"%@ over",ani.animationKey);
+    };
     self.arr = @[springAnimation,moveAnimation,arcAnimation,addAnimation,multiAnimation,arrAnimation,longSentence,shortSentence,reset];
 }
 
