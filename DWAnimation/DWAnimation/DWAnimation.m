@@ -758,7 +758,7 @@
 
 -(void)setBeginTime:(CGFloat)beginTime
 {
-    _beginTime = beginTime;
+    [super setBeginTime:beginTime];
     self.duration = self.animation.duration * self.repeatCount + beginTime;
     self.animation.beginTime += beginTime;
 }

@@ -18,6 +18,8 @@
 		9B1C2A041D7EC5240029663B /* DWAnimationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B1C29FF1D7EC5240029663B /* DWAnimationManager.m */; };
 		9B1C2A051D7EC5240029663B /* UIView+DWAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B1C2A011D7EC5240029663B /* UIView+DWAnimation.m */; };
 		9B428C8E1DA81A28008AAFE1 /* CALayer+DWAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B428C8D1DA81A28008AAFE1 /* CALayer+DWAnimation.m */; };
+		9B568BFC1DC109E80070D361 /* DWAnimationAbstraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B568BFB1DC109E80070D361 /* DWAnimationAbstraction.m */; };
+		9B568C021DC112D50070D361 /* DWAnimationGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B568C011DC112D50070D361 /* DWAnimationGroup.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +44,10 @@
 		9B1C2A011D7EC5240029663B /* UIView+DWAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+DWAnimation.m"; sourceTree = "<group>"; };
 		9B428C8C1DA81A28008AAFE1 /* CALayer+DWAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+DWAnimation.h"; sourceTree = "<group>"; };
 		9B428C8D1DA81A28008AAFE1 /* CALayer+DWAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+DWAnimation.m"; sourceTree = "<group>"; };
+		9B568BFA1DC109E80070D361 /* DWAnimationAbstraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWAnimationAbstraction.h; sourceTree = "<group>"; };
+		9B568BFB1DC109E80070D361 /* DWAnimationAbstraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWAnimationAbstraction.m; sourceTree = "<group>"; };
+		9B568C001DC112D50070D361 /* DWAnimationGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWAnimationGroup.h; sourceTree = "<group>"; };
+		9B568C011DC112D50070D361 /* DWAnimationGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWAnimationGroup.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +116,10 @@
 				9B1C29FF1D7EC5240029663B /* DWAnimationManager.m */,
 				9B1C2A001D7EC5240029663B /* UIView+DWAnimation.h */,
 				9B1C2A011D7EC5240029663B /* UIView+DWAnimation.m */,
+				9B568BFA1DC109E80070D361 /* DWAnimationAbstraction.h */,
+				9B568BFB1DC109E80070D361 /* DWAnimationAbstraction.m */,
+				9B568C001DC112D50070D361 /* DWAnimationGroup.h */,
+				9B568C011DC112D50070D361 /* DWAnimationGroup.m */,
 			);
 			path = DWAnimation;
 			sourceTree = "<group>";
@@ -186,9 +196,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B1C29E91D7EC4C70029663B /* ViewController.m in Sources */,
+				9B568C021DC112D50070D361 /* DWAnimationGroup.m in Sources */,
 				9B1C2A031D7EC5240029663B /* DWAnimationMaker.m in Sources */,
 				9B1C2A051D7EC5240029663B /* UIView+DWAnimation.m in Sources */,
 				9B1C29E61D7EC4C70029663B /* AppDelegate.m in Sources */,
+				9B568BFC1DC109E80070D361 /* DWAnimationAbstraction.m in Sources */,
 				9B1C29E31D7EC4C70029663B /* main.m in Sources */,
 				9B1C2A021D7EC5240029663B /* DWAnimation.m in Sources */,
 				9B1C2A041D7EC5240029663B /* DWAnimationManager.m in Sources */,
