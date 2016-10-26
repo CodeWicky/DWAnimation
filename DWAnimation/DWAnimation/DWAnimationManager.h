@@ -19,7 +19,7 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "DWAnimationHeader.h"
+#import "DWAnimationConstant.h"
 @class DWAnimation;
 
 @interface DWAnimationManager : NSObject

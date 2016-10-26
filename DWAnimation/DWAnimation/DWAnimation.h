@@ -10,6 +10,7 @@
  DWAnimation
  
  简介：一句话生成CALayer动画，支持动画间任意拼接、组合
+ （仅限针对同一CALayer进行操作，若layer不同，请使用DWAnimationGroup）
  
  version 1.0.0
  提供两种生成动画的构造方法
@@ -98,13 +99,9 @@
  version 1.1.3
  改变继承关系，继承自抽象类DWAnimationAbstraction
  */
+
 #import "DWAnimationAbstraction.h"
-#import "DWAnimationHeader.h"
-#import "DWAnimationMaker.h"
-#import "DWAnimationManager.h"
-#import "UIView+DWAnimation.h"
-#import "CALayer+DWAnimation.h"
-#import "DWAnimationGroup.h"
+#import "DWAnimationConstant.h"
 @class DWAnimationMaker;
 @interface DWAnimation : DWAnimationAbstraction
 

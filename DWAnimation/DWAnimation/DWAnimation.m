@@ -7,7 +7,7 @@
 //
 
 #import "DWAnimation.h"
-
+#import "DWAnimationMaker.h"
 @interface DWAnimation ()<CAAnimationDelegate>
 
 @property (nonatomic ,assign) BOOL notFirstTime;

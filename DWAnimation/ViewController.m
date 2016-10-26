@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "DWAnimation.h"
+#import "DWAnimationHeader.h"
 @interface ViewController ()
 
 @property (nonatomic ,strong) NSArray * arr;

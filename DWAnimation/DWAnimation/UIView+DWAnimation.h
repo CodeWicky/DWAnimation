@@ -25,6 +25,7 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "DWAnimationConstant.h"
 @class DWAnimation;
 @class DWAnimationMaker;
 @interface UIView (DWAnimation)

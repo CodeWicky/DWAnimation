@@ -48,6 +48,7 @@
 		9B568BFB1DC109E80070D361 /* DWAnimationAbstraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWAnimationAbstraction.m; sourceTree = "<group>"; };
 		9B568C001DC112D50070D361 /* DWAnimationGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWAnimationGroup.h; sourceTree = "<group>"; };
 		9B568C011DC112D50070D361 /* DWAnimationGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWAnimationGroup.m; sourceTree = "<group>"; };
+		9B568C041DC135240070D361 /* DWAnimationConstant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DWAnimationConstant.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +108,7 @@
 			children = (
 				9B1C29F91D7EC5240029663B /* DWAnimation.h */,
 				9B1C29FA1D7EC5240029663B /* DWAnimation.m */,
+				9B568C041DC135240070D361 /* DWAnimationConstant.h */,
 				9B1C29FB1D7EC5240029663B /* DWAnimationHeader.h */,
 				9B1C29FC1D7EC5240029663B /* DWAnimationMaker.h */,
 				9B1C29FD1D7EC5240029663B /* DWAnimationMaker.m */,

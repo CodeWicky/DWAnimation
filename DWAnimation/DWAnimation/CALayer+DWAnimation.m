@@ -8,6 +8,7 @@
 
 
 #import "DWAnimation.h"
+#import "DWAnimationManager.h"
 @implementation CALayer (DWAnimation)
 
 -(DWAnimation *)dw_CreateAnimationWithKey:(NSString *)animationKey animationCreater:(void (^)(DWAnimationMaker *))animationCreater
