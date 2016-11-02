@@ -742,6 +742,9 @@
 -(void)animationDidStart:(CAAnimation *)anim
 {
     self.status = DWAnimationStatusPlay;
+    if (self.animationStart) {
+        self.animationStart(self);
+    }
     [[NSNotificationCenter defaultCenter] postNotificationName:DWAnimationPlayStartNotification object:@{@"animation":self}];
 }
 

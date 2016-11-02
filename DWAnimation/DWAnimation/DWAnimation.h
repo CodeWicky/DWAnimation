@@ -98,6 +98,9 @@
  
  version 1.1.3
  改变继承关系，继承自抽象类DWAnimationAbstraction
+ 
+ version 1.1.4
+ 添加动画开始回调、结束回调
  */
 
 #import "DWAnimationAbstraction.h"
@@ -130,6 +133,9 @@
 
 ///动画完成回调
 @property (nonatomic ,copy) void (^completion) (DWAnimation *);
+
+///动画开始回调
+@property (nonatomic ,copy) void (^animationStart)(DWAnimation *);
 
 #pragma mark ---动画构造方法---
 
