@@ -74,6 +74,9 @@ typedef NS_ENUM(NSInteger ,DWAnimationStatus) {
 ///是否为未经初始化的CGPoint
 #define CGPointIsNull(x) CGPointEqualToPoint(CGPointNull,x)
 
+///返回CGPoint类型的NSValue
+#define PointValue(x,y) [NSValue valueWithCGPoint:CGPointMake(x, y)]
+
 ///是否为未经初始化的CGFloat
 #define CGFloatIsNull(x) (x == MAXFLOAT)
 
@@ -82,6 +85,9 @@ typedef NS_ENUM(NSInteger ,DWAnimationStatus) {
 
 ///是否为未经初始化的CGSize
 #define CGSizeIsNull(x) CGSizeEqualToSize(x, CGSizeNull)
+
+///返回CGSize类型的NSValue
+#define SizeValue(w,h) [NSValue valueWithCGSize:CGSizeMake(w, h)]
 
 ///角度转换成弧度
 #define RadianFromDegree(x) ((x) * M_PI / 180.0)
