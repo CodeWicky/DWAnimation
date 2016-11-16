@@ -15,6 +15,6 @@
 #import "CALayer+DWAnimation.h"
 #import "DWAnimationMaker.h"
 #import "DWAnimationConstant.h"
-#import "DWAnimationMaker.h"
+#import "DWAnimationManager.h"
 
 #endif /* DWAnimationHeader_h */
