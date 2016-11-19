@@ -42,6 +42,9 @@
  
  version 1.1.1
  按照需求修改make方法将数组进行排序。
+ 
+ version 1.1.2
+ 增加缩放动画换轴模式
  */
 
 #import <UIKit/UIKit.h>
@@ -69,8 +72,11 @@
 ///旋转初始角度，旋转动画非必须实现方法，参数可为MAXFLOAT，若不实现默认当前角度为旋转初始角度
 @property (nonatomic ,copy) DWAnimationMaker * (^rotateFrom)(CGFloat);
 
-///旋转轴，旋转动画非必须实现方法，参数为RotateAxis枚举类型（X、Y、Z），若不实现默认旋转轴为Z轴
-@property (nonatomic ,copy) DWAnimationMaker * (^axis)(RotateAxis);
+///动画轴，动画非必须实现方法，参数为Axis枚举类型（X、Y、Z），若不实现默认旋转轴为Z轴
+/**
+ 注：当一条语句（以install方法为一条语句结束）中含有动画轴时，则所有支持换轴的动画均将换轴，若不想所有支持换轴的动画都换轴，请以短语句方式书写
+ */
+@property (nonatomic ,copy) DWAnimationMaker * (^axis)(Axis);
 
 ///终止透明度，透明度动画必须实现方法，参数必须为非MAXFlOAT
 @property (nonatomic ,copy) DWAnimationMaker * (^alphaTo)(CGFloat);

@@ -9,7 +9,7 @@
 #ifndef DWAnimationConstant_h
 #define DWAnimationConstant_h
 
-typedef NS_ENUM(NSInteger , RotateAxis) {
+typedef NS_ENUM(NSInteger , Axis) {
     Z = 0,///z轴为旋转轴
     X,///x轴为旋转轴
     Y///y轴为旋转轴

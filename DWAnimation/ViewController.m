@@ -104,6 +104,7 @@
 //    };
 //    self.arr = @[springAnimation,moveAnimation,arcAnimation,addAnimation,multiAnimation,arrAnimation,longSentence,shortSentence,reset];
     
+    
     UIView * blueView = [[UIView alloc] initWithFrame:redView.frame];
     blueView.backgroundColor = [UIColor blueColor];
     [self.view addSubview:blueView];
@@ -121,7 +122,7 @@
     }];
     
     DWAnimation * gA = [greenView dw_CreateAnimationWithKey:@"gr" animationCreater:^(DWAnimationMaker *maker) {
-        maker.moveTo(CGPointMake(300, 300)).beginTime(2).duration(2).install();
+        maker.moveTo(CGPointMake(300, 300)).scaleTo(2).rotateTo(360).axis(X).beginTime(2).duration(2).install();
     }];
     
     bA.beginTime = 2;
@@ -153,7 +154,6 @@
     [self.g start];
 //    [self.a start];
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

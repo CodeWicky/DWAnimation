@@ -101,6 +101,9 @@
  
  version 1.1.4
  添加动画开始回调、结束回调
+ 
+ version 1.1.5
+ block形式动画支持缩放动画换轴
  */
 
 #import "DWAnimationAbstraction.h"

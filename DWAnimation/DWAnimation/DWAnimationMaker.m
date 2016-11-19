@@ -17,7 +17,7 @@
 @property (nonatomic ,assign) CGFloat destinationScale;
 @property (nonatomic ,assign) CGFloat homeAngle;
 @property (nonatomic ,assign) CGFloat destinationAngle;
-@property (nonatomic ,assign) RotateAxis rotateAxis;
+@property (nonatomic ,assign) Axis animationAxis;
 @property (nonatomic ,assign) CGFloat homeAlpha;
 @property (nonatomic ,assign) CGFloat destinationAlpha;
 @property (nonatomic ,assign) CGFloat homeCornerR;
@@ -104,7 +104,7 @@
         self.destinationScale = MAXFLOAT;
         self.homeAngle = MAXFLOAT;
         self.destinationAngle = MAXFLOAT;
-        self.rotateAxis = Z;
+        self.animationAxis = Z;
         self.homeAlpha = MAXFLOAT;
         self.destinationAlpha = MAXFLOAT;
         self.homeCornerR = MAXFLOAT;
@@ -160,8 +160,23 @@ CABasicAnimation *(^MoveAnimation)(CGPoint,CGPoint,CGFloat,CGFloat) = ^(CGPoint 
 };
 
 ///创建缩放类动画
-CABasicAnimation *(^ScaleAnimation)(CGFloat,CGFloat,CGFloat,CGFloat) = ^(CGFloat originalScale ,CGFloat destinationScale,CGFloat beginTime,CGFloat duration){
-    CABasicAnimation * scale = CreateSimpleAnimation(@"transform.scale",beginTime,duration);
+CABasicAnimation *(^ScaleAnimation)(CGFloat,CGFloat,Axis,CGFloat,CGFloat) = ^(CGFloat originalScale ,CGFloat destinationScale,Axis scaleAxis,CGFloat beginTime,CGFloat duration){
+    NSString * key = nil;
+    switch (scaleAxis) {
+        case X:
+            key = @"transform.scale.x";
+            break;
+        case Y:
+            key = @"transform.scale.y";
+            break;
+        case Z:
+            key = @"transform.scale";
+            break;
+        default:
+            key = @"transform.scale";
+            break;
+    }
+    CABasicAnimation * scale = CreateSimpleAnimation(key,beginTime,duration);
     if(!CGFloatIsNull(originalScale)){
         scale.fromValue = @(originalScale);
     }
@@ -173,7 +188,7 @@ CABasicAnimation *(^ScaleAnimation)(CGFloat,CGFloat,CGFloat,CGFloat) = ^(CGFloat
 };
 
 ///创建旋转类动画
-CABasicAnimation *(^RotateAnimation)(CGFloat,CGFloat,RotateAxis,CGFloat,CGFloat) = ^(CGFloat originalAngle,CGFloat destinationAngle,RotateAxis rotateAxis,CGFloat beginTime,CGFloat duration)
+CABasicAnimation *(^RotateAnimation)(CGFloat,CGFloat,Axis,CGFloat,CGFloat) = ^(CGFloat originalAngle,CGFloat destinationAngle,Axis rotateAxis,CGFloat beginTime,CGFloat duration)
 {
     NSString * key = nil;
     switch (rotateAxis) {
@@ -394,10 +409,10 @@ CABasicAnimation *(^BackgroundColorAnimation)(UIColor *,UIColor *,CGFloat,CGFloa
     };
 }
 
--(DWAnimationMaker *(^)(RotateAxis))axis
+-(DWAnimationMaker *(^)(Axis))axis
 {
-    return ^(RotateAxis rotateAxis){
-        self.rotateAxis = rotateAxis;
+    return ^(Axis rotateAxis){
+        self.animationAxis = rotateAxis;
         return self;
     };
 }
@@ -628,7 +643,7 @@ CABasicAnimation *(^BackgroundColorAnimation)(UIColor *,UIColor *,CGFloat,CGFloa
     return ^{
         if (self.needReset) {
             [self.animationsArray addObject:MoveAnimation(CGPointNull,self.layer.position,self.startTime,self.animationDuration)];
-            [self.animationsArray addObject:ScaleAnimation(MAXFLOAT,1,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:ScaleAnimation(MAXFLOAT,1,Z,self.startTime,self.animationDuration)];
             [self.animationsArray addObject:RotateAnimation(MAXFLOAT,0,X,self.startTime,self.animationDuration)];
             [self.animationsArray addObject:RotateAnimation(MAXFLOAT,0,Y,self.startTime,self.animationDuration)];
             [self.animationsArray addObject:RotateAnimation(MAXFLOAT,0,Z,self.startTime,self.animationDuration)];
@@ -664,11 +679,11 @@ CABasicAnimation *(^BackgroundColorAnimation)(UIColor *,UIColor *,CGFloat,CGFloa
             [self resetMovePara];
         }
         if (self.scale) {
-            [self.animationsArray addObject:ScaleAnimation(self.homeScale,self.destinationScale,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:ScaleAnimation(self.homeScale,self.destinationScale,self.animationAxis,self.startTime,self.animationDuration)];
             [self resetScalePara];
         }
         if (self.rotate) {
-            [self.animationsArray addObject:RotateAnimation(self.homeAngle,self.destinationAngle,self.rotateAxis,self.startTime,self.animationDuration)];
+            [self.animationsArray addObject:RotateAnimation(self.homeAngle,self.destinationAngle,self.animationAxis,self.startTime,self.animationDuration)];
             [self resetRotatePara];
         }
         if (self.alpha) {
@@ -734,6 +749,9 @@ CABasicAnimation *(^BackgroundColorAnimation)(UIColor *,UIColor *,CGFloat,CGFloa
     self.scale = NO;
     self.homeScale = MAXFLOAT;
     self.destinationScale = MAXFLOAT;
+    if (!self.rotate) {
+        self.animationAxis = Z;
+    }
 }
 
 -(void)resetRotatePara
@@ -741,7 +759,9 @@ CABasicAnimation *(^BackgroundColorAnimation)(UIColor *,UIColor *,CGFloat,CGFloa
     self.rotate = NO;
     self.homeAngle = MAXFLOAT;
     self.destinationAngle = MAXFLOAT;
-    self.rotateAxis = Z;
+    if (!self.scale) {
+        self.animationAxis = Z;
+    }
 }
 
 -(void)resetAlphaPara
