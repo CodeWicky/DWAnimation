@@ -1,5 +1,9 @@
 #DWAniamtion
 
+![我能实现的动画](http://upload-images.jianshu.io/upload_images/1835430-e7d2fc246edd25c7.gif)
+
+
+
 DWAnimation是一个基于CoreAnimation的动画封装SDK。
 
 所以你应该明确的是它具有CAAnimation的一切特性。
