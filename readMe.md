@@ -1,6 +1,6 @@
 #DWAniamtion
 
-![我能实现的动画](http://upload-images.jianshu.io/upload_images/1835430-e7d2fc246edd25c7.gif)
+![像我一样清爽](https://github.com/CodeWicky/DWAnimation/raw/master/1835430-04a7fd69f578b586.png)
 
 
 
