@@ -547,6 +547,33 @@
     return [[DWAnimation alloc] initAnimationWithLayer:layer animationKey:animationKey beginTime:0 duration:(beginTime + duration) animations:@[animation]];
 }
 
+///创建景深旋转动画
+-(instancetype)initAnimationWithLayer:(CALayer *)layer animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration rotateStartAngle:(CGFloat)startAngle rotateEndAngle:(CGFloat)endAngle rotateAxis:(Axis)rotateAxis deep:(CGFloat)deep
+{
+    if (rotateAxis == Z) {
+        return [[DWAnimation alloc] initAnimationWithLayer:layer animationKey:animationKey animationCreater:^(DWAnimationMaker *maker) {
+            maker.rotateFrom(startAngle).rotateTo(endAngle).beginTime(beginTime).duration(duration).install();
+        }];
+    }
+    else
+    {
+        CATransform3D fromValue = CATransform3DIdentity;
+        fromValue.m34 = -1.f / deep;
+        CATransform3D toValue = CATransform3DIdentity;
+        toValue.m34 = -1.f / deep;
+        if (rotateAxis == X) {
+            fromValue = CATransform3DRotate(fromValue, RadianFromDegree(startAngle), 1, 0, 0);
+            toValue = CATransform3DRotate(toValue, RadianFromDegree(endAngle), 1, 0, 0);
+        }
+        else
+        {
+            fromValue = CATransform3DRotate(fromValue, RadianFromDegree(startAngle), 0, 1, 0);
+            toValue = CATransform3DRotate(toValue, RadianFromDegree(endAngle), 0, 1, 0);
+        }
+        return [[DWAnimation alloc] initAnimationWithLayer:layer keyPath:@"transform" animationKey:animationKey beginTime:beginTime duration:duration fromValue:[NSValue valueWithCATransform3D:fromValue] toValue:[NSValue valueWithCATransform3D:toValue] timingFunctionName:kCAMediaTimingFunctionLinear];
+    }
+}
+
 #pragma mark ------动画控制方法------
 ///开始播放动画
 -(void)start

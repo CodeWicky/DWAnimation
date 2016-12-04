@@ -147,6 +147,31 @@
                                       toValue:(id)toValue
                            timingFunctionName:(NSString *)timingFunctionName;
 
+///创建景深旋转动画
+/**
+ 即具有透视效果的换轴旋转动画
+ 
+ animationKey       动画的标识，可为nil
+ beginTime          动画延时时长
+ duration           动画时长
+ rotateStartAngle   旋转起始角度
+ rotateEndAngle     旋转终止角度
+ rotateAxis         旋转轴
+ deep               景深系数
+ 
+ 注：
+ 1.旋转角度为角度制
+ 2.旋转轴为Z轴时无景深效果
+ 3.deep为景深系数，数值越小，透视效果越明显，反之效果更平缓，推荐值300
+ */
+-(DWAnimation *)dw_CreateAnimationWithAnimationKey:(NSString *)animationKey
+                                         beginTime:(CGFloat)beginTime
+                                          duration:(CGFloat)duration
+                                  rotateStartAngle:(CGFloat)startAngle
+                                    rotateEndAngle:(CGFloat)endAngle
+                                        rotateAxis:(Axis)rotateAxis
+                                              deep:(CGFloat)deep;
+
 ///恢复动画
 /*
  animationKey   动画的标识，可为nil
