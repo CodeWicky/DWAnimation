@@ -185,6 +185,31 @@
                                         rotateAxis:(Axis)rotateAxis
                                               deep:(CGFloat)deep;
 
+///创建拟合锚点改变动画
+/**
+ 以曲线旋转动画拟合改变锚点后的旋转动画
+ 
+ layer                  将要展示动画的layer，不可为nil
+ animationKey           动画的标识，可为nil
+ beginTime              动画延时时长
+ duration               动画时长
+ rotateStartAngle       旋转起始角度
+ rotateEndAngle         旋转终止角度
+ simulateChangeAnchor   拟合的改变后锚点
+ 
+ 注：
+ 1.旋转角度为角度制
+ 2.实际锚点不发生改变，为拟合路径
+ */
+-(DWAnimation *)dw_CreateAnimationWithLayer:(CALayer *)layer
+                               animationKey:(NSString *)animationKey
+                                  beginTime:(CGFloat)beginTime
+                                   duration:(CGFloat)duration
+                           rotateStartAngle:(CGFloat)startAngle
+                             rotateEndAngle:(CGFloat)endAngle
+                       simulateChangeAnchor:(CGPoint)anchor;
+
+
 ///恢复动画
 /**
  animationKey   动画的标识，可为nil
