@@ -59,6 +59,12 @@
     return [[DWAnimation alloc] initAnimationWithLayer:self animationKey:animationKey beginTime:beginTime duration:duration rotateStartAngle:startAngle rotateEndAngle:endAngle rotateAxis:rotateAxis deep:deep];
 }
 
+-(DWAnimation *)dw_CreateAnimationWithLayer:(CALayer *)layer animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration rotateStartAngle:(CGFloat)startAngle rotateEndAngle:(CGFloat)endAngle simulateChangeAnchor:(CGPoint)anchor
+{
+    return [[DWAnimation alloc] initAnimationWithLayer:self animationKey:animationKey beginTime:beginTime duration:duration rotateStartAngle:startAngle rotateEndAngle:endAngle simulateChangeAnchor:anchor];
+}
+
+
 -(DWAnimation *)dw_CreateResetAnimationWithAnimationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration
 {
     return [DWAnimation createResetAnimationWithLayer:self animationKey:animationKey beginTime:beginTime duration:duration];

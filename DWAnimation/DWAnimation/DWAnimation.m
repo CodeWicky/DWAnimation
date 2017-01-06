@@ -574,6 +574,39 @@
     }
 }
 
+///创建拟合锚点移动的旋转动画
+-(instancetype)initAnimationWithLayer:(CALayer *)layer animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration rotateStartAngle:(CGFloat)startAngle rotateEndAngle:(CGFloat)endAngle simulateChangeAnchor:(CGPoint)anchor{
+    DWAnimation * ro = [[DWAnimation alloc] initAnimationWithLayer:layer animationKey:animationKey animationCreater:^(DWAnimationMaker *maker) {
+        maker.rotateFrom(startAngle).rotateTo(endAngle).beginTime(beginTime).duration(duration).install();
+    }];
+    if (CGPointEqualToPoint(anchor, CGPointMake(0.5, 0.5)) || endAngle == startAngle) {
+        return ro;
+    }
+    CGFloat offsetX = layer.bounds.size.width * (anchor.x - 0.5);
+    CGFloat offsetY = layer.bounds.size.height * (anchor.y - 0.5);
+    CGFloat radius = sqrtf(powf(offsetX, 2) + powf(offsetY, 2));
+    CGPoint center = CGPointMake(layer.position.x + offsetX, layer.position.y + offsetY);
+    CGFloat deltaAngle = 0;
+    if (anchor.x == 0.5) {
+        if (anchor.y < 0.5) {
+            deltaAngle = M_PI_2;
+        }
+        else
+        {
+            deltaAngle = M_PI_2 * 3;
+        }
+    }
+    else
+    {
+        deltaAngle = atan2(- offsetY, - offsetX);
+    }
+    UIBezierPath * path = [UIBezierPath bezierPathWithArcCenter:center radius:radius startAngle:RadianFromDegree(startAngle) + deltaAngle endAngle:RadianFromDegree(endAngle) + deltaAngle clockwise:endAngle>startAngle];
+    
+    DWAnimation * trans = [[DWAnimation alloc] initAnimationWithLayer:layer animationKey:animationKey beginTime:beginTime duration:duration bezierPath:path autoRotate:NO];
+    
+    return [ro combineWithAnimation:trans animationKey:animationKey];
+}
+
 #pragma mark ------动画控制方法------
 ///开始播放动画
 -(void)start

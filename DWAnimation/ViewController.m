@@ -28,10 +28,10 @@
     [self.view addSubview:button];
     [button addTarget:self action:@selector(bu) forControlEvents:(UIControlEventTouchUpInside)];
     self.view.backgroundColor = [UIColor lightGrayColor];
-    UIView * redView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+    UIView * redView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 100)];
     redView.backgroundColor = [UIColor redColor];
     [self.view addSubview:redView];
-    redView.center = self.view.center;
+    redView.center = CGPointMake(self.view.center.x + 50, self.view.center.y);
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(finish:) name:DWAnimationPlayFinishNotification object:nil];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(start:) name:DWAnimationPlayStartNotification object:nil];
 //    
@@ -131,7 +131,36 @@
 //    group.beginTime = 2;
 //    
 //    self.g = group;
-    DWAnimation * ani = [[DWAnimation alloc] initAnimationWithLayer:redView.layer animationKey:@"ro" beginTime:0 duration:2 rotateStartAngle:0 rotateEndAngle:180 rotateAxis:X deep:300];
+//    DWAnimation * ani = [[DWAnimation alloc] initAnimationWithLayer:redView.layer animationKey:@"ro" beginTime:0 duration:2 rotateStartAngle:0 rotateEndAngle:180 rotateAxis:X deep:300];
+//    DWAnimation * ani = [[DWAnimation alloc] initAnimationWithLayer:redView.layer animationKey:nil beginTime:0 duration:1 bezierPath:[UIBezierPath bezierPathWithArcCenter:CGPointMake(self.view.center.x - 50, self.view.center.y - 50) radius:sqrt(5000) startAngle:M_PI_4 endAngle:M_PI_4 * 3 clockwise:YES] autoRotate:NO];
+//    DWAnimation * ani2 = [[DWAnimation alloc] initAnimationWithLayer:redView.layer animationKey:nil animationCreater:^(DWAnimationMaker *maker) {
+//        maker.rotateTo(90).duration(1).install();
+//    }];
+    
+    CALayer * line1 = [CALayer layer];
+    line1.backgroundColor = [UIColor whiteColor].CGColor;
+    line1.bounds = CGRectMake(0, 0, 1, self.view.bounds.size.height);
+    line1.position = CGPointMake(self.view.center.x - 50, self.view.center.y);
+    [self.view.layer addSublayer:line1];
+    CALayer * line2 = [CALayer layer];
+    line2.backgroundColor = [UIColor whiteColor].CGColor;
+    line2.bounds = CGRectMake(0, 0, 1, self.view.bounds.size.height);
+    line2.position = CGPointMake(self.view.center.x + 50, self.view.center.y);
+    [self.view.layer addSublayer:line2];
+    CALayer * line3 = [CALayer layer];
+    line3.backgroundColor = [UIColor whiteColor].CGColor;
+    line3.bounds = CGRectMake(0, 0, self.view.bounds.size.width, 1);
+    line3.position = CGPointMake(self.view.center.x, self.view.center.y - 50);
+    [self.view.layer addSublayer:line3];
+    CALayer * line4 = [CALayer layer];
+    line4.backgroundColor = [UIColor whiteColor].CGColor;
+    line4.bounds = CGRectMake(0, 0, self.view.bounds.size.width, 1);
+    line4.position = CGPointMake(self.view.center.x, self.view.center.y + 50);
+    [self.view.layer addSublayer:line4];
+    
+    DWAnimation * ani = [[DWAnimation alloc] initAnimationWithLayer:redView.layer animationKey:nil
+                                                          beginTime:0 duration:2 rotateStartAngle:0 rotateEndAngle:360 simulateChangeAnchor:CGPointMake(0.25, 0.5)];
+    ani.repeatCount = MAXFLOAT;
     self.a = ani;
 }
 
