@@ -395,6 +395,18 @@
                                     beginTime:(CGFloat)beginTime
                                      duration:(CGFloat)duration;
 
+///以content开始动画
+
+/**
+ 以content开始动画
+
+ @param content content类型可为UIView或CALayer
+ 
+ 注：可更换DWAnimation对象的执行主体。
+ 非必须条件下不推荐更换DWAnimaion执行主体。
+ */
+-(void)startAnimationWithContent:(id)content;
+
 ///为以贝塞尔曲线创建的移动动画添加时间间隔
 /**
  keyTimes      时间间隔

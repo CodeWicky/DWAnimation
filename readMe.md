@@ -1,4 +1,4 @@
-#DWAniamtion
+# DWAniamtion
 
 ![像我一样清爽](https://github.com/CodeWicky/DWAnimation/raw/master/1835430-04a7fd69f578b586.png)
 
