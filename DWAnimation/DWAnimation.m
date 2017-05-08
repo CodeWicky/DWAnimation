@@ -714,6 +714,15 @@
     return animation;
 }
 
+-(void)startAnimationWithContent:(id)content {
+    if ([content isKindOfClass:[UIView class]]) {
+        self.layer = [content layer];
+    } else if ([content isKindOfClass:[CALayer class]]) {
+        self.layer = content;
+    }
+    [self start];
+}
+
 ///并发组合两个动画
 -(DWAnimation *)combineWithAnimation:(DWAnimation *)animaiton animationKey:(NSString *)animationKey
 {

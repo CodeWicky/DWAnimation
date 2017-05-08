@@ -110,6 +110,9 @@
  
  version 1.1.7
  支持拟合锚点旋转动画
+ 
+ version 1.1.8
+ 支持更换Layer开始动画
  */
 
 #import "DWAnimationAbstraction.h"

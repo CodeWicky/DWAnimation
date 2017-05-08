@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
 s.name = 'DWAnimation'
-s.version = '1.1.7.2'
+s.version = '1.1.8'
 s.license = { :type => 'MIT', :file => 'LICENSE' }
 s.summary = 'DWAnimation is an SDK for animation based on CoreAnimaiton.Help you to create Animation In DSL.这是一个基于CoreAnimation的SDK，让你享受以链式语法创建动画的快感~'
 s.homepage = 'https://github.com/CodeWicky/DWAnimation'
