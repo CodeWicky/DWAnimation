@@ -38,7 +38,7 @@
         if (![arr containsObject:layer]) {
             [arr addObject:layer];
         }
-        NSString * key = [NSString stringWithFormat:@"%ld",[arr indexOfObject:layer]];
+        NSString * key = [NSString stringWithFormat:@"%lu",(unsigned long)[arr indexOfObject:layer]];
         NSMutableArray * array = dic[key];
         if (!array) {
             array = [NSMutableArray array];

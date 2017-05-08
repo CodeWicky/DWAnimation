@@ -39,7 +39,7 @@
     [self.animationArray removeAllObjects];
     NSMutableArray <DWAnimation *>* array = animations.mutableCopy;
     [array enumerateObjectsUsingBlock:^(DWAnimation * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        DWAnimation * new = [[DWAnimation alloc] initAnimationWithLayer:obj.layer animationKey:[NSString stringWithFormat:@"DWAnimationGroup%lu",idx] beginTime:beginTime duration:obj.duration animations:@[obj.animation]];
+        DWAnimation * new = [[DWAnimation alloc] initAnimationWithLayer:obj.layer animationKey:[NSString stringWithFormat:@"DWAnimationGroup%lu",(unsigned long)idx] beginTime:beginTime duration:obj.duration animations:@[obj.animation]];
         [self.animationArray addObject:new];
         if (obj.duration > duration) {
             duration = obj.duration;
