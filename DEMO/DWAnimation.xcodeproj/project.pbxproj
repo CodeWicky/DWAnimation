@@ -7,22 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		409CDE0BEA8C19E6F096A526 /* libPods-DWAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D77F50E967F1EF23B93B1B24 /* libPods-DWAnimation.a */; };
 		9B1C29E31D7EC4C70029663B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B1C29E21D7EC4C70029663B /* main.m */; };
 		9B1C29E61D7EC4C70029663B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B1C29E51D7EC4C70029663B /* AppDelegate.m */; };
 		9B1C29E91D7EC4C70029663B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B1C29E81D7EC4C70029663B /* ViewController.m */; };
 		9B1C29EC1D7EC4C70029663B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9B1C29EA1D7EC4C70029663B /* Main.storyboard */; };
 		9B1C29EE1D7EC4C70029663B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B1C29ED1D7EC4C70029663B /* Assets.xcassets */; };
 		9B1C29F11D7EC4C70029663B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9B1C29EF1D7EC4C70029663B /* LaunchScreen.storyboard */; };
-		9B1C2A021D7EC5240029663B /* DWAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B1C29FA1D7EC5240029663B /* DWAnimation.m */; };
-		9B1C2A031D7EC5240029663B /* DWAnimationMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B1C29FD1D7EC5240029663B /* DWAnimationMaker.m */; };
-		9B1C2A041D7EC5240029663B /* DWAnimationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B1C29FF1D7EC5240029663B /* DWAnimationManager.m */; };
-		9B1C2A051D7EC5240029663B /* UIView+DWAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B1C2A011D7EC5240029663B /* UIView+DWAnimation.m */; };
-		9B428C8E1DA81A28008AAFE1 /* CALayer+DWAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B428C8D1DA81A28008AAFE1 /* CALayer+DWAnimation.m */; };
-		9B568BFC1DC109E80070D361 /* DWAnimationAbstraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B568BFB1DC109E80070D361 /* DWAnimationAbstraction.m */; };
-		9B568C021DC112D50070D361 /* DWAnimationGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B568C011DC112D50070D361 /* DWAnimationGroup.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		989DF41443602C47F54001B7 /* Pods-DWAnimation.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DWAnimation.release.xcconfig"; path = "Pods/Target Support Files/Pods-DWAnimation/Pods-DWAnimation.release.xcconfig"; sourceTree = "<group>"; };
 		9B1C29DE1D7EC4C70029663B /* DWAnimation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DWAnimation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B1C29E21D7EC4C70029663B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9B1C29E41D7EC4C70029663B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -33,22 +28,8 @@
 		9B1C29ED1D7EC4C70029663B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9B1C29F01D7EC4C70029663B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9B1C29F21D7EC4C70029663B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9B1C29F91D7EC5240029663B /* DWAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWAnimation.h; sourceTree = "<group>"; };
-		9B1C29FA1D7EC5240029663B /* DWAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWAnimation.m; sourceTree = "<group>"; };
-		9B1C29FB1D7EC5240029663B /* DWAnimationHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWAnimationHeader.h; sourceTree = "<group>"; };
-		9B1C29FC1D7EC5240029663B /* DWAnimationMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWAnimationMaker.h; sourceTree = "<group>"; };
-		9B1C29FD1D7EC5240029663B /* DWAnimationMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWAnimationMaker.m; sourceTree = "<group>"; };
-		9B1C29FE1D7EC5240029663B /* DWAnimationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWAnimationManager.h; sourceTree = "<group>"; };
-		9B1C29FF1D7EC5240029663B /* DWAnimationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWAnimationManager.m; sourceTree = "<group>"; };
-		9B1C2A001D7EC5240029663B /* UIView+DWAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+DWAnimation.h"; sourceTree = "<group>"; };
-		9B1C2A011D7EC5240029663B /* UIView+DWAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+DWAnimation.m"; sourceTree = "<group>"; };
-		9B428C8C1DA81A28008AAFE1 /* CALayer+DWAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+DWAnimation.h"; sourceTree = "<group>"; };
-		9B428C8D1DA81A28008AAFE1 /* CALayer+DWAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+DWAnimation.m"; sourceTree = "<group>"; };
-		9B568BFA1DC109E80070D361 /* DWAnimationAbstraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWAnimationAbstraction.h; sourceTree = "<group>"; };
-		9B568BFB1DC109E80070D361 /* DWAnimationAbstraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWAnimationAbstraction.m; sourceTree = "<group>"; };
-		9B568C001DC112D50070D361 /* DWAnimationGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWAnimationGroup.h; sourceTree = "<group>"; };
-		9B568C011DC112D50070D361 /* DWAnimationGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWAnimationGroup.m; sourceTree = "<group>"; };
-		9B568C041DC135240070D361 /* DWAnimationConstant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DWAnimationConstant.h; sourceTree = "<group>"; };
+		D77F50E967F1EF23B93B1B24 /* libPods-DWAnimation.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DWAnimation.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F0E8EFCD1F483151EF4CE43A /* Pods-DWAnimation.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DWAnimation.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DWAnimation/Pods-DWAnimation.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,17 +37,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				409CDE0BEA8C19E6F096A526 /* libPods-DWAnimation.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3E691B85EA67990B1582B86C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F0E8EFCD1F483151EF4CE43A /* Pods-DWAnimation.debug.xcconfig */,
+				989DF41443602C47F54001B7 /* Pods-DWAnimation.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		9B1C29D51D7EC4C70029663B = {
 			isa = PBXGroup;
 			children = (
 				9B1C29E01D7EC4C70029663B /* DWAnimation */,
 				9B1C29DF1D7EC4C70029663B /* Products */,
+				3E691B85EA67990B1582B86C /* Pods */,
+				BAAE7AB615C357A358063792 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -85,7 +78,6 @@
 				9B1C29E51D7EC4C70029663B /* AppDelegate.m */,
 				9B1C29E71D7EC4C70029663B /* ViewController.h */,
 				9B1C29E81D7EC4C70029663B /* ViewController.m */,
-				9B1C29F81D7EC5240029663B /* DWAnimation */,
 				9B1C29EA1D7EC4C70029663B /* Main.storyboard */,
 				9B1C29ED1D7EC4C70029663B /* Assets.xcassets */,
 				9B1C29EF1D7EC4C70029663B /* LaunchScreen.storyboard */,
@@ -103,27 +95,12 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		9B1C29F81D7EC5240029663B /* DWAnimation */ = {
+		BAAE7AB615C357A358063792 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				9B1C29F91D7EC5240029663B /* DWAnimation.h */,
-				9B1C29FA1D7EC5240029663B /* DWAnimation.m */,
-				9B568C041DC135240070D361 /* DWAnimationConstant.h */,
-				9B1C29FB1D7EC5240029663B /* DWAnimationHeader.h */,
-				9B1C29FC1D7EC5240029663B /* DWAnimationMaker.h */,
-				9B1C29FD1D7EC5240029663B /* DWAnimationMaker.m */,
-				9B428C8C1DA81A28008AAFE1 /* CALayer+DWAnimation.h */,
-				9B428C8D1DA81A28008AAFE1 /* CALayer+DWAnimation.m */,
-				9B1C29FE1D7EC5240029663B /* DWAnimationManager.h */,
-				9B1C29FF1D7EC5240029663B /* DWAnimationManager.m */,
-				9B1C2A001D7EC5240029663B /* UIView+DWAnimation.h */,
-				9B1C2A011D7EC5240029663B /* UIView+DWAnimation.m */,
-				9B568BFA1DC109E80070D361 /* DWAnimationAbstraction.h */,
-				9B568BFB1DC109E80070D361 /* DWAnimationAbstraction.m */,
-				9B568C001DC112D50070D361 /* DWAnimationGroup.h */,
-				9B568C011DC112D50070D361 /* DWAnimationGroup.m */,
+				D77F50E967F1EF23B93B1B24 /* libPods-DWAnimation.a */,
 			);
-			path = DWAnimation;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -133,9 +110,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9B1C29F51D7EC4C70029663B /* Build configuration list for PBXNativeTarget "DWAnimation" */;
 			buildPhases = (
+				1D21EB0ED2557AE43E59005A /* [CP] Check Pods Manifest.lock */,
 				9B1C29DA1D7EC4C70029663B /* Sources */,
 				9B1C29DB1D7EC4C70029663B /* Frameworks */,
 				9B1C29DC1D7EC4C70029663B /* Resources */,
+				5A0F02915A5D15151A2901EF /* [CP] Embed Pods Frameworks */,
+				8C089AEB01EB5A132941A48D /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -192,21 +172,62 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		1D21EB0ED2557AE43E59005A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		5A0F02915A5D15151A2901EF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DWAnimation/Pods-DWAnimation-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8C089AEB01EB5A132941A48D /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DWAnimation/Pods-DWAnimation-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		9B1C29DA1D7EC4C70029663B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				9B1C29E91D7EC4C70029663B /* ViewController.m in Sources */,
-				9B568C021DC112D50070D361 /* DWAnimationGroup.m in Sources */,
-				9B1C2A031D7EC5240029663B /* DWAnimationMaker.m in Sources */,
-				9B1C2A051D7EC5240029663B /* UIView+DWAnimation.m in Sources */,
 				9B1C29E61D7EC4C70029663B /* AppDelegate.m in Sources */,
-				9B568BFC1DC109E80070D361 /* DWAnimationAbstraction.m in Sources */,
 				9B1C29E31D7EC4C70029663B /* main.m in Sources */,
-				9B1C2A021D7EC5240029663B /* DWAnimation.m in Sources */,
-				9B1C2A041D7EC5240029663B /* DWAnimationManager.m in Sources */,
-				9B428C8E1DA81A28008AAFE1 /* CALayer+DWAnimation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,6 +341,7 @@
 		};
 		9B1C29F61D7EC4C70029663B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F0E8EFCD1F483151EF4CE43A /* Pods-DWAnimation.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = DWAnimation/Info.plist;
@@ -331,6 +353,7 @@
 		};
 		9B1C29F71D7EC4C70029663B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 989DF41443602C47F54001B7 /* Pods-DWAnimation.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = DWAnimation/Info.plist;

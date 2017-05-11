@@ -1,0 +1,3 @@
+target 'DWAnimation' do
+pod 'DWAnimation', '~> 1.1.10'
+end
