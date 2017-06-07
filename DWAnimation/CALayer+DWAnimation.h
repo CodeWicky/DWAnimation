@@ -176,7 +176,6 @@
 /**
  以曲线旋转动画拟合改变锚点后的旋转动画
  
- layer                  将要展示动画的layer，不可为nil
  animationKey           动画的标识，可为nil
  beginTime              动画延时时长
  duration               动画时长
@@ -188,8 +187,7 @@
  1.旋转角度为角度制
  2.实际锚点不发生改变，为拟合路径
  */
--(DWAnimation *)dw_CreateAnimationWithLayer:(CALayer *)layer
-                               animationKey:(NSString *)animationKey
+-(DWAnimation *)dw_CreateAnimationWithAnimationKey:(NSString *)animationKey
                                   beginTime:(CGFloat)beginTime
                                    duration:(CGFloat)duration
                            rotateStartAngle:(CGFloat)startAngle

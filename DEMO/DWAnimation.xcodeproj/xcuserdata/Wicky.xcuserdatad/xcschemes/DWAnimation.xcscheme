@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9B1C29DD1D7EC4C70029663B"
+               BlueprintIdentifier = "9B6EF9F91EE7A765002B0E39"
                BuildableName = "DWAnimation.app"
                BlueprintName = "DWAnimation"
                ReferencedContainer = "container:DWAnimation.xcodeproj">
@@ -32,7 +32,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9B1C29DD1D7EC4C70029663B"
+            BlueprintIdentifier = "9B6EF9F91EE7A765002B0E39"
             BuildableName = "DWAnimation.app"
             BlueprintName = "DWAnimation"
             ReferencedContainer = "container:DWAnimation.xcodeproj">
@@ -55,7 +55,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9B1C29DD1D7EC4C70029663B"
+            BlueprintIdentifier = "9B6EF9F91EE7A765002B0E39"
             BuildableName = "DWAnimation.app"
             BlueprintName = "DWAnimation"
             ReferencedContainer = "container:DWAnimation.xcodeproj">
@@ -74,7 +74,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9B1C29DD1D7EC4C70029663B"
+            BlueprintIdentifier = "9B6EF9F91EE7A765002B0E39"
             BuildableName = "DWAnimation.app"
             BlueprintName = "DWAnimation"
             ReferencedContainer = "container:DWAnimation.xcodeproj">
