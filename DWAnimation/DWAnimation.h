@@ -226,11 +226,11 @@
  当content为nil时，开始动画需配合startAnimationWithContent:使用。
  */
 -(instancetype)initAnimationWithContent:(id)content
-                         animationKey:(NSString *)animationKey
-                            beginTime:(CGFloat)beginTime
-                             duration:(CGFloat)duration
-                           bezierPath:(UIBezierPath *)bezierPath
-                           autoRotate:(BOOL)autoRotate;
+                           animationKey:(NSString *)animationKey
+                              beginTime:(CGFloat)beginTime
+                               duration:(CGFloat)duration
+                             bezierPath:(UIBezierPath *)bezierPath
+                             autoRotate:(BOOL)autoRotate;
 
 ///创建弧线动画
 /**
@@ -280,15 +280,15 @@
  3.fromValue与toValue，均为UIKit中对象类型，如NSValue/NSNumber/UIColor/UIBezierPath/UIImage。
  */
 -(instancetype)initAnimationWithContent:(id)content
-                         animationKey:(NSString *)animationKey
-                        springingType:(DWAnimationSpringType)springingType
-                            beginTime:(CGFloat)beginTime
-                            fromValue:(id)fromValue
-                              toValue:(id)toValue
-                                 mass:(CGFloat)mass
-                            stiffness:(CGFloat)stiffness
-                              damping:(CGFloat)damping
-                      initialVelocity:(CGFloat)initialVelocity;
+                           animationKey:(NSString *)animationKey
+                          springingType:(DWAnimationSpringType)springingType
+                              beginTime:(CGFloat)beginTime
+                              fromValue:(id)fromValue
+                                toValue:(id)toValue
+                                   mass:(CGFloat)mass
+                              stiffness:(CGFloat)stiffness
+                                damping:(CGFloat)damping
+                        initialVelocity:(CGFloat)initialVelocity;
 
 ///创建特殊属性动画
 /**
@@ -310,13 +310,13 @@
  3.本方法创建的非CALayer属性动画不可用恢复动画自动恢复，请自行恢复
  */
 -(instancetype)initAnimationWithContent:(id)content
-                              keyPath:(NSString *)keyPath
-                         animationKey:(NSString *)animationKey
-                            beginTime:(CGFloat)beginTime
-                             duration:(CGFloat)duration
-                            fromValue:(id)fromValue
-                              toValue:(id)toValue
-                   timingFunctionName:(NSString *)timingFunctionName;
+                                keyPath:(NSString *)keyPath
+                           animationKey:(NSString *)animationKey
+                              beginTime:(CGFloat)beginTime
+                               duration:(CGFloat)duration
+                              fromValue:(id)fromValue
+                                toValue:(id)toValue
+                     timingFunctionName:(NSString *)timingFunctionName;
 
 ///创建景深旋转动画
 /**
@@ -338,13 +338,13 @@
  4.deep为景深系数，数值越小，透视效果越明显，反之效果更平缓，推荐值300
  */
 -(instancetype)initAnimationWithContent:(id)content
-                         animationKey:(NSString *)animationKey
-                            beginTime:(CGFloat)beginTime
-                             duration:(CGFloat)duration
-                     rotateStartAngle:(CGFloat)startAngle
-                       rotateEndAngle:(CGFloat)endAngle
-                           rotateAxis:(Axis)rotateAxis
-                                 deep:(CGFloat)deep;
+                           animationKey:(NSString *)animationKey
+                              beginTime:(CGFloat)beginTime
+                               duration:(CGFloat)duration
+                       rotateStartAngle:(CGFloat)startAngle
+                         rotateEndAngle:(CGFloat)endAngle
+                             rotateAxis:(Axis)rotateAxis
+                                   deep:(CGFloat)deep;
 
 ///创建拟合锚点改变动画
 /**
@@ -364,12 +364,12 @@
  3.实际锚点不发生改变，为拟合路径
  */
 -(instancetype)initAnimationWithContent:(id)content
-                         animationKey:(NSString *)animationKey
-                            beginTime:(CGFloat)beginTime
-                             duration:(CGFloat)duration
-                     rotateStartAngle:(CGFloat)startAngle
-                       rotateEndAngle:(CGFloat)endAngle
-                 simulateChangeAnchor:(CGPoint)anchor;
+                           animationKey:(NSString *)animationKey
+                              beginTime:(CGFloat)beginTime
+                               duration:(CGFloat)duration
+                       rotateStartAngle:(CGFloat)startAngle
+                         rotateEndAngle:(CGFloat)endAngle
+                   simulateChangeAnchor:(CGPoint)anchor;
 
 #pragma mark ---动画编辑方法---
 

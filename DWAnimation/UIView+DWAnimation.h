@@ -200,12 +200,12 @@
  1.旋转角度为角度制
  2.实际锚点不发生改变，为拟合路径
  */
--(DWAnimation *)dw_CreateAnimationAnimationKey:(NSString *)animationKey
-                                  beginTime:(CGFloat)beginTime
-                                   duration:(CGFloat)duration
-                           rotateStartAngle:(CGFloat)startAngle
-                             rotateEndAngle:(CGFloat)endAngle
-                       simulateChangeAnchor:(CGPoint)anchor;
+-(DWAnimation *)dw_CreateAnimationWithAnimationKey:(NSString *)animationKey
+                                         beginTime:(CGFloat)beginTime
+                                          duration:(CGFloat)duration
+                                  rotateStartAngle:(CGFloat)startAngle
+                                    rotateEndAngle:(CGFloat)endAngle
+                              simulateChangeAnchor:(CGPoint)anchor;
 
 
 ///恢复动画
