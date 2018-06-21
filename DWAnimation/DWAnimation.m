@@ -10,8 +10,6 @@
 #import "DWAnimationMaker.h"
 @interface DWAnimation ()<CAAnimationDelegate>
 
-@property (nonatomic ,assign) BOOL notFirstTime;
-
 @end
 
 @implementation DWAnimation
@@ -812,7 +810,8 @@
 {
     self.status = DWAnimationStatusPlay;
     if (self.animationStart) {
-        self.animationStart(self);
+        __weak typeof(self)weakSelf = self;
+        self.animationStart(weakSelf);
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:DWAnimationPlayStartNotification object:@{@"animation":self}];
 }
@@ -821,7 +820,8 @@
 {
     self.status = DWAnimationStatusFinished;
     if (self.completion) {
-        self.completion(self);
+        __weak typeof(self)weakSelf = self;
+        self.completion(weakSelf);
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:DWAnimationPlayFinishNotification object:@{@"animation":self,@"finished":@(flag)}];
 }
