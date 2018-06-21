@@ -8,6 +8,14 @@
 
 #import "DWAnimation.h"
 #import "DWAnimationMaker.h"
+
+#define IllegalContentReturnNil \
+{\
+if (content && ![content isKindOfClass:[UIView class]] && ![content isKindOfClass:[CALayer class]]) {\
+return nil;\
+}\
+}
+
 @interface DWAnimation ()<CAAnimationDelegate>
 
 @end
@@ -19,18 +27,19 @@
 #pragma mark ------构造方法------
 
 ///以block形式创建动画
--(instancetype)initAnimationWithLayer:(CALayer *)layer
-                        animationKey:(NSString *)animationKey
-                    animationCreater:(void(^)(DWAnimationMaker * maker))animationCreater
+-(instancetype)initAnimationWithContent:(id)content
+                           animationKey:(NSString *)animationKey
+                       animationCreater:(void(^)(DWAnimationMaker * maker))animationCreater
 {
+    IllegalContentReturnNil
     self = [super init];
     if (self) {
         self.repeatCount = 1;
-        self.layer = layer;
+        self.layer = layerFromContent(content);
         self.animationKey = animationKey;
         self.status = DWAnimationStatusReadyToShow;
         DWAnimationMaker * maker = [DWAnimationMaker new];
-        maker.layer = layer;
+        maker.layer = self.layer;
         if (animationCreater) {
             animationCreater(maker);
         }
@@ -42,12 +51,13 @@
 }
 
 ///以数组形式创建动画
--(instancetype)initAnimationWithLayer:(CALayer *)layer animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration animations:(__kindof NSArray<CAAnimation *> *)animations
+-(instancetype)initAnimationWithContent:(id)content animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration animations:(__kindof NSArray<CAAnimation *> *)animations
 {
+    IllegalContentReturnNil
     self = [super init];
     if (self) {
         self.repeatCount = 1;
-        self.layer = layer;
+        self.layer = layerFromContent(content);
         self.duration = duration + beginTime;
         self.animationKey = animationKey;
         self.status = DWAnimationStatusReadyToShow;
@@ -78,9 +88,11 @@
 }
 
 ///创建连续动画
--(instancetype)initAnimationWithLayer:(CALayer *)layer animationType:(DWAnimationType)animationType animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime values:(NSArray *)values timeIntervals:(NSArray *)timeIntervals transition:(BOOL)transtion
+-(instancetype)initAnimationWithContent:(id)content animationType:(DWAnimationType)animationType animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime values:(NSArray *)values timeIntervals:(NSArray *)timeIntervals transition:(BOOL)transtion
 
 {
+    IllegalContentReturnNil
+    CALayer * layer = layerFromContent(content);
     if ((values.count - timeIntervals.count == 1) && timeIntervals.count)
     {
         NSString * type = nil;
@@ -271,7 +283,7 @@
         if (transtion) {
             animation.calculationMode = kCAAnimationCubic;
         }
-        return [[DWAnimation alloc] initAnimationWithLayer:layer animationKey:animationKey beginTime:0  duration:duration + beginTime animations:@[animation]];
+        return [[DWAnimation alloc] initAnimationWithContent:layer animationKey:animationKey beginTime:0  duration:duration + beginTime animations:@[animation]];
     }
     else
     {
@@ -280,9 +292,10 @@
 }
 
 ///以贝尔塞曲线创建移动动画
--(instancetype)initAnimationWithLayer:(CALayer *)layer animationKey:(NSString *)animationKey
+-(instancetype)initAnimationWithContent:(id)content animationKey:(NSString *)animationKey
                            beginTime:(CGFloat)beginTime duration:(CGFloat)duration bezierPath:(UIBezierPath *)bezierPath autoRotate:(BOOL)autoRotate
 {
+    IllegalContentReturnNil
     CAKeyframeAnimation * animation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
     animation.duration = duration;
     animation.beginTime += beginTime;
@@ -294,19 +307,22 @@
     if (autoRotate) {
         animation.rotationMode = kCAAnimationRotateAuto;
     }
-    return [[DWAnimation alloc] initAnimationWithLayer:layer animationKey:animationKey beginTime:0  duration:(beginTime + duration) animations:@[animation]];
+    return [[DWAnimation alloc] initAnimationWithContent:content animationKey:animationKey beginTime:0  duration:(beginTime + duration) animations:@[animation]];
 }
 
 ///创建弧线动画
--(instancetype)initAnimationWithLayer:(CALayer *)layer animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration arcCenter:(CGPoint)center radius:(CGFloat)radius startAngle:(CGFloat)startAngle endAngle:(CGFloat)endAngle clockwise:(BOOL)clockwise autoRotate:(BOOL)autoRotate
+-(instancetype)initAnimationWithContent:(id)content animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration arcCenter:(CGPoint)center radius:(CGFloat)radius startAngle:(CGFloat)startAngle endAngle:(CGFloat)endAngle clockwise:(BOOL)clockwise autoRotate:(BOOL)autoRotate
 {
+    IllegalContentReturnNil
     UIBezierPath * path = [UIBezierPath bezierPathWithArcCenter:center radius:radius startAngle:RadianFromDegree(startAngle - 90) endAngle:RadianFromDegree(endAngle - 90) clockwise:clockwise];
-    return [[DWAnimation alloc] initAnimationWithLayer:layer animationKey:animationKey beginTime:beginTime duration:duration bezierPath:path autoRotate:autoRotate];
+    return [[DWAnimation alloc] initAnimationWithContent:content animationKey:animationKey beginTime:beginTime duration:duration bezierPath:path autoRotate:autoRotate];
 }
 
 ///创建震荡动画
--(instancetype)initAnimationWithLayer:(CALayer *)layer animationKey:(NSString *)animationKey springingType:(DWAnimationSpringType)springingType beginTime:(CGFloat)beginTime fromValue:(id)fromValue toValue:(id)toValue mass:(CGFloat)mass stiffness:(CGFloat)stiffness damping:(CGFloat)damping initialVelocity:(CGFloat)initialVelocity
+-(instancetype)initAnimationWithContent:(id)content animationKey:(NSString *)animationKey springingType:(DWAnimationSpringType)springingType beginTime:(CGFloat)beginTime fromValue:(id)fromValue toValue:(id)toValue mass:(CGFloat)mass stiffness:(CGFloat)stiffness damping:(CGFloat)damping initialVelocity:(CGFloat)initialVelocity
 {
+    IllegalContentReturnNil
+    CALayer * layer = layerFromContent(content);
     if (!SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(9.0)) {
         return nil;
     }
@@ -364,15 +380,6 @@
             key = @"position";
             break;
     }
-    CASpringAnimation * animation = [CASpringAnimation animationWithKeyPath:key];
-    animation.beginTime = beginTime;
-    animation.removedOnCompletion = NO;
-    animation.fillMode = kCAFillModeForwards;
-    animation.mass = mass;
-    animation.stiffness = stiffness;
-    animation.damping = damping;
-    animation.initialVelocity = initialVelocity;
-    animation.duration = animation.settlingDuration;
     if ((springingType == DWAnimationSpringTypeMove || springingType == DWAnimationSpringTypeShadowOffset) && ((![toValue isKindOfClass:[NSValue class]]) || ((fromValue) && (![fromValue isKindOfClass:[NSValue class]])))){
         return nil;
     }
@@ -388,6 +395,15 @@
     if ((springingType == DWAnimationSpringTypeBackgroundImage) && ((![toValue isKindOfClass:[UIImage class]]) || ((fromValue) && (![fromValue isKindOfClass:[UIImage class]])))) {
         return nil;
     }
+    CASpringAnimation * animation = [CASpringAnimation animationWithKeyPath:key];
+    animation.beginTime = beginTime;
+    animation.removedOnCompletion = NO;
+    animation.fillMode = kCAFillModeForwards;
+    animation.mass = mass;
+    animation.stiffness = stiffness;
+    animation.damping = damping;
+    animation.initialVelocity = initialVelocity;
+    animation.duration = animation.settlingDuration;
     if (springingType == DWAnimationSpringTypeBackgroundImage && !fromValue) {
         fromValue = UIImageNull;
     }
@@ -396,142 +412,154 @@
     }
     if (springingType == DWAnimationSpringTypeShadowOffset && !fromValue) {
         fromValue = [NSValue valueWithCGSize:CGSizeNull];
-    }
-    if (fromValue) {
-        if (springingType == DWAnimationSpringTypeMove || springingType == DWAnimationSpringTypeShadowOffset) {
+    }    
+    switch (springingType) {
+        case DWAnimationSpringTypeMove:
+        case DWAnimationSpringTypeShadowOffset:
+        {
             if (springingType == DWAnimationSpringTypeMove) {
-                CGPoint point = [(NSValue *)fromValue CGPointValue];
+                CGPoint point = [(NSValue *)toValue CGPointValue];
                 if (!CGPointIsNull((point))) {
-                    animation.fromValue = fromValue;
+                    animation.toValue = toValue;
+                }
+                else
+                {
+                    return nil;
+                }
+                if (fromValue) {
+                    point = [(NSValue *)fromValue CGPointValue];
+                    if (!CGPointIsNull((point))) {
+                        animation.fromValue = fromValue;
+                    }
                 }
             }
             else
             {
-                CGSize size = [(NSValue *)fromValue CGSizeValue];
+                CGSize size = [(NSValue *)toValue CGSizeValue];
                 if (!CGSizeIsNull(size)) {
-                    animation.fromValue = fromValue;
+                    animation.toValue = toValue;
+                    if (!layer.shadowOpacity) {
+                        layer.shadowOpacity = 0.5;
+                    }
+                }
+                else
+                {
+                    return nil;
+                }
+                if (fromValue) {
+                    size = [(NSValue *)fromValue CGSizeValue];
+                    if (!CGSizeIsNull(size)) {
+                        animation.fromValue = fromValue;
+                    }
                 }
             }
+            
+            break;
         }
-        else if(springingType == DWAnimationSpringTypeRotate || springingType == DWAnimationSpringTypeScale || springingType == DWAnimationSpringTypeAlpha || springingType == DWAnimationSpringTypeCornerRadius || springingType == DWAnimationSpringTypeBorderWidth || springingType == DWAnimationSpringTypeShadowAlpha || springingType == DWAnimationSpringTypeShadowCornerRadius)
+        case DWAnimationSpringTypeRotate:
+        case DWAnimationSpringTypeScale:
+        case DWAnimationSpringTypeAlpha:
+        case DWAnimationSpringTypeCornerRadius:
+        case DWAnimationSpringTypeBorderWidth:
+        case DWAnimationSpringTypeShadowAlpha:
+        case DWAnimationSpringTypeShadowCornerRadius:
         {
-            CGFloat num = [(NSNumber *)fromValue floatValue];
+            CGFloat num = [(NSNumber *)toValue floatValue];
             if (!CGFloatIsNull(num)) {
                 if (springingType == DWAnimationSpringTypeRotate) {
-                    fromValue = @(RadianFromDegree(num));
+                    toValue = @(RadianFromDegree(num));
                 }
                 if (springingType == DWAnimationSpringTypeAlpha || springingType == DWAnimationSpringTypeShadowAlpha) {
                     if (num > 1) {
                         num = 1;
-                        fromValue = @(num);
+                        toValue = @(num);
                     }
                     if (num < 0) {
                         num = 0;
-                        fromValue = @(num);
+                        toValue = @(num);
                     }
                 }
-                animation.fromValue = fromValue;
-            }
-        }
-        else if (springingType == DWAnimationSpringTypeBorderColor || springingType== DWAnimationSpringTypeShadowColor || springingType == DWAnimationSpringTypeBackgroundColor)
-        {
-            UIColor * color = (UIColor *)fromValue;
-            animation.fromValue = (id)color.CGColor;
-        }
-        else if (springingType == DWAnimationSpringTypeShadowPath)
-        {
-            UIBezierPath * path = (UIBezierPath *)fromValue;
-            animation.fromValue = (id)path.CGPath;
-        }
-        else
-        {
-            UIImage * image = (UIImage *)fromValue;
-            animation.fromValue = (id)image.CGImage;
-        }
-    }
-    if (springingType == DWAnimationSpringTypeMove || springingType == DWAnimationSpringTypeShadowOffset) {
-        if (springingType == DWAnimationSpringTypeMove) {
-            CGPoint point = [(NSValue *)toValue CGPointValue];
-            if (!CGPointIsNull((point))) {
-                animation.toValue = toValue;
-            }
-            else
-            {
-                return nil;
-            }
-        }
-        else
-        {
-            CGSize size = [(NSValue *)toValue CGSizeValue];
-            if (!CGSizeIsNull(size)) {
-                animation.toValue = toValue;
-                if (!layer.shadowOpacity) {
+                if ((springingType == DWAnimationSpringTypeShadowAlpha || springingType == DWAnimationSpringTypeShadowCornerRadius) && !layer.shadowOpacity) {
                     layer.shadowOpacity = 0.5;
                 }
+                animation.toValue = toValue;
             }
             else
             {
                 return nil;
             }
+            if (fromValue) {
+                num = [(NSNumber *)fromValue floatValue];
+                if (!CGFloatIsNull(num)) {
+                    if (springingType == DWAnimationSpringTypeRotate) {
+                        fromValue = @(RadianFromDegree(num));
+                    }
+                    if (springingType == DWAnimationSpringTypeAlpha || springingType == DWAnimationSpringTypeShadowAlpha) {
+                        if (num > 1) {
+                            num = 1;
+                            fromValue = @(num);
+                        }
+                        if (num < 0) {
+                            num = 0;
+                            fromValue = @(num);
+                        }
+                    }
+                    animation.fromValue = fromValue;
+                }
+            }
+            break;
         }
-    }
-    else if(springingType == DWAnimationSpringTypeRotate || springingType == DWAnimationSpringTypeScale || springingType == DWAnimationSpringTypeAlpha || springingType == DWAnimationSpringTypeCornerRadius || springingType == DWAnimationSpringTypeBorderWidth || springingType == DWAnimationSpringTypeShadowAlpha || springingType == DWAnimationSpringTypeShadowCornerRadius)
-    {
-        CGFloat num = [(NSNumber *)toValue floatValue];
-        if (!CGFloatIsNull(num)) {
-            if (springingType == DWAnimationSpringTypeRotate) {
-                toValue = @(RadianFromDegree(num));
+        case DWAnimationSpringTypeBorderColor:
+        case DWAnimationSpringTypeShadowColor:
+        case DWAnimationSpringTypeBackgroundColor:
+        {
+            UIColor * toColor = (UIColor *)toValue;
+            animation.toValue = (id)toColor.CGColor;
+            if (springingType == DWAnimationSpringTypeBorderColor && !layer.borderWidth) {
+                layer.borderWidth = 3;
             }
-            if (springingType == DWAnimationSpringTypeAlpha || springingType == DWAnimationSpringTypeShadowAlpha) {
-                if (num > 1) {
-                    num = 1;
-                    toValue = @(num);
-                }
-                if (num < 0) {
-                    num = 0;
-                    toValue = @(num);
-                }
-            }
-            if ((springingType == DWAnimationSpringTypeShadowAlpha || springingType == DWAnimationSpringTypeShadowCornerRadius) && !layer.shadowOpacity) {
+            if (springingType == DWAnimationSpringTypeShadowColor && !layer.shadowOpacity) {
                 layer.shadowOpacity = 0.5;
             }
-            animation.toValue = toValue;
+            if (fromValue) {
+                UIColor * fromColor = (UIColor *)fromValue;
+                animation.fromValue = (id)fromColor.CGColor;
+            }
+            break;
         }
-        else
+        case DWAnimationSpringTypeShadowPath:
         {
-            return nil;
+            UIBezierPath * toPath = (UIBezierPath *)toValue;
+            animation.toValue = (id)toPath.CGPath;
+            if (springingType == DWAnimationSpringTypeShadowPath && !layer.shadowOpacity) {
+                layer.shadowOpacity = 0.5;
+            }
+            if (fromValue) {
+                UIBezierPath * fromPath = (UIBezierPath *)fromValue;
+                animation.fromValue = (id)fromPath.CGPath;
+            }
+            break;
         }
-    }
-    else if (springingType == DWAnimationSpringTypeBorderColor || springingType== DWAnimationSpringTypeShadowColor || springingType == DWAnimationSpringTypeBackgroundColor)
-    {
-        UIColor * color = (UIColor *)toValue;
-        animation.toValue = (id)color.CGColor;
-        if (springingType == DWAnimationSpringTypeBorderColor && !layer.borderWidth) {
-            layer.borderWidth = 3;
+        case DWAnimationSpringTypeBackgroundImage:
+        {
+            UIImage * toImage = (UIImage *)toValue;
+            animation.toValue = (id)toImage.CGImage;
+            if (fromValue) {
+                UIImage * fromImage = (UIImage *)fromValue;
+                animation.fromValue = (id)fromImage.CGImage;
+            }
+            break;
         }
-        if (springingType == DWAnimationSpringTypeShadowColor && !layer.shadowOpacity) {
-            layer.shadowOpacity = 0.5;
-        }
-    }
-    else if (springingType == DWAnimationSpringTypeShadowPath)
-    {
-        UIBezierPath * path = (UIBezierPath *)toValue;
-        animation.toValue = (id)path.CGPath;
-        if (springingType == DWAnimationSpringTypeShadowPath && !layer.shadowOpacity) {
-            layer.shadowOpacity = 0.5;
-        }
-    }
-    else
-    {
-        UIImage * image = (UIImage *)toValue;
-        animation.toValue = (id)image.CGImage;
-    }
-    return [[DWAnimation alloc] initAnimationWithLayer:layer animationKey:animationKey beginTime:0  duration:(beginTime + animation.duration) animations:@[animation]];
+        default:
+            break;
+    }    
+    return [[DWAnimation alloc] initAnimationWithContent:layer animationKey:animationKey beginTime:0  duration:(beginTime + animation.duration) animations:@[animation]];
 }
 
 ///创建特殊属性动画
--(instancetype)initAnimationWithLayer:(CALayer *)layer keyPath:(NSString *)keyPath animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration fromValue:(id)fromValue toValue:(id)toValue timingFunctionName:(NSString *)timingFunctionName
+-(instancetype)initAnimationWithContent:(id)content keyPath:(NSString *)keyPath animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration fromValue:(id)fromValue toValue:(id)toValue timingFunctionName:(NSString *)timingFunctionName
 {
+    IllegalContentReturnNil
     CABasicAnimation * animation = [CABasicAnimation animationWithKeyPath:keyPath];
     animation.removedOnCompletion = NO;
     animation.fillMode = kCAFillModeForwards;
@@ -542,14 +570,15 @@
     }
     animation.toValue = toValue;
     animation.timingFunction = [CAMediaTimingFunction functionWithName:timingFunctionName];
-    return [[DWAnimation alloc] initAnimationWithLayer:layer animationKey:animationKey beginTime:0 duration:(beginTime + duration) animations:@[animation]];
+    return [[DWAnimation alloc] initAnimationWithContent:content animationKey:animationKey beginTime:0 duration:(beginTime + duration) animations:@[animation]];
 }
 
 ///创建景深旋转动画
--(instancetype)initAnimationWithLayer:(CALayer *)layer animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration rotateStartAngle:(CGFloat)startAngle rotateEndAngle:(CGFloat)endAngle rotateAxis:(Axis)rotateAxis deep:(CGFloat)deep
+-(instancetype)initAnimationWithContent:(id)content animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration rotateStartAngle:(CGFloat)startAngle rotateEndAngle:(CGFloat)endAngle rotateAxis:(Axis)rotateAxis deep:(CGFloat)deep
 {
+    IllegalContentReturnNil
     if (rotateAxis == Z) {
-        return [[DWAnimation alloc] initAnimationWithLayer:layer animationKey:animationKey animationCreater:^(DWAnimationMaker *maker) {
+        return [[DWAnimation alloc] initAnimationWithContent:content animationKey:animationKey animationCreater:^(DWAnimationMaker *maker) {
             maker.rotateFrom(startAngle).rotateTo(endAngle).beginTime(beginTime).duration(duration).install();
         }];
     }
@@ -568,18 +597,23 @@
             fromValue = CATransform3DRotate(fromValue, RadianFromDegree(startAngle), 0, 1, 0);
             toValue = CATransform3DRotate(toValue, RadianFromDegree(endAngle), 0, 1, 0);
         }
-        return [[DWAnimation alloc] initAnimationWithLayer:layer keyPath:@"transform" animationKey:animationKey beginTime:beginTime duration:duration fromValue:[NSValue valueWithCATransform3D:fromValue] toValue:[NSValue valueWithCATransform3D:toValue] timingFunctionName:kCAMediaTimingFunctionLinear];
+        return [[DWAnimation alloc] initAnimationWithContent:content keyPath:@"transform" animationKey:animationKey beginTime:beginTime duration:duration fromValue:[NSValue valueWithCATransform3D:fromValue] toValue:[NSValue valueWithCATransform3D:toValue] timingFunctionName:kCAMediaTimingFunctionLinear];
     }
 }
 
 ///创建拟合锚点移动的旋转动画
--(instancetype)initAnimationWithLayer:(CALayer *)layer animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration rotateStartAngle:(CGFloat)startAngle rotateEndAngle:(CGFloat)endAngle simulateChangeAnchor:(CGPoint)anchor{
-    DWAnimation * ro = [[DWAnimation alloc] initAnimationWithLayer:layer animationKey:animationKey animationCreater:^(DWAnimationMaker *maker) {
+-(instancetype)initAnimationWithContent:(id)content animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration rotateStartAngle:(CGFloat)startAngle rotateEndAngle:(CGFloat)endAngle simulateChangeAnchor:(CGPoint)anchor{
+    IllegalContentReturnNil
+    if (!content) {
+        return nil;
+    }
+    DWAnimation * ro = [[DWAnimation alloc] initAnimationWithContent:content animationKey:animationKey animationCreater:^(DWAnimationMaker *maker) {
         maker.rotateFrom(startAngle).rotateTo(endAngle).beginTime(beginTime).duration(duration).install();
     }];
     if (CGPointEqualToPoint(anchor, CGPointMake(0.5, 0.5)) || endAngle == startAngle) {
         return ro;
     }
+    CALayer * layer = layerFromContent(content);
     CGFloat offsetX = layer.bounds.size.width * (anchor.x - 0.5);
     CGFloat offsetY = layer.bounds.size.height * (anchor.y - 0.5);
     CGFloat radius = sqrtf(powf(offsetX, 2) + powf(offsetY, 2));
@@ -600,7 +634,7 @@
     }
     UIBezierPath * path = [UIBezierPath bezierPathWithArcCenter:center radius:radius startAngle:RadianFromDegree(startAngle) + deltaAngle endAngle:RadianFromDegree(endAngle) + deltaAngle clockwise:endAngle>startAngle];
     
-    DWAnimation * trans = [[DWAnimation alloc] initAnimationWithLayer:layer animationKey:animationKey beginTime:beginTime duration:duration bezierPath:path autoRotate:NO];
+    DWAnimation * trans = [[DWAnimation alloc] initAnimationWithContent:layer animationKey:animationKey beginTime:beginTime duration:duration bezierPath:path autoRotate:NO];
     
     return [ro combineWithAnimation:trans animationKey:animationKey];
 }
@@ -609,7 +643,7 @@
 ///开始播放动画
 -(void)start
 {
-    if (self.repeatCount > 0) {
+    if (self.layer && self.repeatCount > 0) {
         if (self.status == DWAnimationStatusReadyToShow || self.status == DWAnimationStatusRemoved || self.status == DWAnimationStatusFinished) {
             self.animation.delegate = self;
             [self.layer addAnimation:self.animation forKey:self.animationKey];
@@ -670,7 +704,7 @@
     NSMutableArray * arr = [NSMutableArray array];
     [arr addObject:self.animation];
     [arr addObject:animation.animation];
-    return [[DWAnimation alloc] initAnimationWithLayer:layer animationKey:animationKey beginTime:0  duration:duration animations:arr];
+    return [[DWAnimation alloc] initAnimationWithContent:layer animationKey:animationKey beginTime:0  duration:duration animations:arr];
 }
 
 ///按顺序拼接数组中的所有动画
@@ -713,11 +747,7 @@
 }
 
 -(void)startAnimationWithContent:(id)content {
-    if ([content isKindOfClass:[UIView class]]) {
-        self.layer = [content layer];
-    } else if ([content isKindOfClass:[CALayer class]]) {
-        self.layer = content;
-    }
+    self.layer = layerFromContent(content);
     [self start];
 }
 
@@ -734,7 +764,7 @@
     if (animationKey == nil || animationKey.length == 0) {
         animationKey = [NSString stringWithFormat:@"(%@_COMBINE_%@)",self.animationKey,animaiton.animationKey];
     }
-    return [[DWAnimation alloc] initAnimationWithLayer:self.layer animationKey:animationKey beginTime:0 duration:duration animations:arr];
+    return [[DWAnimation alloc] initAnimationWithContent:self.layer animationKey:animationKey beginTime:0 duration:duration animations:arr];
 }
 
 ///并发组合数组中的动画
@@ -764,12 +794,12 @@
 }
 
 ///创建恢复动画
-+(DWAnimation *)createResetAnimationWithLayer:(CALayer *)layer animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration
++(DWAnimation *)createResetAnimationWithContent:(id)content animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration
 {
     if (animationKey == nil || animationKey.length == 0) {
         animationKey = @"resetAnimation";
     }
-    return [[DWAnimation alloc] initAnimationWithLayer:layer animationKey:animationKey animationCreater:^(DWAnimationMaker *maker) {
+    return [[DWAnimation alloc] initAnimationWithContent:(id)content animationKey:animationKey animationCreater:^(DWAnimationMaker *maker) {
         maker.reset.beginTime(beginTime).duration(duration).install();
     }];
 }
@@ -846,5 +876,15 @@
 {
     _timingFunctionName = timingFunctionName;
     self.animation.timingFunction = [CAMediaTimingFunction functionWithName:timingFunctionName];
+}
+
+#pragma mark --- inline method ---
+static inline CALayer * layerFromContent(id content) {
+    if ([content isKindOfClass:[UIView class]]) {
+        return [content layer];
+    } else if ([content isKindOfClass:[CALayer class]]) {
+        return content;
+    }
+    return nil;
 }
 @end

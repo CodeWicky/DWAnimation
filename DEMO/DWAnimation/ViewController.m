@@ -158,7 +158,7 @@
     line4.position = CGPointMake(self.view.center.x, self.view.center.y + 50);
     [self.view.layer addSublayer:line4];
     
-    DWAnimation * ani = [[DWAnimation alloc] initAnimationWithLayer:redView.layer animationKey:nil
+    DWAnimation * ani = [[DWAnimation alloc] initAnimationWithContent:redView animationKey:nil
                                                           beginTime:0 duration:2 rotateStartAngle:0 rotateEndAngle:360 simulateChangeAnchor:CGPointMake(0.25, 0.5)];
     ani.repeatCount = MAXFLOAT;
     self.a = ani;

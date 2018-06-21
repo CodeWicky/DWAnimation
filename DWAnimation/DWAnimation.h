@@ -113,6 +113,10 @@
  
  version 1.1.8
  支持更换Layer开始动画
+ 
+ version 1.1.9
+ 构造api改变，可传入CALayer、UIView、nil三种可选类型
+ 属性动画逻辑优化
  */
 
 #import "DWAnimationAbstraction.h"
@@ -153,30 +157,36 @@
 
 ///以block形式创建动画(移动，缩放，旋转，透明度，圆角，边框宽度，边框颜色，阴影颜色，阴影偏移量，阴影透明度，阴影路径，阴影圆角，背景图，背景色)
 /**
- layer              将要展示动画的layer，不可为nil
+ content            将要展示动画的视图，可选类型，CALayer，UIView，nil
  animationKey       动画的标识，可为nil
  animationCreater   创建动画的回调Block
+ 
+ 注：
+ 当content为nil时，开始动画需配合startAnimationWithContent:使用。
  */
--(instancetype)initAnimationWithLayer:(CALayer *)layer
-                         animationKey:(NSString *)animationKey
-                     animationCreater:(void(^)(DWAnimationMaker * maker))animationCreater;
+-(instancetype)initAnimationWithContent:(id)content
+                           animationKey:(NSString *)animationKey
+                       animationCreater:(void(^)(DWAnimationMaker * maker))animationCreater;
 
 ///以数组形式创建动画
 /**
- layer              将要展示动画的layer，不可为nil
+ content            将要展示动画的视图，可选类型，CALayer，UIView，nil
  duration           动画时长
  animationKey       动画的标识，可为nil
  animations         动画数组，由CAAnimation及其派生类组成
+ 
+ 注：
+ 当content为nil时，开始动画需配合startAnimationWithContent:使用。
  */
--(instancetype)initAnimationWithLayer:(CALayer *)layer
-                         animationKey:(NSString *)animationKey
-                            beginTime:(CGFloat)beginTime
-                             duration:(CGFloat)duration
-                           animations:(__kindof NSArray<CAAnimation *> *)animations;
+-(instancetype)initAnimationWithContent:(id)content
+                           animationKey:(NSString *)animationKey
+                              beginTime:(CGFloat)beginTime
+                               duration:(CGFloat)duration
+                             animations:(__kindof NSArray<CAAnimation *> *)animations;
 
 ///以多个状态及时间间隔创建连续动画
 /**
- layer              将要展示动画的layer，不可为nil
+ content            将要展示动画的视图，可选类型，CALayer，UIView，nil
  animationType      创建的动画类型
  animationKey       动画的标识
  beginTime          动画延迟时间
@@ -185,40 +195,46 @@
  transition         各个动画状态节点间是否平滑过渡
  
  注：
- animationType的默认属性为DWAnimationTypeMove
+ 1.由于Api中会对Layer的一些属性按需做预处理，如果content传入nil，
+ 请自行处理borderWidth/shadowOpacity默认值以保证动画正常展示。
+ 2.当content为nil时，开始动画需配合startAnimationWithContent:使用。
+ 3.animationType的默认属性为DWAnimationTypeMove
  values中第一个数据为动画的初始状态，之后的数据为状
  态节点。timeIntervals是当前状态节点距上一节点的时
  间间隔。如：timeIntervals的第一个数据为第一个状态
  节点距初始状态的时间间隔。故timeIntervals数组元素
  个数应该比values元素个数少1。若参数不正确，则返回nil。
  */
--(instancetype)initAnimationWithLayer:(CALayer *)layer
-                        animationType:(DWAnimationType)animationType
-                         animationKey:(NSString *)animationKey
-                            beginTime:(CGFloat)beginTime
-                               values:(NSArray *)values
-                        timeIntervals:(NSArray *)timeIntervals
-                           transition:(BOOL)transition;
+-(instancetype)initAnimationWithContent:(id)content
+                          animationType:(DWAnimationType)animationType
+                           animationKey:(NSString *)animationKey
+                              beginTime:(CGFloat)beginTime
+                                 values:(NSArray *)values
+                          timeIntervals:(NSArray *)timeIntervals
+                             transition:(BOOL)transition;
 
 ///以贝塞尔曲线创建移动动画
 /**
- layer              将要展示动画的layer，不可为nil
+ content            将要展示动画的视图，可选类型，CALayer，UIView，nil
  animationKey       动画的标识，可为nil
  beginTime          动画延时时长
  duration           动画时长
  bezierPath         运动轨迹，不可为nil
  autoRotate         跟随路径自动旋转
+ 
+ 注：
+ 当content为nil时，开始动画需配合startAnimationWithContent:使用。
  */
--(instancetype)initAnimationWithLayer:(CALayer *)layer
-                         animationKey:(NSString *)animationKey
-                            beginTime:(CGFloat)beginTime
-                             duration:(CGFloat)duration
-                           bezierPath:(UIBezierPath *)bezierPath
-                           autoRotate:(BOOL)autoRotate;
+-(instancetype)initAnimationWithContent:(id)content
+                           animationKey:(NSString *)animationKey
+                              beginTime:(CGFloat)beginTime
+                               duration:(CGFloat)duration
+                             bezierPath:(UIBezierPath *)bezierPath
+                             autoRotate:(BOOL)autoRotate;
 
 ///创建弧线动画
 /**
- layer              将要展示动画的layer，不可为nil
+ content            将要展示动画的视图，可选类型，CALayer，UIView，nil
  animationKey       动画的标识，可为nil
  beginTime          动画延时时长
  duration           动画时长
@@ -228,23 +244,26 @@
  endAngle           弧线的终止角度
  clockwise          是否为顺时针
  autoRotate         是否跟随弧线自动旋转
+ 
+ 注：
+ 当content为nil时，开始动画需配合startAnimationWithContent:使用。
  */
--(instancetype)initAnimationWithLayer:(CALayer *)layer
-                         animationKey:(NSString *)animationKey
-                            beginTime:(CGFloat)beginTime
-                             duration:(CGFloat)duration
-                            arcCenter:(CGPoint)center
-                               radius:(CGFloat)radius
-                           startAngle:(CGFloat)startAngle
-                             endAngle:(CGFloat)endAngle
-                            clockwise:(BOOL)clockwise
-                           autoRotate:(BOOL)autoRotate;
+-(instancetype)initAnimationWithContent:(id)content
+                           animationKey:(NSString *)animationKey
+                              beginTime:(CGFloat)beginTime
+                               duration:(CGFloat)duration
+                              arcCenter:(CGPoint)center
+                                 radius:(CGFloat)radius
+                             startAngle:(CGFloat)startAngle
+                               endAngle:(CGFloat)endAngle
+                              clockwise:(BOOL)clockwise
+                             autoRotate:(BOOL)autoRotate;
 
 ///创建震荡动画
 /**
  即改变属性有震荡效果
  
- layer              将要展示动画的layer，不可为nil
+ content            将要展示动画的视图，可选类型，CALayer，UIView，nil
  animationKey       动画的标识，可为nil
  beginTime          动画延时时长
  fromValue          起始值：可以为动画类型所对应的空类型。若为空，则默认当前状态为初始状态
@@ -254,24 +273,28 @@
  damping            阻尼系数：影响震荡停止速度，需大于0。想实现默认效果请传10。
  initialVelocity    初始速度：可正可负，负则先做反向运动，随后正向。想实现默认效果请传0。
  
- 注：fromValue与toValue，均为UIKit中对象类型，如NSValue/NSNumber/UIColor/UIBezierPath/UIImage。
+ 注：
+ 1.由于Api中会对Layer的一些属性按需做预处理，如果content传入nil，
+ 请自行处理borderWidth/shadowOpacity默认值以保证动画正常展示。
+ 2.当content为nil时，开始动画需配合startAnimationWithContent:使用。
+ 3.fromValue与toValue，均为UIKit中对象类型，如NSValue/NSNumber/UIColor/UIBezierPath/UIImage。
  */
--(instancetype)initAnimationWithLayer:(CALayer *)layer
-                         animationKey:(NSString *)animationKey
-                        springingType:(DWAnimationSpringType)springingType
-                            beginTime:(CGFloat)beginTime
-                            fromValue:(id)fromValue
-                              toValue:(id)toValue
-                                 mass:(CGFloat)mass
-                            stiffness:(CGFloat)stiffness
-                              damping:(CGFloat)damping
-                      initialVelocity:(CGFloat)initialVelocity;
+-(instancetype)initAnimationWithContent:(id)content
+                           animationKey:(NSString *)animationKey
+                          springingType:(DWAnimationSpringType)springingType
+                              beginTime:(CGFloat)beginTime
+                              fromValue:(id)fromValue
+                                toValue:(id)toValue
+                                   mass:(CGFloat)mass
+                              stiffness:(CGFloat)stiffness
+                                damping:(CGFloat)damping
+                        initialVelocity:(CGFloat)initialVelocity;
 
 ///创建特殊属性动画
 /**
  即为指定属性（包括CALayer及其子类所有支持动画的属性）添加动画
  
- layer              将要展示动画的layer，不可为nil
+ content            将要展示动画的视图，可选类型，CALayer，UIView，nil
  animationKey       动画的标识，可为nil
  keyPath            将要添加动画的属性名
  beginTime          动画延时时长
@@ -282,23 +305,24 @@
  @"easeInEaseOut" 和 @"default"。也可使用其对应的常量形式，如kCAMediaTimingFunctionLinear
  
  注：
- 1.fromValue与toValue，均为UIKit中对象类型，如NSValue/NSNumber/UIColor/UIBezierPath/UIImage等等对应的对象类型。
- 2.本方法创建的非CALayer属性动画不可用恢复动画自动恢复，请自行恢复
+ 1.当content为nil时，开始动画需配合startAnimationWithContent:使用。
+ 2.fromValue与toValue，均为UIKit中对象类型，如NSValue/NSNumber/UIColor/UIBezierPath/UIImage等等对应的对象类型。
+ 3.本方法创建的非CALayer属性动画不可用恢复动画自动恢复，请自行恢复
  */
--(instancetype)initAnimationWithLayer:(CALayer *)layer
-                              keyPath:(NSString *)keyPath
-                         animationKey:(NSString *)animationKey
-                            beginTime:(CGFloat)beginTime
-                             duration:(CGFloat)duration
-                            fromValue:(id)fromValue
-                              toValue:(id)toValue
-                   timingFunctionName:(NSString *)timingFunctionName;
+-(instancetype)initAnimationWithContent:(id)content
+                                keyPath:(NSString *)keyPath
+                           animationKey:(NSString *)animationKey
+                              beginTime:(CGFloat)beginTime
+                               duration:(CGFloat)duration
+                              fromValue:(id)fromValue
+                                toValue:(id)toValue
+                     timingFunctionName:(NSString *)timingFunctionName;
 
 ///创建景深旋转动画
 /**
  即具有透视效果的换轴旋转动画
  
- layer              将要展示动画的layer，不可为nil
+ content            将要展示动画的视图，可选类型，CALayer，UIView，nil
  animationKey       动画的标识，可为nil
  beginTime          动画延时时长
  duration           动画时长
@@ -308,24 +332,25 @@
  deep               景深系数
  
  注：
- 1.旋转角度为角度制
- 2.旋转轴为Z轴时无景深效果
- 3.deep为景深系数，数值越小，透视效果越明显，反之效果更平缓，推荐值300
+ 1.当content为nil时，开始动画需配合startAnimationWithContent:使用。
+ 2.旋转角度为角度制
+ 3.旋转轴为Z轴时无景深效果
+ 4.deep为景深系数，数值越小，透视效果越明显，反之效果更平缓，推荐值300
  */
--(instancetype)initAnimationWithLayer:(CALayer *)layer
-                         animationKey:(NSString *)animationKey
-                            beginTime:(CGFloat)beginTime
-                             duration:(CGFloat)duration
-                     rotateStartAngle:(CGFloat)startAngle
-                       rotateEndAngle:(CGFloat)endAngle
-                           rotateAxis:(Axis)rotateAxis
-                                 deep:(CGFloat)deep;
+-(instancetype)initAnimationWithContent:(id)content
+                           animationKey:(NSString *)animationKey
+                              beginTime:(CGFloat)beginTime
+                               duration:(CGFloat)duration
+                       rotateStartAngle:(CGFloat)startAngle
+                         rotateEndAngle:(CGFloat)endAngle
+                             rotateAxis:(Axis)rotateAxis
+                                   deep:(CGFloat)deep;
 
 ///创建拟合锚点改变动画
 /**
  以曲线旋转动画拟合改变锚点后的旋转动画
  
- layer                  将要展示动画的layer，不可为nil
+ content                将要展示动画的视图，可选类型，CALayer，UIView，不可为nil
  animationKey           动画的标识，可为nil
  beginTime              动画延时时长
  duration               动画时长
@@ -334,16 +359,17 @@
  simulateChangeAnchor   拟合的改变后锚点
  
  注：
- 1.旋转角度为角度制
- 2.实际锚点不发生改变，为拟合路径
+ 1.与上述Api不同，拟合动画需要预先接受Layer尺寸创建拟合曲线，故content不可为nil
+ 2.旋转角度为角度制
+ 3.实际锚点不发生改变，为拟合路径
  */
--(instancetype)initAnimationWithLayer:(CALayer *)layer
-                         animationKey:(NSString *)animationKey
-                            beginTime:(CGFloat)beginTime
-                             duration:(CGFloat)duration
-                     rotateStartAngle:(CGFloat)startAngle
-                       rotateEndAngle:(CGFloat)endAngle
-                 simulateChangeAnchor:(CGPoint)anchor;
+-(instancetype)initAnimationWithContent:(id)content
+                           animationKey:(NSString *)animationKey
+                              beginTime:(CGFloat)beginTime
+                               duration:(CGFloat)duration
+                       rotateStartAngle:(CGFloat)startAngle
+                         rotateEndAngle:(CGFloat)endAngle
+                   simulateChangeAnchor:(CGPoint)anchor;
 
 #pragma mark ---动画编辑方法---
 
@@ -393,10 +419,10 @@
 /**
  注：特殊属性动画不在恢复动画范围内，请自行恢复。
  */
-+(DWAnimation *)createResetAnimationWithLayer:(CALayer *)layer
-                                 animationKey:(NSString *)animationKey
-                                    beginTime:(CGFloat)beginTime
-                                     duration:(CGFloat)duration;
++(DWAnimation *)createResetAnimationWithContent:(id)content
+                                   animationKey:(NSString *)animationKey
+                                      beginTime:(CGFloat)beginTime
+                                       duration:(CGFloat)duration;
 
 ///以content开始动画
 
@@ -405,8 +431,11 @@
 
  @param content content类型可为UIView或CALayer
  
- 注：可更换DWAnimation对象的执行主体。
+ 注：
+ 1.可更换DWAnimation对象的执行主体。
  非必须条件下不推荐更换DWAnimaion执行主体。
+ 2.拟合锚点改变动画的拟合路径由初始传入Layer的尺寸决定。
+ 若想改变主体，应保证改变后主题与初始尺寸相同，才能正确展示。
  */
 -(void)startAnimationWithContent:(id)content;
 
