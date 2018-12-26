@@ -21,7 +21,7 @@
 @interface DWAnimationGroup : DWAnimationAbstraction
 
 ///动画数组，将要展示的动画集合源
-@property (nonatomic ,strong) NSMutableArray <DWAnimation *>* animations;
+@property (nonatomic ,strong ,readonly) NSMutableArray <DWAnimation *>* animations;
 
 ///以动画数组初始化实例
 -(instancetype)initWithAnimations:(__kindof NSArray <DWAnimation *>*)animations;

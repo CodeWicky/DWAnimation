@@ -121,6 +121,7 @@
 
 #import "DWAnimationAbstraction.h"
 #import "DWAnimationConstant.h"
+#import "DWAnimationMaker.h"
 @class DWAnimationMaker;
 @interface DWAnimation : DWAnimationAbstraction
 
@@ -148,10 +149,10 @@
 @property (nonatomic ,assign) CGFloat repeatCount;
 
 ///动画完成回调
-@property (nonatomic ,copy) void (^completion) (DWAnimation *);
+@property (nonatomic ,copy) void (^completion) (DWAnimation * ani);
 
 ///动画开始回调
-@property (nonatomic ,copy) void (^animationStart)(DWAnimation *);
+@property (nonatomic ,copy) void (^animationStart)(DWAnimation * ani);
 
 #pragma mark ---动画构造方法---
 
