@@ -95,202 +95,200 @@ return nil;\
 {
     IllegalContentReturnNil
     CALayer * layer = layerFromContent(content);
-    if ((values.count - timeIntervals.count == 1) && timeIntervals.count)
-    {
-        NSString * type = nil;
-        switch (animationType) {
-            case DWAnimationTypeMove:
-            {
-                if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSValue class])]) {
-                    return nil;
-                }
-                type = @"position";
-                break;
-            }
-            case DWAnimationTypeScale:
-            {
-                if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSNumber class])]) {
-                    return nil;
-                }
-                type = @"transform.scale";
-                break;
-            }
-            case DWAnimationTypeRotate:
-            {
-                if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSNumber class])]) {
-                    return nil;
-                }
-                NSMutableArray * arr = [NSMutableArray array];
-                for (NSNumber * number in values) {
-                    [arr addObject:@RadianFromDegree(number.floatValue)];
-                }
-                values = [NSArray arrayWithArray:arr];
-                type = @"transform.rotation";
-                break;
-            }
-            case DWAnimationTypeAlpha:
-            {
-                if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSNumber class])]) {
-                    return nil;
-                }
-                type = @"opacity";
-                break;
-            }
-            case DWAnimationTypeCornerRadius:
-            {
-                if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSNumber class])]) {
-                    return nil;
-                }
-                type = @"cornerRadius";
-                break;
-            }
-            case DWAnimationTypeBorderColor:
-            {
-                if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([UIColor class])]) {
-                    return nil;
-                }
-                NSMutableArray * arr = [NSMutableArray array];
-                for (UIColor * color in values) {
-                    [arr addObject:(id)color.CGColor];
-                }
-                values = [NSArray arrayWithArray:arr];
-                if (!layer.borderWidth) {
-                    layer.borderWidth = 3;
-                }
-                type = @"borderColor";
-                break;
-            }
-            case DWAnimationTypeBorderWidth:
-            {
-                if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSNumber class])]) {
-                    return nil;
-                }
-                type = @"borderWidth";
-                break;
-            }
-            case DWAnimationTypeShadowColor:
-            {
-                if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([UIColor class])]) {
-                    return nil;
-                }
-                NSMutableArray * arr = [NSMutableArray array];
-                for (UIColor * color in values) {
-                    [arr addObject:(id)color.CGColor];
-                }
-                values = [NSArray arrayWithArray:arr];
-                if (!layer.shadowOpacity) {
-                    layer.shadowOpacity = 0.5;
-                }
-                type = @"shadowColor";
-                break;
-            }
-            case DWAnimationTypeShadowAlpha:
-            {
-                if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSNumber class])]) {
-                    return nil;
-                }
-                type = @"shadowOpacity";
-                break;
-            }
-            case DWAnimationTypeShadowOffset:
-            {
-                if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSValue class])]) {
-                    return nil;
-                }
-                if (!layer.shadowOpacity) {
-                    layer.shadowOpacity = 0.5;
-                }
-                type = @"shadowOffset";
-                break;
-            }
-            case DWAnimationTypeShadowCornerRadius:
-            {
-                if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSNumber class])]) {
-                    return nil;
-                }
-                if (!layer.shadowOpacity) {
-                    layer.shadowOpacity = 0.5;
-                }
-                type = @"shadowRadius";
-                break;
-            }
-            case DWAnimationTypeShadowPath:
-            {
-                if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([UIBezierPath class])]) {
-                    return nil;
-                }
-                NSMutableArray * arr = [NSMutableArray array];
-                for (UIBezierPath * path in values) {
-                    [arr addObject:(id)path.CGPath];
-                }
-                values = [NSArray arrayWithArray:arr];
-                if (!layer.shadowOpacity) {
-                    layer.shadowOpacity = 0.5;
-                }
-                type = @"shadowPath";
-                break;
-            }
-            case DWAnimationTypeBackgroundImage:
-            {
-                if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([UIImage class])]) {
-                    return nil;
-                }
-                NSMutableArray * arr = [NSMutableArray array];
-                for (UIImage * image in values) {
-                    [arr addObject:(id)image.CGImage];
-                }
-                values = [NSArray arrayWithArray:arr];
-                type = @"contents";
-                break;
-            }
-            case DWAnimationTypeBackgroundColor:
-            {
-                if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([UIColor class])]) {
-                    return nil;
-                }
-                NSMutableArray * arr = [NSMutableArray array];
-                for (UIColor * color in values) {
-                    [arr addObject:(id)color.CGColor];
-                }
-                values = [NSArray arrayWithArray:arr];
-                type = @"backgroundColor";
-                break;
-            }
-            default:
-            {
-                if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSNumber class])]) {
-                    return nil;
-                }
-                type = @"position";
-                break;
-            }
-        }
-        __block CGFloat duration = 0;
-        [timeIntervals enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            duration += [(NSNumber *)obj floatValue];
-        }];
-        NSMutableArray * arrTimes = [NSMutableArray arrayWithObject:@0];
-        CGFloat numTemp = 0;
-        for (NSNumber * number in timeIntervals) {
-            numTemp += number.floatValue;
-            [arrTimes addObject:[NSNumber numberWithFloat:numTemp / duration]];
-        }
-        CAKeyframeAnimation * animation = [CAKeyframeAnimation animationWithKeyPath:type];
-        animation.values = values;
-        animation.keyTimes = arrTimes;
-        animation.fillMode = kCAFillModeForwards;
-        animation.removedOnCompletion = NO;
-        animation.beginTime += beginTime;
-        animation.duration = duration;
-        if (transtion) {
-            animation.calculationMode = kCAAnimationCubic;
-        }
-        return [[DWAnimation alloc] initAnimationWithContent:layer animationKey:animationKey beginTime:0  duration:duration + beginTime animations:@[animation]];
-    }
-    else
-    {
+    
+    if (!((values.count - timeIntervals.count == 1) && timeIntervals.count)) {
         return nil;
     }
+    
+    NSString * type = nil;
+    switch (animationType) {
+        case DWAnimationTypeMove:
+        {
+            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSValue class])]) {
+                return nil;
+            }
+            type = @"position";
+            break;
+        }
+        case DWAnimationTypeScale:
+        {
+            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSNumber class])]) {
+                return nil;
+            }
+            type = @"transform.scale";
+            break;
+        }
+        case DWAnimationTypeRotate:
+        {
+            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSNumber class])]) {
+                return nil;
+            }
+            NSMutableArray * arr = [NSMutableArray array];
+            for (NSNumber * number in values) {
+                [arr addObject:@RadianFromDegree(number.floatValue)];
+            }
+            values = [NSArray arrayWithArray:arr];
+            type = @"transform.rotation";
+            break;
+        }
+        case DWAnimationTypeAlpha:
+        {
+            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSNumber class])]) {
+                return nil;
+            }
+            type = @"opacity";
+            break;
+        }
+        case DWAnimationTypeCornerRadius:
+        {
+            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSNumber class])]) {
+                return nil;
+            }
+            type = @"cornerRadius";
+            break;
+        }
+        case DWAnimationTypeBorderColor:
+        {
+            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([UIColor class])]) {
+                return nil;
+            }
+            NSMutableArray * arr = [NSMutableArray array];
+            for (UIColor * color in values) {
+                [arr addObject:(id)color.CGColor];
+            }
+            values = [NSArray arrayWithArray:arr];
+            if (!layer.borderWidth) {
+                layer.borderWidth = 3;
+            }
+            type = @"borderColor";
+            break;
+        }
+        case DWAnimationTypeBorderWidth:
+        {
+            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSNumber class])]) {
+                return nil;
+            }
+            type = @"borderWidth";
+            break;
+        }
+        case DWAnimationTypeShadowColor:
+        {
+            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([UIColor class])]) {
+                return nil;
+            }
+            NSMutableArray * arr = [NSMutableArray array];
+            for (UIColor * color in values) {
+                [arr addObject:(id)color.CGColor];
+            }
+            values = [NSArray arrayWithArray:arr];
+            if (!layer.shadowOpacity) {
+                layer.shadowOpacity = 0.5;
+            }
+            type = @"shadowColor";
+            break;
+        }
+        case DWAnimationTypeShadowAlpha:
+        {
+            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSNumber class])]) {
+                return nil;
+            }
+            type = @"shadowOpacity";
+            break;
+        }
+        case DWAnimationTypeShadowOffset:
+        {
+            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSValue class])]) {
+                return nil;
+            }
+            if (!layer.shadowOpacity) {
+                layer.shadowOpacity = 0.5;
+            }
+            type = @"shadowOffset";
+            break;
+        }
+        case DWAnimationTypeShadowCornerRadius:
+        {
+            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSNumber class])]) {
+                return nil;
+            }
+            if (!layer.shadowOpacity) {
+                layer.shadowOpacity = 0.5;
+            }
+            type = @"shadowRadius";
+            break;
+        }
+        case DWAnimationTypeShadowPath:
+        {
+            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([UIBezierPath class])]) {
+                return nil;
+            }
+            NSMutableArray * arr = [NSMutableArray array];
+            for (UIBezierPath * path in values) {
+                [arr addObject:(id)path.CGPath];
+            }
+            values = [NSArray arrayWithArray:arr];
+            if (!layer.shadowOpacity) {
+                layer.shadowOpacity = 0.5;
+            }
+            type = @"shadowPath";
+            break;
+        }
+        case DWAnimationTypeBackgroundImage:
+        {
+            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([UIImage class])]) {
+                return nil;
+            }
+            NSMutableArray * arr = [NSMutableArray array];
+            for (UIImage * image in values) {
+                [arr addObject:(id)image.CGImage];
+            }
+            values = [NSArray arrayWithArray:arr];
+            type = @"contents";
+            break;
+        }
+        case DWAnimationTypeBackgroundColor:
+        {
+            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([UIColor class])]) {
+                return nil;
+            }
+            NSMutableArray * arr = [NSMutableArray array];
+            for (UIColor * color in values) {
+                [arr addObject:(id)color.CGColor];
+            }
+            values = [NSArray arrayWithArray:arr];
+            type = @"backgroundColor";
+            break;
+        }
+        default:
+        {
+            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSNumber class])]) {
+                return nil;
+            }
+            type = @"position";
+            break;
+        }
+    }
+    __block CGFloat duration = 0;
+    [timeIntervals enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        duration += [(NSNumber *)obj floatValue];
+    }];
+    NSMutableArray * arrTimes = [NSMutableArray arrayWithObject:@0];
+    CGFloat numTemp = 0;
+    for (NSNumber * number in timeIntervals) {
+        numTemp += number.floatValue;
+        [arrTimes addObject:[NSNumber numberWithFloat:numTemp / duration]];
+    }
+    CAKeyframeAnimation * animation = [CAKeyframeAnimation animationWithKeyPath:type];
+    animation.values = values;
+    animation.keyTimes = arrTimes;
+    animation.fillMode = kCAFillModeForwards;
+    animation.removedOnCompletion = NO;
+    animation.beginTime += beginTime;
+    animation.duration = duration;
+    if (transtion) {
+        animation.calculationMode = kCAAnimationCubic;
+    }
+    return [[DWAnimation alloc] initAnimationWithContent:layer animationKey:animationKey beginTime:0  duration:duration + beginTime animations:@[animation]];
 }
 
 ///以贝尔塞曲线创建移动动画
