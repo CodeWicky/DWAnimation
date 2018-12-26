@@ -18,8 +18,6 @@ return nil;\
 
 @interface DWAnimation ()<CAAnimationDelegate>
 
-@property (nonatomic ,assign) BOOL notFirstTime;
-
 @end
 
 @implementation DWAnimation
@@ -288,7 +286,7 @@ return nil;\
     if (transtion) {
         animation.calculationMode = kCAAnimationCubic;
     }
-    return [[DWAnimation alloc] initAnimationWithContent:layer animationKey:animationKey beginTime:0  duration:duration + beginTime animations:@[animation]];
+    return [[DWAnimation alloc] initAnimationWithContent:layer animationKey:animationKey beginTime:0 duration:duration + beginTime animations:@[animation]];
 }
 
 ///以贝尔塞曲线创建移动动画
@@ -307,7 +305,7 @@ return nil;\
     if (autoRotate) {
         animation.rotationMode = kCAAnimationRotateAuto;
     }
-    return [[DWAnimation alloc] initAnimationWithContent:content animationKey:animationKey beginTime:0  duration:(beginTime + duration) animations:@[animation]];
+    return [[DWAnimation alloc] initAnimationWithContent:content animationKey:animationKey beginTime:0 duration:(beginTime + duration) animations:@[animation]];
 }
 
 ///创建弧线动画
@@ -553,7 +551,7 @@ return nil;\
         default:
             break;
     }    
-    return [[DWAnimation alloc] initAnimationWithContent:layer animationKey:animationKey beginTime:0  duration:(beginTime + animation.duration) animations:@[animation]];
+    return [[DWAnimation alloc] initAnimationWithContent:layer animationKey:animationKey beginTime:0 duration:(beginTime + animation.duration) animations:@[animation]];
 }
 
 ///创建特殊属性动画
