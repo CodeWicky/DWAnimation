@@ -2,8 +2,8 @@
 //  AppDelegate.h
 //  DWAnimation
 //
-//  Created by Wicky on 2017/6/7.
-//  Copyright © 2017年 Wicky. All rights reserved.
+//  Created by Wicky on 2018/6/21.
+//  Copyright © 2018年 Wicky. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
