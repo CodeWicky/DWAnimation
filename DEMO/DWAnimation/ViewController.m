@@ -10,6 +10,10 @@
 #import "DWAnimationHeader.h"
 @interface ViewController ()
 
+@property (nonatomic ,strong) UIView * redView;
+
+@property (nonatomic ,copy) dispatch_block_t touchAction;
+
 @property (nonatomic ,strong) NSArray * arr;
 
 @property (nonatomic ,strong) DWAnimation * a;
@@ -22,31 +26,35 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(finish:) name:DWAnimationPlayFinishNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(start:) name:DWAnimationPlayStartNotification object:nil];
     
-    CASpringAnimation * animation = [CASpringAnimation animationWithKeyPath:@"position"];
-    animation.beginTime = 10;
-    animation.removedOnCompletion = NO;
-    animation.fillMode = kCAFillModeForwards;
-//    animation.mass = mass;
-//    animation.stiffness = stiffness;
-//    animation.damping = damping;
-//    animation.initialVelocity = initialVelocity;
-    animation.duration = animation.settlingDuration;
+    [self testArrAnimation];
     
-    NSLog(@"%f",animation.settlingDuration);
-    
-    
-    UIButton * button = [UIButton buttonWithType:(UIButtonTypeSystem)];
-    [button setFrame:CGRectMake(100, 100, 60, 30)];
-    [button setTitle:@"点我啊" forState:(UIControlStateNormal)];
-    [button setBackgroundColor:[UIColor greenColor]];
-    [self.view addSubview:button];
-    [button addTarget:self action:@selector(bu) forControlEvents:(UIControlEventTouchUpInside)];
-    self.view.backgroundColor = [UIColor lightGrayColor];
-    UIView * redView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 100)];
-    redView.backgroundColor = [UIColor redColor];
-    [self.view addSubview:redView];
-    redView.center = CGPointMake(self.view.center.x + 50, self.view.center.y);
+//    CASpringAnimation * animation = [CASpringAnimation animationWithKeyPath:@"position"];
+//    animation.beginTime = 10;
+//    animation.removedOnCompletion = NO;
+//    animation.fillMode = kCAFillModeForwards;
+////    animation.mass = mass;
+////    animation.stiffness = stiffness;
+////    animation.damping = damping;
+////    animation.initialVelocity = initialVelocity;
+//    animation.duration = animation.settlingDuration;
+//
+//    NSLog(@"%f",animation.settlingDuration);
+//
+//
+//    UIButton * button = [UIButton buttonWithType:(UIButtonTypeSystem)];
+//    [button setFrame:CGRectMake(100, 100, 60, 30)];
+//    [button setTitle:@"点我啊" forState:(UIControlStateNormal)];
+//    [button setBackgroundColor:[UIColor greenColor]];
+//    [self.view addSubview:button];
+//    [button addTarget:self action:@selector(bu) forControlEvents:(UIControlEventTouchUpInside)];
+//    self.view.backgroundColor = [UIColor lightGrayColor];
+//    UIView * redView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 100)];
+//    redView.backgroundColor = [UIColor redColor];
+//    [self.view addSubview:redView];
+//    redView.center = CGPointMake(self.view.center.x + 50, self.view.center.y);
     //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(finish:) name:DWAnimationPlayFinishNotification object:nil];
     //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(start:) name:DWAnimationPlayStartNotification object:nil];
     //
@@ -152,32 +160,77 @@
     //        maker.rotateTo(90).duration(1).install();
     //    }];
     
-    CALayer * line1 = [CALayer layer];
-    line1.backgroundColor = [UIColor whiteColor].CGColor;
-    line1.bounds = CGRectMake(0, 0, 1, self.view.bounds.size.height);
-    line1.position = CGPointMake(self.view.center.x - 50, self.view.center.y);
-    [self.view.layer addSublayer:line1];
-    CALayer * line2 = [CALayer layer];
-    line2.backgroundColor = [UIColor whiteColor].CGColor;
-    line2.bounds = CGRectMake(0, 0, 1, self.view.bounds.size.height);
-    line2.position = CGPointMake(self.view.center.x + 50, self.view.center.y);
-    [self.view.layer addSublayer:line2];
-    CALayer * line3 = [CALayer layer];
-    line3.backgroundColor = [UIColor whiteColor].CGColor;
-    line3.bounds = CGRectMake(0, 0, self.view.bounds.size.width, 1);
-    line3.position = CGPointMake(self.view.center.x, self.view.center.y - 50);
-    [self.view.layer addSublayer:line3];
-    CALayer * line4 = [CALayer layer];
-    line4.backgroundColor = [UIColor whiteColor].CGColor;
-    line4.bounds = CGRectMake(0, 0, self.view.bounds.size.width, 1);
-    line4.position = CGPointMake(self.view.center.x, self.view.center.y + 50);
-    [self.view.layer addSublayer:line4];
-    
-    DWAnimation * ani = [[DWAnimation alloc] initAnimationWithContent:redView animationKey:nil
-                                                          beginTime:0 duration:2 rotateStartAngle:0 rotateEndAngle:360 simulateChangeAnchor:CGPointMake(0.25, 0.5)];
-    ani.repeatCount = MAXFLOAT;
-    self.a = ani;
+//    CALayer * line1 = [CALayer layer];
+//    line1.backgroundColor = [UIColor whiteColor].CGColor;
+//    line1.bounds = CGRectMake(0, 0, 1, self.view.bounds.size.height);
+//    line1.position = CGPointMake(self.view.center.x - 50, self.view.center.y);
+//    [self.view.layer addSublayer:line1];
+//    CALayer * line2 = [CALayer layer];
+//    line2.backgroundColor = [UIColor whiteColor].CGColor;
+//    line2.bounds = CGRectMake(0, 0, 1, self.view.bounds.size.height);
+//    line2.position = CGPointMake(self.view.center.x + 50, self.view.center.y);
+//    [self.view.layer addSublayer:line2];
+//    CALayer * line3 = [CALayer layer];
+//    line3.backgroundColor = [UIColor whiteColor].CGColor;
+//    line3.bounds = CGRectMake(0, 0, self.view.bounds.size.width, 1);
+//    line3.position = CGPointMake(self.view.center.x, self.view.center.y - 50);
+//    [self.view.layer addSublayer:line3];
+//    CALayer * line4 = [CALayer layer];
+//    line4.backgroundColor = [UIColor whiteColor].CGColor;
+//    line4.bounds = CGRectMake(0, 0, self.view.bounds.size.width, 1);
+//    line4.position = CGPointMake(self.view.center.x, self.view.center.y + 50);
+//    [self.view.layer addSublayer:line4];
+//
+//    DWAnimation * ani = [[DWAnimation alloc] initAnimationWithContent:redView animationKey:nil
+//                                                          beginTime:0 duration:2 rotateStartAngle:0 rotateEndAngle:360 simulateChangeAnchor:CGPointMake(0.25, 0.5)];
+//    ani.repeatCount = MAXFLOAT;
+//    self.a = ani;
 }
+
+-(void)testMakerAnimation {
+    [self.view addSubview:self.redView];
+    self.a = [[DWAnimation alloc] initAnimationWithContent:self.redView animationKey:@"redAni" animationCreater:^(DWAnimationMaker *maker) {
+        maker.moveTo(self.view.center).duration(0.4).install();
+        maker.backgroundColorTo([UIColor greenColor]).beginTime(0.4).duration(0.4).install();
+    }];
+    __weak typeof(self)weakSelf = self;
+    self.touchAction = ^{
+        [weakSelf.a start];
+    };
+}
+
+-(void)testArrAnimation {
+    [self.view addSubview:self.redView];
+    CABasicAnimation * aniP = [CABasicAnimation animationWithKeyPath:@"position"];
+    aniP.toValue = [NSValue valueWithCGPoint:self.view.center];
+    aniP.duration = 0.4;
+    
+    CAAnimationGroup * group = [CAAnimationGroup animation];
+    group.timingFunction = [CAMediaTimingFunction functionWithName:kCAAnimationLinear];
+    group.removedOnCompletion = NO;
+    group.beginTime = 0.4;
+    group.fillMode = kCAFillModeForwards;
+    group.duration = 0.4;
+    group.animations = @[aniP];
+    group.repeatCount = 1;
+    
+    CAAnimationGroup * g2 = [CAAnimationGroup animation];
+    g2.timingFunction = [CAMediaTimingFunction functionWithName:kCAAnimationLinear];
+    g2.removedOnCompletion = NO;
+    g2.fillMode = kCAFillModeForwards;
+    g2.duration = 0.8;
+    g2.animations = @[group];
+    g2.repeatCount = 1;
+    
+    self.a = [[DWAnimation alloc] initAnimationWithContent:self.redView.layer animationKey:@"arrAni" beginTime:0.4 duration:0.4 animations:@[aniP]];
+    __weak typeof(self)weakSelf = self;
+    self.touchAction = ^{
+        [weakSelf.a start];
+//        [self.redView.layer addAnimation:g2 forKey:nil];
+    };
+}
+
+
 
 -(void)finish:(NSNotification *)notice
 {
@@ -193,16 +246,18 @@
     NSLog(@"start:%@",animaiton.animationKey);
 }
 
--(void)bu
-{
-    //    [UIView dw_StartAnimations:self.arr playMode:(DWAnimationPlayModeSingle)];
-    //    [self.g start];
-    [self.a start];
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    if (self.touchAction) {
+        self.touchAction();
+    }
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+-(UIView *)redView {
+    if (!_redView) {
+        _redView = [[UIView alloc] initWithFrame:CGRectMake(100, 100, 50, 100)];
+        _redView.backgroundColor = [UIColor redColor];
+    }
+    return _redView;
 }
 
 @end

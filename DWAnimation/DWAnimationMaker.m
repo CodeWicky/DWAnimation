@@ -638,7 +638,7 @@ CABasicAnimation *(^BackgroundColorAnimation)(UIColor *,UIColor *,CGFloat,CGFloa
     };
 }
 
--(DWAnimationMaker *(^)())install
+-(void(^)(void))install
 {
     return ^{
         if (self.needReset) {
@@ -733,7 +733,6 @@ CABasicAnimation *(^BackgroundColorAnimation)(UIColor *,UIColor *,CGFloat,CGFloa
         self.totalDuration = MAX(self.totalDuration, self.startTime + self.animationDuration);
         self.startTime = 0;
         self.animationDuration = 0;
-        return self;
     };
 }
 

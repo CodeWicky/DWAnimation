@@ -164,6 +164,14 @@
  
  注：
  当content为nil时，开始动画需配合startAnimationWithContent:使用。
+ 
+ eg.:
+ 
+ self.a = [[DWAnimation alloc] initAnimationWithContent:self.redView animationKey:@"redAni" animationCreater:^(DWAnimationMaker *maker) {
+    maker.moveTo(self.view.center).duration(0.4).install();
+    maker.backgroundColorTo([UIColor greenColor]).beginTime(0.4).duration(0.4).install();
+ }];
+ 
  */
 -(instancetype)initAnimationWithContent:(id)content
                            animationKey:(NSString *)animationKey

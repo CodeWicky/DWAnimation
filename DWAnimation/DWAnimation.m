@@ -32,8 +32,7 @@ return nil;\
                        animationCreater:(void(^)(DWAnimationMaker * maker))animationCreater
 {
     IllegalContentReturnNil
-    self = [super init];
-    if (self) {
+    if (self = [super init]) {
         _layer = layerFromContent(content);
         _animationKey = animationKey;
         _timingFunctionName = @"linear";
@@ -55,8 +54,7 @@ return nil;\
 -(instancetype)initAnimationWithContent:(id)content animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration animations:(__kindof NSArray<CAAnimation *> *)animations
 {
     IllegalContentReturnNil
-    self = [super init];
-    if (self) {
+    if (self = [super init]) {
         [super setBeginTime:beginTime];
         self.duration = duration;
         _layer = layerFromContent(content);
