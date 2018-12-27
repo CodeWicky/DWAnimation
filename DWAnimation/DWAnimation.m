@@ -764,7 +764,7 @@ return nil;\
     if (animationKey == nil || animationKey.length == 0) {
         animationKey = [NSString stringWithFormat:@"(%@_COMBINE_%@)",self.animationKey,animaiton.animationKey];
     }
-    return [[DWAnimation alloc] initAnimationWithContent:self.layer animationKey:animationKey beginTime:0 duration:duration animations:arr]];
+    return [[DWAnimation alloc] initAnimationWithContent:self.layer animationKey:animationKey beginTime:0 duration:duration animations:arr];
 }
 
 ///并发组合数组中的动画
