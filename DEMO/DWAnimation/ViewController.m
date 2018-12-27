@@ -21,6 +21,21 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    
+    CASpringAnimation * animation = [CASpringAnimation animationWithKeyPath:@"position"];
+    animation.beginTime = 10;
+    animation.removedOnCompletion = NO;
+    animation.fillMode = kCAFillModeForwards;
+//    animation.mass = mass;
+//    animation.stiffness = stiffness;
+//    animation.damping = damping;
+//    animation.initialVelocity = initialVelocity;
+    animation.duration = animation.settlingDuration;
+    
+    NSLog(@"%f",animation.settlingDuration);
+    
+    
     UIButton * button = [UIButton buttonWithType:(UIButtonTypeSystem)];
     [button setFrame:CGRectMake(100, 100, 60, 30)];
     [button setTitle:@"点我啊" forState:(UIControlStateNormal)];

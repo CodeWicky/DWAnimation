@@ -34,10 +34,11 @@ return nil;\
     IllegalContentReturnNil
     self = [super init];
     if (self) {
-        self.repeatCount = 1;
-        self.layer = layerFromContent(content);
-        self.animationKey = animationKey;
-        self.status = DWAnimationStatusReadyToShow;
+        _layer = layerFromContent(content);
+        _animationKey = animationKey;
+        _timingFunctionName = @"linear";
+        _status = DWAnimationStatusReadyToShow;
+        _repeatCount = 1;
         DWAnimationMaker * maker = [DWAnimationMaker new];
         maker.layer = self.layer;
         if (animationCreater) {
@@ -56,8 +57,8 @@ return nil;\
     IllegalContentReturnNil
     self = [super init];
     if (self) {
-        [super setBeginTime:0];
-        self.duration = duration + beginTime;
+        [super setBeginTime:beginTime];
+        self.duration = duration;
         _layer = layerFromContent(content);
         _animationKey = animationKey;
         _timingFunctionName = @"linear";
@@ -74,14 +75,13 @@ return nil;\
                 return NSOrderedSame;
             }
         }];
-        for (CAAnimation * animation in animations) {
-            animation.beginTime += beginTime;
-        }
+        
         CAAnimationGroup * group = [CAAnimationGroup animation];
         group.timingFunction = [CAMediaTimingFunction functionWithName:kCAAnimationLinear];
         group.removedOnCompletion = NO;
+        group.beginTime = beginTime;
         group.fillMode = kCAFillModeForwards;
-        group.duration = duration + beginTime;
+        group.duration = duration;
         group.animations = arr;
         group.repeatCount = 1;
         self.animation = group;
@@ -283,12 +283,11 @@ return nil;\
     animation.keyTimes = arrTimes;
     animation.fillMode = kCAFillModeForwards;
     animation.removedOnCompletion = NO;
-    animation.beginTime += beginTime;
     animation.duration = duration;
     if (transtion) {
         animation.calculationMode = kCAAnimationCubic;
     }
-    return [self initAnimationWithContent:layer animationKey:animationKey beginTime:0 duration:duration + beginTime animations:@[animation]];
+    return [self initAnimationWithContent:layer animationKey:animationKey beginTime:beginTime duration:duration animations:@[animation]];
 }
 
 ///以贝尔塞曲线创建移动动画
@@ -298,7 +297,6 @@ return nil;\
     IllegalContentReturnNil
     CAKeyframeAnimation * animation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
     animation.duration = duration;
-    animation.beginTime += beginTime;
     animation.removedOnCompletion = NO;
     animation.fillMode = kCAFillModeForwards;
     animation.calculationMode = kCAAnimationCubicPaced;
@@ -307,7 +305,7 @@ return nil;\
     if (autoRotate) {
         animation.rotationMode = kCAAnimationRotateAuto;
     }
-    return [self initAnimationWithContent:content animationKey:animationKey beginTime:0 duration:(beginTime + duration) animations:@[animation]];
+    return [self initAnimationWithContent:content animationKey:animationKey beginTime:beginTime duration:duration animations:@[animation]];
 }
 
 ///创建弧线动画
@@ -396,7 +394,6 @@ return nil;\
         return nil;
     }
     CASpringAnimation * animation = [CASpringAnimation animationWithKeyPath:key];
-    animation.beginTime = beginTime;
     animation.removedOnCompletion = NO;
     animation.fillMode = kCAFillModeForwards;
     animation.mass = mass;
@@ -553,7 +550,7 @@ return nil;\
         default:
             break;
     }    
-    return [self initAnimationWithContent:layer animationKey:animationKey beginTime:0 duration:(beginTime + animation.duration) animations:@[animation]];
+    return [self initAnimationWithContent:layer animationKey:animationKey beginTime:beginTime duration: animation.duration animations:@[animation]];
 }
 
 ///创建特殊属性动画
@@ -563,14 +560,13 @@ return nil;\
     CABasicAnimation * animation = [CABasicAnimation animationWithKeyPath:keyPath];
     animation.removedOnCompletion = NO;
     animation.fillMode = kCAFillModeForwards;
-    animation.beginTime = beginTime;
     animation.duration = duration;
     if (fromValue) {
         animation.fromValue = fromValue;
     }
     animation.toValue = toValue;
     animation.timingFunction = [CAMediaTimingFunction functionWithName:timingFunctionName];
-    return [self initAnimationWithContent:content animationKey:animationKey beginTime:0 duration:(beginTime + duration) animations:@[animation]];
+    return [self initAnimationWithContent:content animationKey:animationKey beginTime:beginTime duration:duration animations:@[animation]];
 }
 
 ///创建景深旋转动画
@@ -695,16 +691,16 @@ return nil;\
     if (![layer isEqual:animation.layer]) {
         return self;
     }
-    CGFloat beginTime = self.duration + self.beginTime;
+    CGFloat beginTime = (self.duration + self.beginTime) * self.repeatCount;
     if (animationKey == nil || animationKey.length == 0) {
         animationKey = [NSString stringWithFormat:@"(%@_ADD_%@)",self.animationKey,animation.animationKey];
     }
-    CGFloat duration = beginTime + animation.duration;
-    animation.beginTime = beginTime;
+    CGFloat duration = beginTime + (animation.beginTime + animation.duration) * self.repeatCount;
+    animation.beginTime = beginTime + animation.beginTime;
     NSMutableArray * arr = [NSMutableArray array];
     [arr addObject:self.animation];
     [arr addObject:animation.animation];
-    return [self initAnimationWithContent:layer animationKey:animationKey beginTime:0 duration:duration animations:arr];
+    return [[DWAnimation alloc] initAnimationWithContent:layer animationKey:animationKey beginTime:0 duration:duration animations:arr];
 }
 
 ///按顺序拼接数组中的所有动画
@@ -848,15 +844,13 @@ return nil;\
 -(void)setBeginTime:(CGFloat)beginTime
 {
     [super setBeginTime:beginTime];
-    self.duration = self.animation.duration * self.repeatCount + beginTime;
-    self.animation.beginTime += beginTime;
+    self.animation.beginTime = beginTime;
 }
 
 -(void)setRepeatCount:(CGFloat)repeatCount
 {
     _repeatCount = repeatCount;
     self.animation.repeatCount = repeatCount;
-    self.duration = self.animation.duration * repeatCount + self.beginTime;
 }
 
 -(void)setTimingFunctionName:(NSString *)timingFunctionName

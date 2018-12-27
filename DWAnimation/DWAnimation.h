@@ -383,7 +383,7 @@
  故参与添加动画后，仅返回的动画实例具有正确动画效果，调用对象和添加均不能正确展示。
  */
 -(DWAnimation *)addAnimation:(DWAnimation *)animation
-                animationKey:(NSString *)animationKey;
+       animationKey:(NSString *)animationKey;
 
 ///按顺序拼接数组中的所有动画
 /**
