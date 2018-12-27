@@ -48,8 +48,8 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "DWAnimationHeader.h"
-@class DWAnimation;
+#import "DWAnimationConstant.h"
+
 @interface DWAnimationMaker : NSObject
 
 #pragma mark ---方法属性---
@@ -164,7 +164,7 @@
 @property (nonatomic ,copy) DWAnimationMaker * (^beginTime)(CGFloat);
 
 ///动画生成，所有动画必须实现方法，且最后实现
-@property (nonatomic ,copy) DWAnimationMaker * (^install)();
+@property (nonatomic ,copy) DWAnimationMaker * (^install)(void);
 
 #pragma mark ---中间属性---
 @property (nonatomic ,strong) CAAnimationGroup * animation;

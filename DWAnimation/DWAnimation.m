@@ -56,11 +56,13 @@ return nil;\
     IllegalContentReturnNil
     self = [super init];
     if (self) {
-        self.repeatCount = 1;
-        self.layer = layerFromContent(content);
+        [super setBeginTime:0];
         self.duration = duration + beginTime;
-        self.animationKey = animationKey;
-        self.status = DWAnimationStatusReadyToShow;
+        _layer = layerFromContent(content);
+        _animationKey = animationKey;
+        _timingFunctionName = @"linear";
+        _status = DWAnimationStatusReadyToShow;
+        _repeatCount = 1;
         NSArray * arr = [animations sortedArrayUsingComparator:^NSComparisonResult(CAAnimation * ani1, CAAnimation * ani2) {
             if (ani1.beginTime > ani2.beginTime) {
                 return NSOrderedDescending;
@@ -102,7 +104,7 @@ return nil;\
     switch (animationType) {
         case DWAnimationTypeMove:
         {
-            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSValue class])]) {
+            if (!allObjsIsKindOfClass(values,[NSValue class])) {
                 return nil;
             }
             type = @"position";
@@ -110,7 +112,7 @@ return nil;\
         }
         case DWAnimationTypeScale:
         {
-            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSNumber class])]) {
+            if (!allObjsIsKindOfClass(values, [NSNumber class])) {
                 return nil;
             }
             type = @"transform.scale";
@@ -118,7 +120,7 @@ return nil;\
         }
         case DWAnimationTypeRotate:
         {
-            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSNumber class])]) {
+            if (!allObjsIsKindOfClass(values, [NSNumber class])) {
                 return nil;
             }
             NSMutableArray * arr = [NSMutableArray array];
@@ -131,7 +133,7 @@ return nil;\
         }
         case DWAnimationTypeAlpha:
         {
-            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSNumber class])]) {
+            if (!allObjsIsKindOfClass(values, [NSNumber class])) {
                 return nil;
             }
             type = @"opacity";
@@ -139,7 +141,7 @@ return nil;\
         }
         case DWAnimationTypeCornerRadius:
         {
-            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSNumber class])]) {
+            if (!allObjsIsKindOfClass(values, [NSNumber class])) {
                 return nil;
             }
             type = @"cornerRadius";
@@ -147,7 +149,7 @@ return nil;\
         }
         case DWAnimationTypeBorderColor:
         {
-            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([UIColor class])]) {
+            if (!allObjsIsKindOfClass(values, [UIColor class])) {
                 return nil;
             }
             NSMutableArray * arr = [NSMutableArray array];
@@ -163,7 +165,7 @@ return nil;\
         }
         case DWAnimationTypeBorderWidth:
         {
-            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSNumber class])]) {
+            if (!allObjsIsKindOfClass(values, [NSNumber class])) {
                 return nil;
             }
             type = @"borderWidth";
@@ -171,7 +173,7 @@ return nil;\
         }
         case DWAnimationTypeShadowColor:
         {
-            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([UIColor class])]) {
+            if (!allObjsIsKindOfClass(values, [UIColor class])) {
                 return nil;
             }
             NSMutableArray * arr = [NSMutableArray array];
@@ -187,7 +189,7 @@ return nil;\
         }
         case DWAnimationTypeShadowAlpha:
         {
-            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSNumber class])]) {
+            if (!allObjsIsKindOfClass(values, [NSNumber class])) {
                 return nil;
             }
             type = @"shadowOpacity";
@@ -195,7 +197,7 @@ return nil;\
         }
         case DWAnimationTypeShadowOffset:
         {
-            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSValue class])]) {
+            if (!allObjsIsKindOfClass(values, [NSValue class])) {
                 return nil;
             }
             if (!layer.shadowOpacity) {
@@ -206,7 +208,7 @@ return nil;\
         }
         case DWAnimationTypeShadowCornerRadius:
         {
-            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSNumber class])]) {
+            if (!allObjsIsKindOfClass(values, [NSNumber class])) {
                 return nil;
             }
             if (!layer.shadowOpacity) {
@@ -217,7 +219,7 @@ return nil;\
         }
         case DWAnimationTypeShadowPath:
         {
-            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([UIBezierPath class])]) {
+            if (!allObjsIsKindOfClass(values, [UIBezierPath class])) {
                 return nil;
             }
             NSMutableArray * arr = [NSMutableArray array];
@@ -233,7 +235,7 @@ return nil;\
         }
         case DWAnimationTypeBackgroundImage:
         {
-            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([UIImage class])]) {
+            if (!allObjsIsKindOfClass(values, [UIImage class])) {
                 return nil;
             }
             NSMutableArray * arr = [NSMutableArray array];
@@ -246,7 +248,7 @@ return nil;\
         }
         case DWAnimationTypeBackgroundColor:
         {
-            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([UIColor class])]) {
+            if (!allObjsIsKindOfClass(values, [UIColor class])) {
                 return nil;
             }
             NSMutableArray * arr = [NSMutableArray array];
@@ -259,7 +261,7 @@ return nil;\
         }
         default:
         {
-            if (![DWAnimation allObjectsInArray:values isKindClass:NSStringFromClass([NSNumber class])]) {
+            if (!allObjsIsKindOfClass(values, [NSNumber class])) {
                 return nil;
             }
             type = @"position";
@@ -286,7 +288,7 @@ return nil;\
     if (transtion) {
         animation.calculationMode = kCAAnimationCubic;
     }
-    return [[DWAnimation alloc] initAnimationWithContent:layer animationKey:animationKey beginTime:0 duration:duration + beginTime animations:@[animation]];
+    return [self initAnimationWithContent:layer animationKey:animationKey beginTime:0 duration:duration + beginTime animations:@[animation]];
 }
 
 ///以贝尔塞曲线创建移动动画
@@ -305,7 +307,7 @@ return nil;\
     if (autoRotate) {
         animation.rotationMode = kCAAnimationRotateAuto;
     }
-    return [[DWAnimation alloc] initAnimationWithContent:content animationKey:animationKey beginTime:0 duration:(beginTime + duration) animations:@[animation]];
+    return [self initAnimationWithContent:content animationKey:animationKey beginTime:0 duration:(beginTime + duration) animations:@[animation]];
 }
 
 ///创建弧线动画
@@ -313,7 +315,7 @@ return nil;\
 {
     IllegalContentReturnNil
     UIBezierPath * path = [UIBezierPath bezierPathWithArcCenter:center radius:radius startAngle:RadianFromDegree(startAngle - 90) endAngle:RadianFromDegree(endAngle - 90) clockwise:clockwise];
-    return [[DWAnimation alloc] initAnimationWithContent:content animationKey:animationKey beginTime:beginTime duration:duration bezierPath:path autoRotate:autoRotate];
+    return [self initAnimationWithContent:content animationKey:animationKey beginTime:beginTime duration:duration bezierPath:path autoRotate:autoRotate];
 }
 
 ///创建震荡动画
@@ -551,7 +553,7 @@ return nil;\
         default:
             break;
     }    
-    return [[DWAnimation alloc] initAnimationWithContent:layer animationKey:animationKey beginTime:0 duration:(beginTime + animation.duration) animations:@[animation]];
+    return [self initAnimationWithContent:layer animationKey:animationKey beginTime:0 duration:(beginTime + animation.duration) animations:@[animation]];
 }
 
 ///创建特殊属性动画
@@ -568,7 +570,7 @@ return nil;\
     }
     animation.toValue = toValue;
     animation.timingFunction = [CAMediaTimingFunction functionWithName:timingFunctionName];
-    return [[DWAnimation alloc] initAnimationWithContent:content animationKey:animationKey beginTime:0 duration:(beginTime + duration) animations:@[animation]];
+    return [self initAnimationWithContent:content animationKey:animationKey beginTime:0 duration:(beginTime + duration) animations:@[animation]];
 }
 
 ///创建景深旋转动画
@@ -576,7 +578,7 @@ return nil;\
 {
     IllegalContentReturnNil
     if (rotateAxis == Z) {
-        return [[DWAnimation alloc] initAnimationWithContent:content animationKey:animationKey animationCreater:^(DWAnimationMaker *maker) {
+        return [self initAnimationWithContent:content animationKey:animationKey animationCreater:^(DWAnimationMaker *maker) {
             maker.rotateFrom(startAngle).rotateTo(endAngle).beginTime(beginTime).duration(duration).install();
         }];
     }
@@ -595,7 +597,7 @@ return nil;\
             fromValue = CATransform3DRotate(fromValue, RadianFromDegree(startAngle), 0, 1, 0);
             toValue = CATransform3DRotate(toValue, RadianFromDegree(endAngle), 0, 1, 0);
         }
-        return [[DWAnimation alloc] initAnimationWithContent:content keyPath:@"transform" animationKey:animationKey beginTime:beginTime duration:duration fromValue:[NSValue valueWithCATransform3D:fromValue] toValue:[NSValue valueWithCATransform3D:toValue] timingFunctionName:kCAMediaTimingFunctionLinear];
+        return [self initAnimationWithContent:content keyPath:@"transform" animationKey:animationKey beginTime:beginTime duration:duration fromValue:[NSValue valueWithCATransform3D:fromValue] toValue:[NSValue valueWithCATransform3D:toValue] timingFunctionName:kCAMediaTimingFunctionLinear];
     }
 }
 
@@ -605,7 +607,7 @@ return nil;\
     if (!content) {
         return nil;
     }
-    DWAnimation * ro = [[DWAnimation alloc] initAnimationWithContent:content animationKey:animationKey animationCreater:^(DWAnimationMaker *maker) {
+    DWAnimation * ro = [self initAnimationWithContent:content animationKey:animationKey animationCreater:^(DWAnimationMaker *maker) {
         maker.rotateFrom(startAngle).rotateTo(endAngle).beginTime(beginTime).duration(duration).install();
     }];
     if (CGPointEqualToPoint(anchor, CGPointMake(0.5, 0.5)) || endAngle == startAngle) {
@@ -702,7 +704,7 @@ return nil;\
     NSMutableArray * arr = [NSMutableArray array];
     [arr addObject:self.animation];
     [arr addObject:animation.animation];
-    return [[DWAnimation alloc] initAnimationWithContent:layer animationKey:animationKey beginTime:0  duration:duration animations:arr];
+    return [self initAnimationWithContent:layer animationKey:animationKey beginTime:0 duration:duration animations:arr];
 }
 
 ///按顺序拼接数组中的所有动画
@@ -762,7 +764,7 @@ return nil;\
     if (animationKey == nil || animationKey.length == 0) {
         animationKey = [NSString stringWithFormat:@"(%@_COMBINE_%@)",self.animationKey,animaiton.animationKey];
     }
-    return [[DWAnimation alloc] initAnimationWithContent:self.layer animationKey:animationKey beginTime:0 duration:duration animations:arr];
+    return [[DWAnimation alloc] initAnimationWithContent:self.layer animationKey:animationKey beginTime:0 duration:duration animations:arr]];
 }
 
 ///并发组合数组中的动画
@@ -819,19 +821,6 @@ return nil;\
     animation.keyTimes = arr;
 }
 
-///判断数组中元素是否均为某种类型
-+(BOOL)allObjectsInArray:(NSArray *)array
-             isKindClass:(NSString *)string
-{
-    for (id object in array) {
-        BOOL result = [object isKindOfClass:NSClassFromString(string)];
-        if (!result) {
-            return NO;
-        }
-    }
-    return YES;
-}
-
 #pragma mark ---animation代理---
 
 -(void)animationDidStart:(CAAnimation *)anim
@@ -877,12 +866,22 @@ return nil;\
 }
 
 #pragma mark --- inline method ---
-static inline CALayer * layerFromContent(id content) {
+NS_INLINE CALayer * layerFromContent(id content) {
     if ([content isKindOfClass:[UIView class]]) {
         return [content layer];
     } else if ([content isKindOfClass:[CALayer class]]) {
         return content;
     }
     return nil;
+}
+
+NS_INLINE BOOL allObjsIsKindOfClass(NSArray * objs,Class clazz) {
+    for (id object in objs) {
+        BOOL result = [object isKindOfClass:clazz];
+        if (!result) {
+            return NO;
+        }
+    }
+    return YES;
 }
 @end
