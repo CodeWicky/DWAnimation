@@ -77,7 +77,6 @@ return nil;\
         CAAnimationGroup * group = [CAAnimationGroup animation];
         group.timingFunction = [CAMediaTimingFunction functionWithName:kCAAnimationLinear];
         group.removedOnCompletion = NO;
-        group.beginTime = beginTime;
         group.fillMode = kCAFillModeForwards;
         group.duration = duration;
         group.animations = arr;
@@ -640,6 +639,7 @@ return nil;\
     if (self.layer && self.repeatCount > 0) {
         if (self.status == DWAnimationStatusReadyToShow || self.status == DWAnimationStatusRemoved || self.status == DWAnimationStatusFinished) {
             self.animation.delegate = self;
+            self.animation.beginTime = CACurrentMediaTime() + self.beginTime;
             [self.layer addAnimation:self.animation forKey:self.animationKey];
         }
     }

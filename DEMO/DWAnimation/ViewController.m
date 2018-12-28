@@ -19,6 +19,13 @@
 @property (nonatomic ,strong) DWAnimation * a;
 
 @property (nonatomic ,strong) DWAnimationGroup * g;
+
+@property (nonatomic ,strong) UILabel * timeLb;
+
+@property (nonatomic ,strong) NSTimer * timer;
+
+@property (nonatomic ,assign) CGFloat time;
+
 @end
 
 @implementation ViewController
@@ -28,7 +35,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(finish:) name:DWAnimationPlayFinishNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(start:) name:DWAnimationPlayStartNotification object:nil];
-    
+    [self.view addSubview:self.timeLb];
     [self testArrAnimation];
     
 //    CASpringAnimation * animation = [CASpringAnimation animationWithKeyPath:@"position"];
@@ -203,34 +210,25 @@
     [self.view addSubview:self.redView];
     CABasicAnimation * aniP = [CABasicAnimation animationWithKeyPath:@"position"];
     aniP.toValue = [NSValue valueWithCGPoint:self.view.center];
+    aniP.fromValue = [NSValue valueWithCGPoint:self.redView.center];
     aniP.duration = 0.4;
+    aniP.beginTime = 1;
     
-    CAAnimationGroup * group = [CAAnimationGroup animation];
-    group.timingFunction = [CAMediaTimingFunction functionWithName:kCAAnimationLinear];
-    group.removedOnCompletion = NO;
-    group.beginTime = 0.4;
-    group.fillMode = kCAFillModeForwards;
-    group.duration = 0.4;
-    group.animations = @[aniP];
-    group.repeatCount = 1;
-    
-    CAAnimationGroup * g2 = [CAAnimationGroup animation];
-    g2.timingFunction = [CAMediaTimingFunction functionWithName:kCAAnimationLinear];
-    g2.removedOnCompletion = NO;
-    g2.fillMode = kCAFillModeForwards;
-    g2.duration = 0.8;
-    g2.animations = @[group];
-    g2.repeatCount = 1;
-    
-    self.a = [[DWAnimation alloc] initAnimationWithContent:self.redView.layer animationKey:@"arrAni" beginTime:0.4 duration:0.4 animations:@[aniP]];
+    self.a = [[DWAnimation alloc] initAnimationWithContent:self.redView.layer animationKey:@"arrAni" beginTime:1 duration:1.4 animations:@[aniP]];
+    self.a.repeatCount = 2;
     __weak typeof(self)weakSelf = self;
     self.touchAction = ^{
         [weakSelf.a start];
-//        [self.redView.layer addAnimation:g2 forKey:nil];
     };
 }
 
-
+-(void)timing {
+    self.time = 0;
+    self.timeLb.text = @"0";
+    [self.timer invalidate];
+    self.timer = nil;
+    [self.timer fire];
+}
 
 -(void)finish:(NSNotification *)notice
 {
@@ -250,6 +248,7 @@
     if (self.touchAction) {
         self.touchAction();
     }
+    [self timing];
 }
 
 -(UIView *)redView {
@@ -258,6 +257,24 @@
         _redView.backgroundColor = [UIColor redColor];
     }
     return _redView;
+}
+
+-(UILabel *)timeLb {
+    if (!_timeLb) {
+        _timeLb = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 300, 50)];
+    }
+    return _timeLb;
+}
+
+-(NSTimer *)timer {
+    if (!_timer) {
+        __weak typeof(self)weakSelf = self;
+        _timer = [NSTimer scheduledTimerWithTimeInterval:0.1 repeats:YES block:^(NSTimer * _Nonnull timer) {
+            weakSelf.timeLb.text = [NSString stringWithFormat:@"%.1f",self.time];
+            weakSelf.time += 0.1;
+        }];
+    }
+    return _timer;
 }
 
 @end
