@@ -39,7 +39,8 @@
 //    [self testMakerAnimation];
 //    [self testArrAnimation];
 //    [self testTimeIntervalAnimation];
-    [self testBezierAnimation];
+//    [self testBezierAnimation];
+    [self testArcAnimation];
     
 //    CASpringAnimation * animation = [CASpringAnimation animationWithKeyPath:@"position"];
 //    animation.beginTime = 10;
@@ -243,6 +244,15 @@
     UIBezierPath * bp = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(self.view.center.x - 100, self.view.center.y - 100, 200, 200)];
     self.a = [[DWAnimation alloc] initAnimationWithContent:self.redView.layer animationKey:@"bezierAnimation" beginTime:2 duration:5 bezierPath:bp autoRotate:YES];
     self.a.repeatCount = 2;
+    self.touchAction = ^{
+        [weakSelf.a start];
+    };
+}
+
+-(void)testArcAnimation {
+    [self.view addSubview:self.redView];
+    __weak typeof(self)weakSelf = self;
+    self.a = [[DWAnimation alloc] initAnimationWithContent:self.redView.layer animationKey:@"arcAnimation" beginTime:2 duration:1 arcCenter:CGPointMake(self.view.center.x, self.view.center.y - 100) radius:200 startAngle:120 endAngle:60 clockwise:NO autoRotate:YES];
     self.touchAction = ^{
         [weakSelf.a start];
     };
