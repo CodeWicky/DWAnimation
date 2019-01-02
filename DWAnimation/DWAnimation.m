@@ -81,6 +81,7 @@ return nil;\
         group.duration = duration;
         group.animations = arr;
         group.repeatCount = 1;
+        group.beginTime = beginTime;
         self.animation = group;
     }
     return self;

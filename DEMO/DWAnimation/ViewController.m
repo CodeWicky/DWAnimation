@@ -36,7 +36,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(finish:) name:DWAnimationPlayFinishNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(start:) name:DWAnimationPlayStartNotification object:nil];
     [self.view addSubview:self.timeLb];
-    [self testArrAnimation];
+//    [self testMakerAnimation];
+//    [self testArrAnimation];
+//    [self testTimeIntervalAnimation];
+    [self testBezierAnimation];
     
 //    CASpringAnimation * animation = [CASpringAnimation animationWithKeyPath:@"position"];
 //    animation.beginTime = 10;
@@ -217,6 +220,29 @@
     self.a = [[DWAnimation alloc] initAnimationWithContent:self.redView.layer animationKey:@"arrAni" beginTime:1 duration:1.4 animations:@[aniP]];
     self.a.repeatCount = 2;
     __weak typeof(self)weakSelf = self;
+    self.touchAction = ^{
+        [weakSelf.a start];
+    };
+}
+
+-(void)testTimeIntervalAnimation {
+    [self.view addSubview:self.redView];
+    self.redView.center = CGPointMake(100, 100);
+    __weak typeof(self)weakSelf = self;
+    self.a = [[DWAnimation alloc] initAnimationWithContent:self.redView.layer animationType:(DWAnimationTypeMove) animationKey:@"timeIntervalAnimation" beginTime:1 values:@[[NSValue valueWithCGPoint:CGPointMake(100, 100)],[NSValue valueWithCGPoint:CGPointMake(200, 100)],[NSValue valueWithCGPoint:CGPointMake(200, 200)],[NSValue valueWithCGPoint:CGPointMake(100, 200)],[NSValue valueWithCGPoint:CGPointMake(100, 100)]] timeIntervals:@[@1,@2,@3,@1] transition:NO];
+    self.a.repeatCount = 2;
+    self.touchAction = ^{
+        [weakSelf.a start];
+    };
+}
+
+-(void)testBezierAnimation {
+    [self.view addSubview:self.redView];
+    self.redView.center = self.view.center;
+    __weak typeof(self)weakSelf = self;
+    UIBezierPath * bp = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(self.view.center.x - 100, self.view.center.y - 100, 200, 200)];
+    self.a = [[DWAnimation alloc] initAnimationWithContent:self.redView.layer animationKey:@"bezierAnimation" beginTime:2 duration:5 bezierPath:bp autoRotate:YES];
+    self.a.repeatCount = 2;
     self.touchAction = ^{
         [weakSelf.a start];
     };
