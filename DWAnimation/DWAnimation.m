@@ -81,6 +81,7 @@ return nil;\
         group.duration = duration;
         group.animations = arr;
         group.repeatCount = 1;
+        group.beginTime = beginTime;
         self.animation = group;
     }
     return self;
@@ -309,7 +310,7 @@ return nil;\
 -(instancetype)initAnimationWithContent:(id)content animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration arcCenter:(CGPoint)center radius:(CGFloat)radius startAngle:(CGFloat)startAngle endAngle:(CGFloat)endAngle clockwise:(BOOL)clockwise autoRotate:(BOOL)autoRotate
 {
     IllegalContentReturnNil
-    UIBezierPath * path = [UIBezierPath bezierPathWithArcCenter:center radius:radius startAngle:RadianFromDegree(startAngle - 90) endAngle:RadianFromDegree(endAngle - 90) clockwise:clockwise];
+    UIBezierPath * path = [UIBezierPath bezierPathWithArcCenter:center radius:radius startAngle:RadianFromDegree(startAngle) endAngle:RadianFromDegree(endAngle) clockwise:clockwise];
     return [self initAnimationWithContent:content animationKey:animationKey beginTime:beginTime duration:duration bezierPath:path autoRotate:autoRotate];
 }
 

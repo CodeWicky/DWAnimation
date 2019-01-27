@@ -186,6 +186,16 @@
  
  注：
  当content为nil时，开始动画需配合startAnimationWithContent:使用。
+ 
+ eg.:
+ 
+ CABasicAnimation * aniP = [CABasicAnimation animationWithKeyPath:@"position"];
+ aniP.toValue = [NSValue valueWithCGPoint:self.view.center];
+ aniP.fromValue = [NSValue valueWithCGPoint:self.redView.center];
+ aniP.duration = 0.4;
+ aniP.beginTime = 1;
+ self.a = [[DWAnimation alloc] initAnimationWithContent:self.redView.layer animationKey:@"arrAni" beginTime:1 duration:1.4 animations:@[aniP]];
+ 
  */
 -(instancetype)initAnimationWithContent:(id)content
                            animationKey:(NSString *)animationKey
@@ -206,13 +216,18 @@
  注：
  1.由于Api中会对Layer的一些属性按需做预处理，如果content传入nil，
  请自行处理borderWidth/shadowOpacity默认值以保证动画正常展示。
- 2.当content为nil时，开始动画需配合startAnimationWithContent:使用。
- 3.animationType的默认属性为DWAnimationTypeMove
+ 2.animationType的默认属性为DWAnimationTypeMove
  values中第一个数据为动画的初始状态，之后的数据为状
  态节点。timeIntervals是当前状态节点距上一节点的时
  间间隔。如：timeIntervals的第一个数据为第一个状态
  节点距初始状态的时间间隔。故timeIntervals数组元素
  个数应该比values元素个数少1。若参数不正确，则返回nil。
+ 3.当content为nil时，开始动画需配合startAnimationWithContent:使用。
+ 
+ eg.:
+ 
+ self.a = [[DWAnimation alloc] initAnimationWithContent:self.redView.layer animationType:(DWAnimationTypeMove) animationKey:@"timeIntervalAnimation" beginTime:1 values:@[[NSValue valueWithCGPoint:CGPointMake(100, 100)],[NSValue valueWithCGPoint:CGPointMake(200, 100)],[NSValue valueWithCGPoint:CGPointMake(200, 200)],[NSValue valueWithCGPoint:CGPointMake(100, 200)],[NSValue valueWithCGPoint:CGPointMake(100, 100)]] timeIntervals:@[@1,@2,@3,@1] transition:NO];
+ 
  */
 -(instancetype)initAnimationWithContent:(id)content
                           animationType:(DWAnimationType)animationType
@@ -233,6 +248,12 @@
  
  注：
  当content为nil时，开始动画需配合startAnimationWithContent:使用。
+ 
+ eg.:
+ 
+ UIBezierPath * bp = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(self.view.center.x - 100, self.view.center.y - 100, 200, 200)];
+ self.a = [[DWAnimation alloc] initAnimationWithContent:self.redView.layer animationKey:@"bezierAnimation" beginTime:2 duration:5 bezierPath:bp autoRotate:YES];
+ 
  */
 -(instancetype)initAnimationWithContent:(id)content
                            animationKey:(NSString *)animationKey
@@ -255,7 +276,13 @@
  autoRotate         是否跟随弧线自动旋转
  
  注：
- 当content为nil时，开始动画需配合startAnimationWithContent:使用。
+ 1.度数为角度制
+ 2.0度为水平向右方向，顺时针方向为正方向。
+ 3.当content为nil时，开始动画需配合startAnimationWithContent:使用。
+ 
+ eg.:
+ self.a = [[DWAnimation alloc] initAnimationWithContent:self.redView.layer animationKey:@"arcAnimation" beginTime:2 duration:1 arcCenter:CGPointMake(self.view.center.x, self.view.center.y - 100) radius:200 startAngle:120 endAngle:60 clockwise:NO autoRotate:YES];
+ 
  */
 -(instancetype)initAnimationWithContent:(id)content
                            animationKey:(NSString *)animationKey
@@ -287,6 +314,10 @@
  请自行处理borderWidth/shadowOpacity默认值以保证动画正常展示。
  2.当content为nil时，开始动画需配合startAnimationWithContent:使用。
  3.fromValue与toValue，均为UIKit中对象类型，如NSValue/NSNumber/UIColor/UIBezierPath/UIImage。
+ 
+ eg.:
+ self.a = [[DWAnimation alloc] initAnimationWithContent:self.redView.layer animationKey:@"arcAnimation" beginTime:2 duration:1 arcCenter:CGPointMake(self.view.center.x, self.view.center.y - 100) radius:200 startAngle:120 endAngle:60 clockwise:NO autoRotate:YES];
+ 
  */
 -(instancetype)initAnimationWithContent:(id)content
                            animationKey:(NSString *)animationKey
