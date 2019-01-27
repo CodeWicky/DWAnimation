@@ -56,8 +56,8 @@ typedef NS_ENUM(NSInteger ,DWAnimationSpringType) {
 
 typedef NS_ENUM(NSInteger ,DWAnimationStatus) {
     DWAnimationStatusReadyToShow,///具备播放条件状态
-    DWAnimationStatusPlay,///播放状态
-    DWAnimationStatusSuspend,///暂停状态
+    DWAnimationStatusPlaying,///播放状态
+    DWAnimationStatusSuspended,///暂停状态
     DWAnimationStatusFinished,///播放完成状态
     DWAnimationStatusRemoved///移除状态
 };

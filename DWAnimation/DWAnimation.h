@@ -125,8 +125,8 @@
 @class DWAnimationMaker;
 @interface DWAnimation : DWAnimationAbstraction
 
-///动画组对象
-@property (nonatomic ,strong) CAAnimationGroup * animation;
+///动画对象
+@property (nonatomic ,strong) __kindof CAAnimation * animation;
 
 ///动画标识
 @property (nonatomic ,copy) NSString * animationKey;

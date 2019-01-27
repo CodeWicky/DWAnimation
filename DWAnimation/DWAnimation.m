@@ -12,6 +12,7 @@
 #define IllegalContentReturnNil \
 {\
 if (content && ![content isKindOfClass:[UIView class]] && ![content isKindOfClass:[CALayer class]]) {\
+NSAssert(NO, @"Illegal content type to initialize animation.Content should be kind of UIView or CALayer or nil.");\
 return nil;\
 }\
 }
@@ -29,8 +30,7 @@ return nil;\
 ///以block形式创建动画
 -(instancetype)initAnimationWithContent:(id)content
                            animationKey:(NSString *)animationKey
-                       animationCreater:(void(^)(DWAnimationMaker * maker))animationCreater
-{
+                       animationCreater:(void(^)(DWAnimationMaker * maker))animationCreater {
     IllegalContentReturnNil
     if (self = [super init]) {
         _layer = layerFromContent(content);
@@ -51,9 +51,12 @@ return nil;\
 }
 
 ///以数组形式创建动画
--(instancetype)initAnimationWithContent:(id)content animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration animations:(__kindof NSArray<CAAnimation *> *)animations
-{
+-(instancetype)initAnimationWithContent:(id)content animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration animations:(__kindof NSArray<__kindof CAAnimation *> *)animations {
     IllegalContentReturnNil
+    ///空数组返回空
+    if (animations.count == 0) {
+        return nil;
+    }
     if (self = [super init]) {
         [super setBeginTime:beginTime];
         self.duration = duration;
@@ -62,6 +65,13 @@ return nil;\
         _timingFunctionName = @"linear";
         _status = DWAnimationStatusReadyToShow;
         _repeatCount = 1;
+        
+        ///只有一个对象则不需要动画组
+        if (animations.count == 1) {
+            self.animation = animations.firstObject;
+            return self;
+        }
+        
         NSArray * arr = [animations sortedArrayUsingComparator:^NSComparisonResult(CAAnimation * ani1, CAAnimation * ani2) {
             if (ani1.beginTime > ani2.beginTime) {
                 return NSOrderedDescending;
@@ -75,22 +85,19 @@ return nil;\
         }];
         
         CAAnimationGroup * group = [CAAnimationGroup animation];
-        group.timingFunction = [CAMediaTimingFunction functionWithName:kCAAnimationLinear];
+        group.duration = duration;
+        group.beginTime = beginTime;
+        group.repeatCount = 1;
         group.removedOnCompletion = NO;
         group.fillMode = kCAFillModeForwards;
-        group.duration = duration;
         group.animations = arr;
-        group.repeatCount = 1;
-        group.beginTime = beginTime;
         self.animation = group;
     }
     return self;
 }
 
 ///创建连续动画
--(instancetype)initAnimationWithContent:(id)content animationType:(DWAnimationType)animationType animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime values:(NSArray *)values timeIntervals:(NSArray *)timeIntervals transition:(BOOL)transtion
-
-{
+-(instancetype)initAnimationWithContent:(id)content animationType:(DWAnimationType)animationType animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime values:(NSArray *)values timeIntervals:(NSArray *)timeIntervals transition:(BOOL)transtion {
     IllegalContentReturnNil
     CALayer * layer = layerFromContent(content);
     
@@ -277,11 +284,13 @@ return nil;\
         [arrTimes addObject:[NSNumber numberWithFloat:numTemp / duration]];
     }
     CAKeyframeAnimation * animation = [CAKeyframeAnimation animationWithKeyPath:type];
+    animation.duration = duration;
+    animation.beginTime = beginTime;
+    animation.repeatCount = 1;
+    animation.removedOnCompletion = NO;
+    animation.fillMode = kCAFillModeForwards;
     animation.values = values;
     animation.keyTimes = arrTimes;
-    animation.fillMode = kCAFillModeForwards;
-    animation.removedOnCompletion = NO;
-    animation.duration = duration;
     if (transtion) {
         animation.calculationMode = kCAAnimationCubic;
     }
@@ -290,15 +299,15 @@ return nil;\
 
 ///以贝尔塞曲线创建移动动画
 -(instancetype)initAnimationWithContent:(id)content animationKey:(NSString *)animationKey
-                           beginTime:(CGFloat)beginTime duration:(CGFloat)duration bezierPath:(UIBezierPath *)bezierPath autoRotate:(BOOL)autoRotate
-{
+                           beginTime:(CGFloat)beginTime duration:(CGFloat)duration bezierPath:(UIBezierPath *)bezierPath autoRotate:(BOOL)autoRotate {
     IllegalContentReturnNil
     CAKeyframeAnimation * animation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
     animation.duration = duration;
+    animation.beginTime = beginTime;
+    animation.repeatCount = 1;
     animation.removedOnCompletion = NO;
     animation.fillMode = kCAFillModeForwards;
     animation.calculationMode = kCAAnimationCubicPaced;
-    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAAnimationLinear];
     animation.path = bezierPath.CGPath;
     if (autoRotate) {
         animation.rotationMode = kCAAnimationRotateAuto;
@@ -307,16 +316,14 @@ return nil;\
 }
 
 ///创建弧线动画
--(instancetype)initAnimationWithContent:(id)content animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration arcCenter:(CGPoint)center radius:(CGFloat)radius startAngle:(CGFloat)startAngle endAngle:(CGFloat)endAngle clockwise:(BOOL)clockwise autoRotate:(BOOL)autoRotate
-{
+-(instancetype)initAnimationWithContent:(id)content animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration arcCenter:(CGPoint)center radius:(CGFloat)radius startAngle:(CGFloat)startAngle endAngle:(CGFloat)endAngle clockwise:(BOOL)clockwise autoRotate:(BOOL)autoRotate {
     IllegalContentReturnNil
     UIBezierPath * path = [UIBezierPath bezierPathWithArcCenter:center radius:radius startAngle:RadianFromDegree(startAngle) endAngle:RadianFromDegree(endAngle) clockwise:clockwise];
     return [self initAnimationWithContent:content animationKey:animationKey beginTime:beginTime duration:duration bezierPath:path autoRotate:autoRotate];
 }
 
 ///创建震荡动画
--(instancetype)initAnimationWithContent:(id)content animationKey:(NSString *)animationKey springingType:(DWAnimationSpringType)springingType beginTime:(CGFloat)beginTime fromValue:(id)fromValue toValue:(id)toValue mass:(CGFloat)mass stiffness:(CGFloat)stiffness damping:(CGFloat)damping initialVelocity:(CGFloat)initialVelocity
-{
+-(instancetype)initAnimationWithContent:(id)content animationKey:(NSString *)animationKey springingType:(DWAnimationSpringType)springingType beginTime:(CGFloat)beginTime fromValue:(id)fromValue toValue:(id)toValue mass:(CGFloat)mass stiffness:(CGFloat)stiffness damping:(CGFloat)damping initialVelocity:(CGFloat)initialVelocity {
     IllegalContentReturnNil
     CALayer * layer = layerFromContent(content);
     if (!SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(9.0)) {
@@ -392,6 +399,7 @@ return nil;\
         return nil;
     }
     CASpringAnimation * animation = [CASpringAnimation animationWithKeyPath:key];
+    animation.repeatCount = 1;
     animation.removedOnCompletion = NO;
     animation.fillMode = kCAFillModeForwards;
     animation.mass = mass;
@@ -416,9 +424,7 @@ return nil;\
                 CGPoint point = [(NSValue *)toValue CGPointValue];
                 if (!CGPointIsNull((point))) {
                     animation.toValue = toValue;
-                }
-                else
-                {
+                } else {
                     return nil;
                 }
                 if (fromValue) {
@@ -427,18 +433,14 @@ return nil;\
                         animation.fromValue = fromValue;
                     }
                 }
-            }
-            else
-            {
+            } else {
                 CGSize size = [(NSValue *)toValue CGSizeValue];
                 if (!CGSizeIsNull(size)) {
                     animation.toValue = toValue;
                     if (!layer.shadowOpacity) {
                         layer.shadowOpacity = 0.5;
                     }
-                }
-                else
-                {
+                } else {
                     return nil;
                 }
                 if (fromValue) {
@@ -448,7 +450,6 @@ return nil;\
                     }
                 }
             }
-            
             break;
         }
         case DWAnimationSpringTypeRotate:
@@ -478,9 +479,7 @@ return nil;\
                     layer.shadowOpacity = 0.5;
                 }
                 animation.toValue = toValue;
-            }
-            else
-            {
+            } else {
                 return nil;
             }
             if (fromValue) {
@@ -552,32 +551,32 @@ return nil;\
 }
 
 ///创建特殊属性动画
--(instancetype)initAnimationWithContent:(id)content keyPath:(NSString *)keyPath animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration fromValue:(id)fromValue toValue:(id)toValue timingFunctionName:(NSString *)timingFunctionName
-{
+-(instancetype)initAnimationWithContent:(id)content keyPath:(NSString *)keyPath animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration fromValue:(id)fromValue toValue:(id)toValue timingFunctionName:(NSString *)timingFunctionName {
     IllegalContentReturnNil
     CABasicAnimation * animation = [CABasicAnimation animationWithKeyPath:keyPath];
+    animation.duration = duration;
+    animation.beginTime = beginTime;
+    animation.repeatCount = 1;
     animation.removedOnCompletion = NO;
     animation.fillMode = kCAFillModeForwards;
-    animation.duration = duration;
     if (fromValue) {
         animation.fromValue = fromValue;
     }
     animation.toValue = toValue;
-    animation.timingFunction = [CAMediaTimingFunction functionWithName:timingFunctionName];
+    if (timingFunctionName.length) {
+        animation.timingFunction = [CAMediaTimingFunction functionWithName:timingFunctionName];
+    }
     return [self initAnimationWithContent:content animationKey:animationKey beginTime:beginTime duration:duration animations:@[animation]];
 }
 
 ///创建景深旋转动画
--(instancetype)initAnimationWithContent:(id)content animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration rotateStartAngle:(CGFloat)startAngle rotateEndAngle:(CGFloat)endAngle rotateAxis:(Axis)rotateAxis deep:(CGFloat)deep
-{
+-(instancetype)initAnimationWithContent:(id)content animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration rotateStartAngle:(CGFloat)startAngle rotateEndAngle:(CGFloat)endAngle rotateAxis:(Axis)rotateAxis deep:(CGFloat)deep {
     IllegalContentReturnNil
     if (rotateAxis == Z) {
         return [self initAnimationWithContent:content animationKey:animationKey animationCreater:^(DWAnimationMaker *maker) {
             maker.rotateFrom(startAngle).rotateTo(endAngle).beginTime(beginTime).duration(duration).install();
         }];
-    }
-    else
-    {
+    } else {
         CATransform3D fromValue = CATransform3DIdentity;
         fromValue.m34 = -1.f / deep;
         CATransform3D toValue = CATransform3DIdentity;
@@ -585,9 +584,7 @@ return nil;\
         if (rotateAxis == X) {
             fromValue = CATransform3DRotate(fromValue, RadianFromDegree(startAngle), 1, 0, 0);
             toValue = CATransform3DRotate(toValue, RadianFromDegree(endAngle), 1, 0, 0);
-        }
-        else
-        {
+        } else {
             fromValue = CATransform3DRotate(fromValue, RadianFromDegree(startAngle), 0, 1, 0);
             toValue = CATransform3DRotate(toValue, RadianFromDegree(endAngle), 0, 1, 0);
         }
@@ -596,9 +593,10 @@ return nil;\
 }
 
 ///创建拟合锚点移动的旋转动画
--(instancetype)initAnimationWithContent:(id)content animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration rotateStartAngle:(CGFloat)startAngle rotateEndAngle:(CGFloat)endAngle simulateChangeAnchor:(CGPoint)anchor{
+-(instancetype)initAnimationWithContent:(id)content animationKey:(NSString *)animationKey beginTime:(CGFloat)beginTime duration:(CGFloat)duration rotateStartAngle:(CGFloat)startAngle rotateEndAngle:(CGFloat)endAngle simulateChangeAnchor:(CGPoint)anchor {
     IllegalContentReturnNil
     if (!content) {
+        NSAssert(NO, @"SimulateChangeAnchor Animation Can't initialize with nil content!");
         return nil;
     }
     DWAnimation * ro = [self initAnimationWithContent:content animationKey:animationKey animationCreater:^(DWAnimationMaker *maker) {
@@ -635,45 +633,41 @@ return nil;\
 
 #pragma mark ------动画控制方法------
 ///开始播放动画
--(void)start
-{
+-(void)start {
     if (self.layer && self.repeatCount > 0) {
         if (self.status == DWAnimationStatusReadyToShow || self.status == DWAnimationStatusRemoved || self.status == DWAnimationStatusFinished) {
             self.animation.delegate = self;
-            self.animation.beginTime = CACurrentMediaTime() + self.beginTime;
+            self.animation.beginTime = CACurrentMediaTime() + self.beginTime - self.layer.beginTime;
             [self.layer addAnimation:self.animation forKey:self.animationKey];
         }
     }
 }
 
 ///暂停动画
--(void)suspend
-{
-    if (self.status == DWAnimationStatusPlay) {
+-(void)suspend {
+    if (self.status == DWAnimationStatusPlaying) {
         CFTimeInterval pausedTime = [self.layer convertTime:CACurrentMediaTime() fromLayer:nil];
         self.layer.speed = 0.0;
         self.layer.timeOffset = pausedTime;
-        self.status = DWAnimationStatusSuspend;
+        self.status = DWAnimationStatusSuspended;
     }
 }
 
 ///恢复动画
--(void)resume
-{
-    if (self.status == DWAnimationStatusSuspend) {
+-(void)resume {
+    if (self.status == DWAnimationStatusSuspended) {
         CFTimeInterval pausedTime = self.layer.timeOffset;
         self.layer.speed = 1.0;
         self.layer.timeOffset = 0.0;
         self.layer.beginTime = 0.0;
         CFTimeInterval timeSincePause = [self.layer convertTime:CACurrentMediaTime() fromLayer:nil] - pausedTime;
         self.layer.beginTime = timeSincePause;
-        self.status = DWAnimationStatusPlay;
+        self.status = DWAnimationStatusPlaying;
     }
 }
 
 ///移除动画
--(void)remove
-{
+-(void)remove {
     if (self.status != DWAnimationStatusRemoved) {
         self.repeatCount = 0;
         [self.layer removeAnimationForKey:self.animationKey];
@@ -802,6 +796,11 @@ return nil;\
 ///为以贝塞尔曲线创建的动画的每段子路径设置时间
 -(void)setTimeIntervals:(NSArray<NSNumber *> *)timeIntervals
 {
+    
+    if (![self.animation isKindOfClass:[CAKeyframeAnimation class]]) {
+        return;
+    }
+    
     NSMutableArray * arr = [NSMutableArray arrayWithArray:@[@0]];
     __block float duration = 0;
     [timeIntervals enumerateObjectsUsingBlock:^(NSNumber * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -812,7 +811,7 @@ return nil;\
         time += obj.floatValue;
         [arr addObject:@(time / duration)];
     }];
-    CAKeyframeAnimation * animation =(CAKeyframeAnimation *)self.animation.animations.firstObject;
+    CAKeyframeAnimation * animation =(CAKeyframeAnimation *)self.animation;
     animation.keyTimes = arr;
 }
 
@@ -820,7 +819,7 @@ return nil;\
 
 -(void)animationDidStart:(CAAnimation *)anim
 {
-    self.status = DWAnimationStatusPlay;
+    self.status = DWAnimationStatusPlaying;
     if (self.animationStart) {
         __weak typeof(self)weakSelf = self;
         self.animationStart(weakSelf);

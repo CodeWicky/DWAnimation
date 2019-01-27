@@ -40,7 +40,11 @@
 //    [self testArrAnimation];
 //    [self testTimeIntervalAnimation];
 //    [self testBezierAnimation];
-    [self testArcAnimation];
+//    [self testArcAnimation];
+//    [self testSpringAnimation];
+//    [self testKeyPathAnimation];
+//    [self testRotateAxisAnimation];
+    [self testSimulateChangeAnchorAnimation];
     
 //    CASpringAnimation * animation = [CASpringAnimation animationWithKeyPath:@"position"];
 //    animation.beginTime = 10;
@@ -241,8 +245,11 @@
     [self.view addSubview:self.redView];
     self.redView.center = self.view.center;
     __weak typeof(self)weakSelf = self;
-    UIBezierPath * bp = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(self.view.center.x - 100, self.view.center.y - 100, 200, 200)];
-    self.a = [[DWAnimation alloc] initAnimationWithContent:self.redView.layer animationKey:@"bezierAnimation" beginTime:2 duration:5 bezierPath:bp autoRotate:YES];
+    UIBezierPath * bp = [UIBezierPath bezierPath];
+    [bp moveToPoint:CGPointMake(self.view.center.x - 100, self.view.center.y)];
+    [bp addArcWithCenter:CGPointMake(self.view.center.x - 50, self.view.center.y) radius:50 startAngle:-M_PI endAngle:0 clockwise:YES];
+    [bp addArcWithCenter:CGPointMake(self.view.center.x + 50, self.view.center.y) radius:50 startAngle:M_PI endAngle:0 clockwise:NO];
+    self.a = [[DWAnimation alloc] initAnimationWithContent:self.redView.layer animationKey:@"bezierAnimation" beginTime:0 duration:5 bezierPath:bp autoRotate:YES];
     self.a.repeatCount = 2;
     self.touchAction = ^{
         [weakSelf.a start];
@@ -253,6 +260,42 @@
     [self.view addSubview:self.redView];
     __weak typeof(self)weakSelf = self;
     self.a = [[DWAnimation alloc] initAnimationWithContent:self.redView.layer animationKey:@"arcAnimation" beginTime:2 duration:1 arcCenter:CGPointMake(self.view.center.x, self.view.center.y - 100) radius:200 startAngle:120 endAngle:60 clockwise:NO autoRotate:YES];
+    self.touchAction = ^{
+        [weakSelf.a start];
+    };
+}
+
+-(void)testSpringAnimation {
+    [self.view addSubview:self.redView];
+    __weak typeof(self)weakSelf = self;
+    self.a = [[DWAnimation alloc] initAnimationWithContent:self.redView animationKey:@"springAnimation" springingType:(DWAnimationSpringTypeScale) beginTime:2 fromValue:@0 toValue:@1 mass:1 stiffness:100 damping:10 initialVelocity:0];
+    self.touchAction = ^{
+        [weakSelf.a start];
+    };
+}
+
+-(void)testKeyPathAnimation {
+    [self.view addSubview:self.redView];
+    __weak typeof(self)weakSelf = self;
+    self.a = [[DWAnimation alloc] initAnimationWithContent:self.redView keyPath:@"position" animationKey:@"keyPathAnimation" beginTime:2 duration:2 fromValue:[NSValue valueWithCGPoint:CGPointMake(100, 100)] toValue:[NSValue valueWithCGPoint:CGPointMake(200, 200)] timingFunctionName:nil];
+    self.touchAction = ^{
+        [weakSelf.a start];
+    };
+}
+
+-(void)testRotateAxisAnimation {
+    [self.view addSubview:self.redView];
+    __weak typeof(self)weakSelf = self;
+    self.a = [[DWAnimation alloc] initAnimationWithContent:self.redView animationKey:@"axisAnimation" beginTime:0 duration:2 rotateStartAngle:0 rotateEndAngle:-180 rotateAxis:X deep:300];
+    self.touchAction = ^{
+        [weakSelf.a start];
+    };
+}
+
+-(void)testSimulateChangeAnchorAnimation {
+    [self.view addSubview:self.redView];
+    __weak typeof(self)weakSelf = self;
+    self.a = [[DWAnimation alloc] initAnimationWithContent:self.redView animationKey:@"simulateAnimation" beginTime:2 duration:2 rotateStartAngle:0 rotateEndAngle:360 simulateChangeAnchor:CGPointMake(1, 0.5)];
     self.touchAction = ^{
         [weakSelf.a start];
     };
@@ -277,14 +320,21 @@
 {
     NSDictionary * dic = notice.object;
     DWAnimation * animaiton = dic[@"animation"];
-    NSLog(@"start:%@",animaiton.animationKey);
+    NSLog(@"start:%@",animaiton.animation);
 }
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    if (self.touchAction) {
-        self.touchAction();
+    
+    if (self.a.status == DWAnimationStatusPlaying ) {
+        [self.a suspend];
+    } else if (self.a.status == DWAnimationStatusSuspended) {
+        [self.a resume];
+    } else {
+        if (self.touchAction) {
+            self.touchAction();
+        }
+        [self timing];
     }
-    [self timing];
 }
 
 -(UIView *)redView {
