@@ -37,14 +37,15 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(start:) name:DWAnimationPlayStartNotification object:nil];
     [self.view addSubview:self.timeLb];
 //    [self testMakerAnimation];
-//    [self testArrAnimation];
+    [self testArrAnimation];
 //    [self testTimeIntervalAnimation];
 //    [self testBezierAnimation];
 //    [self testArcAnimation];
 //    [self testSpringAnimation];
 //    [self testKeyPathAnimation];
 //    [self testRotateAxisAnimation];
-    [self testSimulateChangeAnchorAnimation];
+//    [self testSimulateChangeAnchorAnimation];
+//    [self testBeginTimeRepeat];
     
 //    CASpringAnimation * animation = [CASpringAnimation animationWithKeyPath:@"position"];
 //    animation.beginTime = 10;
@@ -202,6 +203,22 @@
 //    self.a = ani;
 }
 
+-(void)testBeginTimeRepeat {
+    [self.view addSubview:self.redView];
+    CABasicAnimation * ani = [CABasicAnimation animationWithKeyPath:@"backgroundColor"];
+    ani.fromValue = (id)[UIColor redColor].CGColor;
+    ani.toValue = (id)[UIColor blueColor].CGColor;
+//    ani.beginTime = 2 + ani.beginTime;
+    ani.duration = 1;
+    ani.repeatCount = 3;
+    ani.removedOnCompletion = NO;
+    ani.fillMode = kCAFillModeForwards;
+    self.touchAction = ^{
+        ani.beginTime = CACurrentMediaTime() + 2;
+        [self.redView.layer addAnimation:ani forKey:@"aaaa"];
+    };
+}
+
 -(void)testMakerAnimation {
     [self.view addSubview:self.redView];
     self.a = [[DWAnimation alloc] initAnimationWithContent:self.redView animationKey:@"redAni" animationCreater:^(DWAnimationMaker *maker) {
@@ -222,8 +239,17 @@
     aniP.duration = 0.4;
     aniP.beginTime = 1;
     
-    self.a = [[DWAnimation alloc] initAnimationWithContent:self.redView.layer animationKey:@"arrAni" beginTime:1 duration:1.4 animations:@[aniP]];
-    self.a.repeatCount = 2;
+    CABasicAnimation * ani = [CABasicAnimation animationWithKeyPath:@"backgroundColor"];
+    ani.fromValue = (id)[UIColor redColor].CGColor;
+    ani.toValue = (id)[UIColor blueColor].CGColor;
+    ani.beginTime = 1;
+    ani.duration = 2;
+    ani.repeatCount = 3;
+    ani.removedOnCompletion = NO;
+    ani.fillMode = kCAFillModeForwards;
+    
+    self.a = [[DWAnimation alloc] initAnimationWithContent:self.redView.layer animationKey:@"arrAni" beginTime:1 duration:10 animations:@[ani,aniP]];
+//    self.a.repeatCount = 2;
     __weak typeof(self)weakSelf = self;
     self.touchAction = ^{
         [weakSelf.a start];

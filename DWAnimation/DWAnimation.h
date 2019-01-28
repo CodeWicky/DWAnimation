@@ -453,7 +453,7 @@
  animaitonKey   组合后的动画的Key，可为nil或空，若为nil则以默认规则生成Key
  */
 +(DWAnimation *)combineAnimationsInArray:(__kindof NSArray<DWAnimation *> *)animations
-                            animationKey:(NSString *)animaitonKey;
+                            animationKey:(NSString *)animationKey;
 
 ///创建恢复原状的动画
 /**
