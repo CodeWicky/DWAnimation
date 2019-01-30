@@ -203,7 +203,7 @@
                                duration:(CGFloat)duration
                              animations:(__kindof NSArray<CAAnimation *> *)animations;
 
-///以多个状态及时间间隔创建连续动画
+///以关键帧创建动画
 /**
  content            将要展示动画的视图，可选类型，CALayer，UIView，nil
  animationType      创建的动画类型

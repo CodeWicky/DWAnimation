@@ -1,0 +1,3 @@
+target 'DWAnimation' do
+pod 'DWAnimation' ,:path =>'../'
+end

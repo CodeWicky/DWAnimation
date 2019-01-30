@@ -1,0 +1,16 @@
+PODS:
+  - DWAnimation (1.1.10)
+
+DEPENDENCIES:
+  - DWAnimation (from `../`)
+
+EXTERNAL SOURCES:
+  DWAnimation:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  DWAnimation: 63a6b37d42361e17c46a2751c98527fa2eb1bc53
+
+PODFILE CHECKSUM: 2edf4c683ed7ac05f3aca6b7acd16427ace0fac6
+
+COCOAPODS: 1.5.3
