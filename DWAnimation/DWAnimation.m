@@ -406,6 +406,7 @@ return nil;\
         return nil;
     }
     CASpringAnimation * animation = [CASpringAnimation animationWithKeyPath:key];
+    animation.beginTime = beginTime;
     animation.repeatCount = 1;
     animation.removedOnCompletion = NO;
     animation.fillMode = kCAFillModeForwards;
@@ -685,7 +686,7 @@ return nil;\
 #pragma mark ------动画编辑方法------
 
 ///拼接两个动画
--(DWAnimation *)addAnimation:(DWAnimation *)animation animationKey:(NSString *)animationKey {
+-(DWAnimation *)appendAnimation:(DWAnimation *)animation animationKey:(NSString *)animationKey {
     CALayer * layer = self.layer;
     if (![layer isEqual:animation.layer]) {
         return self;
@@ -721,8 +722,8 @@ return nil;\
     [animations enumerateObjectsUsingBlock:^(DWAnimation * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if (obj.animation && [layer isEqual:obj.layer]) {
             obj.beginTime += duration;
-            duration += obj.actualDuration;
-            [tmp addObject:obj];
+            duration = obj.actualDuration;
+            [tmp addObject:obj.animation];
             if (buildKey) {
                 if (!key) {
                     key = obj.animationKey;

@@ -421,7 +421,7 @@
  注：拼接动画会改变调用对象及添加对象的beginTime，且具有累计效应。
  故参与添加动画后，仅返回的动画实例具有正确动画效果，调用对象和添加均不能正确展示。
  */
--(DWAnimation *)addAnimation:(DWAnimation *)animation
+-(DWAnimation *)appendAnimation:(DWAnimation *)animation
        animationKey:(NSString *)animationKey;
 
 ///按顺序拼接数组中的所有动画
@@ -457,7 +457,7 @@
 
 ///创建恢复原状的动画
 /**
- 注：特殊属性动画不在恢复动画范围内，请自行恢复。
+ 注：特殊属性动画不在恢复动画范围内，请自行恢复。恢复并不是倒放一遍动画，而是以最快捷的方式恢复初始状态，比如最开始旋转至365度，那么恢复时只反转5度
  */
 +(DWAnimation *)createResetAnimationWithContent:(id)content
                                    animationKey:(NSString *)animationKey

@@ -58,6 +58,11 @@
                      @"KeyPathAnimationViewController",
                      @"RotateAxisAnimationViewController",
                      @"SimulateChangeAnchorViewController",
+                     @"AppendAnimationViewController",
+                     @"CreateAnimationViewController",
+                     @"CombineAnimationViewController",
+                     @"CombineAnimationsInArrayViewController",
+                     @"ResetAnimationViewController",
                      ];
     }
     return _dataArr;
@@ -75,6 +80,11 @@
                       @"生成特殊属性动画",
                       @"改变旋转轴，带透视效果的旋转动画",
                       @"拟合锚点改变的旋转动画",
+                      @"拼接两个动画",
+                      @"以多个DWAnimation串行拼接成新动画",
+                      @"组合两个DWAnimation为一个新动画",
+                      @"组合数组中的所有DWAnimation为一个新动画",
+                      @"创建恢复动画",
                       ];
     }
     return _titleArr;

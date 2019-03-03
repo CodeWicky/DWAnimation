@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		3C7344E8F6DF7EE455A1FC44 /* libPods-DWAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E019D9BE16BFE209A968D2A /* libPods-DWAnimation.a */; };
+		9B244007222C185B004A6E34 /* AppendAnimationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B244006222C185B004A6E34 /* AppendAnimationViewController.m */; };
+		9B24400A222C1BBD004A6E34 /* CreateAnimationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B244009222C1BBD004A6E34 /* CreateAnimationViewController.m */; };
+		9B24400D222C2173004A6E34 /* CombineAnimationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B24400C222C2173004A6E34 /* CombineAnimationViewController.m */; };
+		9B244010222C224A004A6E34 /* CombineAnimationsInArrayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B24400F222C224A004A6E34 /* CombineAnimationsInArrayViewController.m */; };
+		9B244013222C232D004A6E34 /* ResetAnimationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B244012222C232D004A6E34 /* ResetAnimationViewController.m */; };
 		9B6ED65C22005146003BB1EA /* MakerAnimationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B6ED65B22005146003BB1EA /* MakerAnimationViewController.m */; };
 		9B6ED65F2200516E003BB1EA /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B6ED65E2200516E003BB1EA /* BaseViewController.m */; };
 		9B6ED66222006048003BB1EA /* ArrAnimationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B6ED66122006048003BB1EA /* ArrAnimationViewController.m */; };
@@ -30,6 +35,16 @@
 		1C8A16F8DC132DC54A7798A4 /* Pods-DWAnimation.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DWAnimation.release.xcconfig"; path = "Pods/Target Support Files/Pods-DWAnimation/Pods-DWAnimation.release.xcconfig"; sourceTree = "<group>"; };
 		2E019D9BE16BFE209A968D2A /* libPods-DWAnimation.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DWAnimation.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		92E7299B0B5FA8690B7AE241 /* Pods-DWAnimation.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DWAnimation.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DWAnimation/Pods-DWAnimation.debug.xcconfig"; sourceTree = "<group>"; };
+		9B244005222C185B004A6E34 /* AppendAnimationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppendAnimationViewController.h; sourceTree = "<group>"; };
+		9B244006222C185B004A6E34 /* AppendAnimationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppendAnimationViewController.m; sourceTree = "<group>"; };
+		9B244008222C1BBD004A6E34 /* CreateAnimationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreateAnimationViewController.h; sourceTree = "<group>"; };
+		9B244009222C1BBD004A6E34 /* CreateAnimationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreateAnimationViewController.m; sourceTree = "<group>"; };
+		9B24400B222C2173004A6E34 /* CombineAnimationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CombineAnimationViewController.h; sourceTree = "<group>"; };
+		9B24400C222C2173004A6E34 /* CombineAnimationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CombineAnimationViewController.m; sourceTree = "<group>"; };
+		9B24400E222C224A004A6E34 /* CombineAnimationsInArrayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CombineAnimationsInArrayViewController.h; sourceTree = "<group>"; };
+		9B24400F222C224A004A6E34 /* CombineAnimationsInArrayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CombineAnimationsInArrayViewController.m; sourceTree = "<group>"; };
+		9B244011222C232D004A6E34 /* ResetAnimationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResetAnimationViewController.h; sourceTree = "<group>"; };
+		9B244012222C232D004A6E34 /* ResetAnimationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ResetAnimationViewController.m; sourceTree = "<group>"; };
 		9B6ED65A22005146003BB1EA /* MakerAnimationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MakerAnimationViewController.h; sourceTree = "<group>"; };
 		9B6ED65B22005146003BB1EA /* MakerAnimationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MakerAnimationViewController.m; sourceTree = "<group>"; };
 		9B6ED65D2200516E003BB1EA /* BaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
@@ -128,6 +143,16 @@
 				9B6ED66422006373003BB1EA /* TimeIntervalAnimationViewController.m */,
 				9B6ED66622006795003BB1EA /* BezierAnimationViewController.h */,
 				9B6ED66722006795003BB1EA /* BezierAnimationViewController.m */,
+				9B244005222C185B004A6E34 /* AppendAnimationViewController.h */,
+				9B244006222C185B004A6E34 /* AppendAnimationViewController.m */,
+				9B244008222C1BBD004A6E34 /* CreateAnimationViewController.h */,
+				9B244009222C1BBD004A6E34 /* CreateAnimationViewController.m */,
+				9B24400B222C2173004A6E34 /* CombineAnimationViewController.h */,
+				9B24400C222C2173004A6E34 /* CombineAnimationViewController.m */,
+				9B24400E222C224A004A6E34 /* CombineAnimationsInArrayViewController.h */,
+				9B24400F222C224A004A6E34 /* CombineAnimationsInArrayViewController.m */,
+				9B244011222C232D004A6E34 /* ResetAnimationViewController.h */,
+				9B244012222C232D004A6E34 /* ResetAnimationViewController.m */,
 				9BFD535220DB54FE00356DEC /* Main.storyboard */,
 				9BFD535520DB550000356DEC /* Assets.xcassets */,
 				9BFD535720DB550000356DEC /* LaunchScreen.storyboard */,
@@ -239,6 +264,7 @@
 			files = (
 				9B6ED65F2200516E003BB1EA /* BaseViewController.m in Sources */,
 				9B6ED6742201C69F003BB1EA /* RotateAxisAnimationViewController.m in Sources */,
+				9B244010222C224A004A6E34 /* CombineAnimationsInArrayViewController.m in Sources */,
 				9B6ED66822006795003BB1EA /* BezierAnimationViewController.m in Sources */,
 				9B6ED66E220068F8003BB1EA /* SpringAnimationViewController.m in Sources */,
 				9B6ED66222006048003BB1EA /* ArrAnimationViewController.m in Sources */,
@@ -249,7 +275,11 @@
 				9BFD534E20DB54FE00356DEC /* AppDelegate.m in Sources */,
 				9B6ED66B22006885003BB1EA /* ArcAnimationViewController.m in Sources */,
 				9B6ED6712201C5B6003BB1EA /* KeyPathAnimationViewController.m in Sources */,
+				9B244013222C232D004A6E34 /* ResetAnimationViewController.m in Sources */,
 				9B6ED6772201CECA003BB1EA /* SimulateChangeAnchorViewController.m in Sources */,
+				9B244007222C185B004A6E34 /* AppendAnimationViewController.m in Sources */,
+				9B24400D222C2173004A6E34 /* CombineAnimationViewController.m in Sources */,
+				9B24400A222C1BBD004A6E34 /* CreateAnimationViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -393,6 +423,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Z26Y87B8NH;
 				INFOPLIST_FILE = DWAnimation/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -411,6 +442,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Z26Y87B8NH;
 				INFOPLIST_FILE = DWAnimation/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
