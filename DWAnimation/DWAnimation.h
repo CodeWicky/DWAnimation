@@ -444,7 +444,7 @@
  组合的动画的view应该为同一对象，否则返回自身
  若要实现不同view的动画并发执行，请调用DWAnimationManager中相关api
  */
--(DWAnimation *)combineWithAnimation:(DWAnimation *)animaiton
+-(DWAnimation *)combineWithAnimation:(DWAnimation *)animation
                         animationKey:(NSString *)animationKey;
 
 ///并发组合数组中的动画

@@ -747,16 +747,16 @@ return nil;\
 }
 
 ///并发组合两个动画
--(DWAnimation *)combineWithAnimation:(DWAnimation *)animaiton animationKey:(NSString *)animationKey {
-    if (![self.layer isEqual:animaiton.layer]) {
+-(DWAnimation *)combineWithAnimation:(DWAnimation *)animation animationKey:(NSString *)animationKey {
+    if (![self.layer isEqual:animation.layer]) {
         return self;
     }
     NSMutableArray * arr = [NSMutableArray array];
     [arr addObject:self.animation];
-    [arr addObject:animaiton.animation];
-    CGFloat duration = MAX(self.actualDuration, animaiton.actualDuration);
+    [arr addObject:animation.animation];
+    CGFloat duration = MAX(self.actualDuration, animation.actualDuration);
     if (animationKey == nil || animationKey.length == 0) {
-        animationKey = [NSString stringWithFormat:@"(%@_COMBINE_%@)",self.animationKey,animaiton.animationKey];
+        animationKey = [NSString stringWithFormat:@"(%@_COMBINE_%@)",self.animationKey,animation.animationKey];
     }
     return [[DWAnimation alloc] initAnimationWithContent:self.layer animationKey:animationKey beginTime:0 duration:duration animations:arr];
 }
