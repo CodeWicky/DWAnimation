@@ -8,6 +8,7 @@
 
 #import "ManagerSingleAnimationViewController.h"
 #import <DWAnimationManager.h>
+#import <DWAnimationGroup.h>
 
 @interface ManagerSingleAnimationViewController ()
 
@@ -40,10 +41,11 @@
             maker.backgroundColorTo([UIColor yellowColor]).duration(1).install();
         }];
         
+        DWAnimationGroup * group = [[DWAnimationGroup alloc] initWithAnimations:@[redAni,greenAni]];
+        
         DWAnimation * blueAni = [[DWAnimation alloc] initAnimationWithContent:weakSelf.blueView animationKey:@"blue" beginTime:1 duration:2 rotateStartAngle:0 rotateEndAngle:90 rotateAxis:X deep:300];
         
-        
-        [DWAnimationManager startAnimations:@[redAni,greenAni,blueAni] playMode:(DWAnimationPlayModeSingle)];
+        [DWAnimationManager startAnimations:@[group,blueAni] playMode:(DWAnimationPlayModeSingle)];
     };
 }
 

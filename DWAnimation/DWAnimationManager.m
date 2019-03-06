@@ -8,18 +8,20 @@
 
 #import "DWAnimationManager.h"
 #import "DWAnimation.h"
+#import "DWAnimationGroup.h"
+#import "DWAnimationAbstraction.h"
 
 @implementation DWAnimationManager
 
 ///按顺序执行一组动画
-+(void)startSingleAnimations:(__kindof NSArray<__kindof DWAnimation *> *)animations
++(void)startSingleAnimations:(__kindof NSArray<__kindof DWAnimationAbstraction *> *)animations
 {
     if (!animations.count) {
         return;
     }
     __block float startTime = 0;
     
-    [animations enumerateObjectsUsingBlock:^(DWAnimation * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [animations enumerateObjectsUsingBlock:^(__kindof DWAnimationAbstraction * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         obj.beginTime += startTime;
         startTime += [[obj valueForKey:@"actualDuration"] floatValue];
         [obj start];
@@ -27,33 +29,40 @@
 }
 
 ///并发执行不同view的动画
-+(void)startMultiAnimations:(__kindof NSArray<DWAnimation *> *)animations
++(void)startMultiAnimations:(__kindof NSArray<__kindof DWAnimationAbstraction *> *)animations
 {
     NSMutableArray * arr = [NSMutableArray array];
     NSMutableDictionary * dic = [NSMutableDictionary dictionary];
     
-    [animations enumerateObjectsUsingBlock:^(DWAnimation * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        CALayer * layer = obj.layer;
-        if (![arr containsObject:layer]) {
-            [arr addObject:layer];
+    [animations enumerateObjectsUsingBlock:^(__kindof DWAnimationAbstraction * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([obj isKindOfClass:[DWAnimationGroup class]]) {
+            [dic setValue:obj forKey:[NSString stringWithFormat:@"%p",obj]];
+        } else if ([obj isKindOfClass:[DWAnimation class]]) {
+            CALayer * layer = ((DWAnimation *)obj).layer;
+            if (![arr containsObject:layer]) {
+                [arr addObject:layer];
+            }
+            NSString * key = [NSString stringWithFormat:@"%lu",(unsigned long)[arr indexOfObject:layer]];
+            NSMutableArray * array = dic[key];
+            if (!array) {
+                array = [NSMutableArray array];
+                [dic setValue:array forKey:key];
+            }
+            [array addObject:obj];
         }
-        NSString * key = [NSString stringWithFormat:@"%lu",(unsigned long)[arr indexOfObject:layer]];
-        NSMutableArray * array = dic[key];
-        if (!array) {
-            array = [NSMutableArray array];
-            [dic setValue:array forKey:key];
-        }
-        [array addObject:obj];
     }];
     
     [dic enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-        [[DWAnimation createAnimationWithAnimations:obj animationKey:nil] start];
+        if ([obj isKindOfClass:[DWAnimationAbstraction class]]) {
+            [(DWAnimationAbstraction *)obj start];
+        } else if ([obj isKindOfClass:[NSArray class]]) {
+            [[DWAnimation createAnimationWithAnimations:obj animationKey:nil] start];
+        }
     }];
-    
 }
 
 ///根据不同的模式播放动画
-+(void)startAnimations:(__kindof NSArray<DWAnimation *> *)animations playMode:(DWAnimationPlayMode)playMode
++(void)startAnimations:(__kindof NSArray<__kindof DWAnimationAbstraction *> *)animations playMode:(DWAnimationPlayMode)playMode
 {
     switch (playMode) {
         case DWAnimationPlayModeSingle:

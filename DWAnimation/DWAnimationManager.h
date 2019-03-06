@@ -22,7 +22,7 @@
  */
 
 #import <UIKit/UIKit.h>
-@class DWAnimation;
+@class DWAnimationAbstraction;
 
 typedef NS_ENUM(NSInteger , DWAnimationPlayMode) {
     DWAnimationPlayModeMulti,///不同view分线处理
@@ -35,5 +35,5 @@ typedef NS_ENUM(NSInteger , DWAnimationPlayMode) {
 /*
  animations     以DWAnimation对象组成的数组
  */
-+(void)startAnimations:(__kindof NSArray<__kindof DWAnimation *> *)animations playMode:(DWAnimationPlayMode)playMode;
++(void)startAnimations:(__kindof NSArray<__kindof DWAnimationAbstraction *> *)animations playMode:(DWAnimationPlayMode)playMode;
 @end

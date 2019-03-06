@@ -8,6 +8,7 @@
 
 #import "ManagerMultiAnimationViewController.h"
 #import <DWAnimationManager.h>
+#import <DWAnimationGroup.h>
 
 @interface ManagerMultiAnimationViewController ()
 
@@ -36,14 +37,17 @@
             maker.scaleTo(2).duration(2).install();
         }];
         
+        
+        
         DWAnimation * greenAni = [[DWAnimation alloc] initAnimationWithContent:weakSelf.greenView animationKey:@"green" animationCreater:^(DWAnimationMaker *maker) {
             maker.backgroundColorTo([UIColor yellowColor]).duration(1).install();
         }];
         
-        DWAnimation * blueAni = [[DWAnimation alloc] initAnimationWithContent:weakSelf.blueView animationKey:@"blue" beginTime:1 duration:2 rotateStartAngle:0 rotateEndAngle:90 rotateAxis:X deep:300];
+        DWAnimation * blueAni = [[DWAnimation alloc] initAnimationWithContent:weakSelf.blueView animationKey:@"blue" beginTime:0 duration:2 rotateStartAngle:0 rotateEndAngle:90 rotateAxis:X deep:300];
         
-        
-        [DWAnimationManager startAnimations:@[redAni,greenAni,blueAni] playMode:(DWAnimationPlayModeMulti)];
+        DWAnimationGroup * group = [[DWAnimationGroup alloc] initWithAnimations:@[greenAni,blueAni]];
+        group.beginTime = 2;
+        [DWAnimationManager startAnimations:@[redAni,group] playMode:(DWAnimationPlayModeMulti)];
     };
 }
 
