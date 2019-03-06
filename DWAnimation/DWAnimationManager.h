@@ -18,7 +18,7 @@
  完善以数组播放api，两种播放模式
  
  version 1.0.2
- 配合DWAnimation中改造beginTime
+ 配合DWAnimation中改造beginTime,修改为enumerate
  */
 
 #import <UIKit/UIKit.h>

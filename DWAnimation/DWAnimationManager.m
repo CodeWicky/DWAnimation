@@ -31,8 +31,9 @@
 {
     NSMutableArray * arr = [NSMutableArray array];
     NSMutableDictionary * dic = [NSMutableDictionary dictionary];
-    for (DWAnimation * animation in animations) {
-        CALayer * layer = animation.layer;
+    
+    [animations enumerateObjectsUsingBlock:^(DWAnimation * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        CALayer * layer = obj.layer;
         if (![arr containsObject:layer]) {
             [arr addObject:layer];
         }
@@ -42,11 +43,13 @@
             array = [NSMutableArray array];
             [dic setValue:array forKey:key];
         }
-        [array addObject:animation];
-    }
-    for (NSMutableArray * arrValue in dic.allValues) {
-        [[DWAnimation createAnimationWithAnimations:arrValue animationKey:nil] start];
-    }
+        [array addObject:obj];
+    }];
+    
+    [dic enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+        [[DWAnimation createAnimationWithAnimations:obj animationKey:nil] start];
+    }];
+    
 }
 
 ///根据不同的模式播放动画
