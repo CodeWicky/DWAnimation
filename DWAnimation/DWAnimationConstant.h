@@ -15,11 +15,6 @@ typedef NS_ENUM(NSInteger , Axis) {
     Y///y轴为旋转轴
 };
 
-typedef NS_ENUM(NSInteger , DWAnimationPlayMode) {
-    DWAnimationPlayModeMulti,///不同view分线处理
-    DWAnimationPlayModeSingle///不区分view，按数组顺序播放
-};
-
 typedef NS_ENUM(NSInteger , DWAnimationType) {
     DWAnimationTypeMove,///移动动画
     DWAnimationTypeScale,///缩放动画

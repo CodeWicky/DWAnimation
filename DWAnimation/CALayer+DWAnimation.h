@@ -14,6 +14,7 @@
  */
 #import <QuartzCore/QuartzCore.h>
 #import "DWAnimationMaker.h"
+#import "DWAnimationManager.h"
 @class DWAnimation;
 @interface CALayer (DWAnimation)
 

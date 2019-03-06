@@ -64,6 +64,8 @@
                      @"CombineAnimationsInArrayViewController",
                      @"ResetAnimationViewController",
                      @"AnimationGroupViewController",
+                     @"ManagerSingleAnimationViewController",
+                     @"ManagerMultiAnimationViewController",
                      ];
     }
     return _dataArr;
@@ -87,6 +89,8 @@
                       @"组合数组中的所有DWAnimation为一个新动画",
                       @"创建恢复动画",
                       @"动画组",
+                      @"Manager管理的串行动画",
+                      @"Manager管理的并行动画",
                       ];
     }
     return _titleArr;

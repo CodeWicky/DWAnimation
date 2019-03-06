@@ -117,6 +117,9 @@
  version 1.1.9
  构造api改变，可传入CALayer、UIView、nil三种可选类型
  属性动画逻辑优化
+ 
+ version 1.1.10
+ 更改beginTime含义，与CAAnimation保持一致。并重构所有API
  */
 
 #import "DWAnimationAbstraction.h"

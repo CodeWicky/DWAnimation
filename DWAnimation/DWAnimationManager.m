@@ -12,20 +12,18 @@
 @implementation DWAnimationManager
 
 ///按顺序执行一组动画
-+(void)startSingleAnimations:(__kindof NSArray<DWAnimation *> *)animations
++(void)startSingleAnimations:(__kindof NSArray<__kindof DWAnimation *> *)animations
 {
-    int count = (int)animations.count;
-    if (!count) {
+    if (!animations.count) {
         return;
     }
-    float startTime = 0;
-    CFTimeInterval time = CACurrentMediaTime();
-    for (int i = 0; i < count; i++) {
-        DWAnimation * animation = animations[i];
-        animation.animation.beginTime = time + startTime + animation.beginTime;
-        startTime += animation.duration;
-        [animation start];
-    }
+    __block float startTime = 0;
+    
+    [animations enumerateObjectsUsingBlock:^(DWAnimation * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        obj.beginTime += startTime;
+        startTime += [[obj valueForKey:@"actualDuration"] floatValue];
+        [obj start];
+    }];
 }
 
 ///并发执行不同view的动画

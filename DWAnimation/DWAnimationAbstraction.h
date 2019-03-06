@@ -16,6 +16,9 @@
  version 1.0.0
  抽象出基础属性beginTime，duration
  抽象出基础方法，动画操作方法
+ 
+ version 1.0.1
+ 抽象出completion、animationStart、status三个属性
  */
 
 @class DWAnimationAbstraction;
@@ -36,11 +39,6 @@ typedef NS_ENUM(NSInteger ,DWAnimationStatus) {
 @property (nonatomic ,assign) CGFloat duration;
 
 ///动画延时时长
-/*
- 注：所有构造方法，包括构造方法中含有参数beginTime都不影响本属性。
- 本属性仅作为编辑动画时要延时某个动画时调整属性，其他情况下请勿修改本属性。
- 默认值为0。手动修改本属性后，将会使本动画再原有基础上再延时一段时间执行。
- */
 @property (nonatomic ,assign) CGFloat beginTime;
 
 ///动画完成回调
