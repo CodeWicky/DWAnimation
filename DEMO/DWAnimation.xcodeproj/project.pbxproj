@@ -23,6 +23,7 @@
 		9B6ED6712201C5B6003BB1EA /* KeyPathAnimationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B6ED6702201C5B6003BB1EA /* KeyPathAnimationViewController.m */; };
 		9B6ED6742201C69F003BB1EA /* RotateAxisAnimationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B6ED6732201C69F003BB1EA /* RotateAxisAnimationViewController.m */; };
 		9B6ED6772201CECA003BB1EA /* SimulateChangeAnchorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B6ED6762201CECA003BB1EA /* SimulateChangeAnchorViewController.m */; };
+		9B92D763222F7F5400C49C55 /* AnimationGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B92D762222F7F5400C49C55 /* AnimationGroupViewController.m */; };
 		9BFD534E20DB54FE00356DEC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BFD534D20DB54FE00356DEC /* AppDelegate.m */; };
 		9BFD535120DB54FE00356DEC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BFD535020DB54FE00356DEC /* ViewController.m */; };
 		9BFD535420DB54FE00356DEC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9BFD535220DB54FE00356DEC /* Main.storyboard */; };
@@ -65,6 +66,8 @@
 		9B6ED6732201C69F003BB1EA /* RotateAxisAnimationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RotateAxisAnimationViewController.m; sourceTree = "<group>"; };
 		9B6ED6752201CECA003BB1EA /* SimulateChangeAnchorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimulateChangeAnchorViewController.h; sourceTree = "<group>"; };
 		9B6ED6762201CECA003BB1EA /* SimulateChangeAnchorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SimulateChangeAnchorViewController.m; sourceTree = "<group>"; };
+		9B92D761222F7F5400C49C55 /* AnimationGroupViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnimationGroupViewController.h; sourceTree = "<group>"; };
+		9B92D762222F7F5400C49C55 /* AnimationGroupViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnimationGroupViewController.m; sourceTree = "<group>"; };
 		9BFD534920DB54FE00356DEC /* DWAnimation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DWAnimation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BFD534C20DB54FE00356DEC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9BFD534D20DB54FE00356DEC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -153,6 +156,8 @@
 				9B24400F222C224A004A6E34 /* CombineAnimationsInArrayViewController.m */,
 				9B244011222C232D004A6E34 /* ResetAnimationViewController.h */,
 				9B244012222C232D004A6E34 /* ResetAnimationViewController.m */,
+				9B92D761222F7F5400C49C55 /* AnimationGroupViewController.h */,
+				9B92D762222F7F5400C49C55 /* AnimationGroupViewController.m */,
 				9BFD535220DB54FE00356DEC /* Main.storyboard */,
 				9BFD535520DB550000356DEC /* Assets.xcassets */,
 				9BFD535720DB550000356DEC /* LaunchScreen.storyboard */,
@@ -271,6 +276,7 @@
 				9B6ED66522006373003BB1EA /* TimeIntervalAnimationViewController.m in Sources */,
 				9B6ED65C22005146003BB1EA /* MakerAnimationViewController.m in Sources */,
 				9BFD535120DB54FE00356DEC /* ViewController.m in Sources */,
+				9B92D763222F7F5400C49C55 /* AnimationGroupViewController.m in Sources */,
 				9BFD535C20DB550000356DEC /* main.m in Sources */,
 				9BFD534E20DB54FE00356DEC /* AppDelegate.m in Sources */,
 				9B6ED66B22006885003BB1EA /* ArcAnimationViewController.m in Sources */,

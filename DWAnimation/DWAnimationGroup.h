@@ -24,6 +24,6 @@
 @property (nonatomic ,strong ,readonly) NSMutableArray <DWAnimation *>* animations;
 
 ///以动画数组初始化实例
--(instancetype)initWithAnimations:(__kindof NSArray <DWAnimation *>*)animations;
+-(instancetype)initWithAnimations:(__kindof NSArray <__kindof DWAnimationAbstraction *>*)animations;
 
 @end

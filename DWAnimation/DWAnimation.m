@@ -38,7 +38,7 @@ return nil;\
         _layer = layerFromContent(content);
         _animationKey = animationKey;
         _timingFunctionName = @"linear";
-        _status = DWAnimationStatusReadyToShow;
+        [super setStatus:DWAnimationStatusReadyToShow];
         _repeatCount = 1;
         DWAnimationMaker * maker = [DWAnimationMaker new];
         maker.layer = self.layer;
@@ -67,7 +67,7 @@ return nil;\
         _layer = layerFromContent(content);
         _animationKey = animationKey;
         _timingFunctionName = @"linear";
-        _status = DWAnimationStatusReadyToShow;
+        [super setStatus:DWAnimationStatusReadyToShow];
         _repeatCount = 1;
         
         ///只有一个对象则不需要动画组
@@ -657,7 +657,7 @@ return nil;\
         CFTimeInterval pausedTime = [self.layer convertTime:CACurrentMediaTime() fromLayer:nil];
         self.layer.speed = 0.0;
         self.layer.timeOffset = pausedTime;
-        self.status = DWAnimationStatusSuspended;
+        [super setStatus:DWAnimationStatusSuspended];
     }
 }
 
@@ -670,7 +670,7 @@ return nil;\
         self.layer.beginTime = 0.0;
         CFTimeInterval timeSincePause = [self.layer convertTime:CACurrentMediaTime() fromLayer:nil] - pausedTime;
         self.layer.beginTime = timeSincePause;
-        self.status = DWAnimationStatusPlaying;
+        [super setStatus:DWAnimationStatusPlaying];
     }
 }
 
@@ -679,7 +679,7 @@ return nil;\
     if (self.status != DWAnimationStatusRemoved) {
         self.repeatCount = 0;
         [self.layer removeAnimationForKey:self.animationKey];
-        self.status = DWAnimationStatusRemoved;
+        [super setStatus:DWAnimationStatusRemoved];
     }
 }
 
@@ -831,20 +831,18 @@ return nil;\
 #pragma mark ---animation代理---
 
 -(void)animationDidStart:(CAAnimation *)anim {
-    self.status = DWAnimationStatusPlaying;
+    [super setStatus:DWAnimationStatusPlaying];
     if (self.animationStart) {
-        __weak typeof(self)weakSelf = self;
-        self.animationStart(weakSelf);
+        self.animationStart(self);
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:DWAnimationPlayStartNotification object:@{@"animation":self}];
 }
 
 -(void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
-    self.status = DWAnimationStatusFinished;
     if (self.completion) {
-        __weak typeof(self)weakSelf = self;
-        self.completion(weakSelf);
+        self.completion(self);
     }
+    [super setStatus:DWAnimationStatusFinished];
     [[NSNotificationCenter defaultCenter] postNotificationName:DWAnimationPlayFinishNotification object:@{@"animation":self,@"finished":@(flag)}];
 }
 

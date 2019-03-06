@@ -17,6 +17,18 @@
  抽象出基础属性beginTime，duration
  抽象出基础方法，动画操作方法
  */
+
+@class DWAnimationAbstraction;
+typedef void(^DWAnimationCallback)(__kindof DWAnimationAbstraction * ani);
+
+typedef NS_ENUM(NSInteger ,DWAnimationStatus) {
+    DWAnimationStatusReadyToShow,///具备播放条件状态
+    DWAnimationStatusPlaying,///播放状态
+    DWAnimationStatusSuspended,///暂停状态
+    DWAnimationStatusFinished,///播放完成状态
+    DWAnimationStatusRemoved///移除状态
+};
+
 #import <UIKit/UIKit.h>
 
 @interface DWAnimationAbstraction : NSObject
@@ -30,6 +42,15 @@
  默认值为0。手动修改本属性后，将会使本动画再原有基础上再延时一段时间执行。
  */
 @property (nonatomic ,assign) CGFloat beginTime;
+
+///动画完成回调
+@property (nonatomic ,copy) DWAnimationCallback completion;
+
+///动画开始回调
+@property (nonatomic ,copy) DWAnimationCallback animationStart;
+
+///动画状态
+@property (nonatomic ,assign) DWAnimationStatus status;
 
 #pragma mark ---动画控制方法---
 

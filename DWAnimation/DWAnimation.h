@@ -137,9 +137,6 @@
 ///动画节奏类型名
 @property (nonatomic ,copy) NSString * timingFunctionName;
 
-///动画状态
-@property (nonatomic ,assign) DWAnimationStatus status;
-
 ///动画播放次数
 /**
  repeatCount        数值设为MAXFLOAT，为无限播放
@@ -147,12 +144,6 @@
  repeatCount        数值设为正数，播放次数
  */
 @property (nonatomic ,assign) CGFloat repeatCount;
-
-///动画完成回调
-@property (nonatomic ,copy) void (^completion) (DWAnimation * ani);
-
-///动画开始回调
-@property (nonatomic ,copy) void (^animationStart)(DWAnimation * ani);
 
 #pragma mark ---动画构造方法---
 

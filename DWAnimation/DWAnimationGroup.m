@@ -11,18 +11,24 @@
 
 @interface DWAnimationGroup ()
 
-///动画操作源
-@property (nonatomic ,strong) NSMutableArray * animationArray;
+@property (nonatomic ,assign) CGFloat actualDuration;
+
+@property (nonatomic ,strong) NSMutableDictionary * beginTimes;
+
+@property (nonatomic ,weak) DWAnimationAbstraction * firstAnimation;
+
+@property (nonatomic ,weak) DWAnimationAbstraction * lastAnimation;
 
 @end
 
 @implementation DWAnimationGroup
 
--(instancetype)initWithAnimations:(__kindof NSArray<DWAnimation *> *)animations
+-(instancetype)initWithAnimations:(__kindof NSArray<DWAnimationAbstraction *> *)animations
 {
     self = [super init];
     if (self) {
         self.animations = animations;
+        [super setStatus:DWAnimationStatusReadyToShow];
     }
     return self;
 }
@@ -30,65 +36,106 @@
 -(void)setAnimations:(NSMutableArray<DWAnimation *> *)animations
 {
     _animations = animations;
-    [self handleAnimationArrayWithAnimations:animations withBeginTime:0];
+    [self handleAnimationsInfo];
+    [self handleActualDuration];
 }
 
--(void)handleAnimationArrayWithAnimations:(NSMutableArray<DWAnimation *> *)animations withBeginTime:(CGFloat)beginTime
-{
+-(void)handleAnimationsInfo {
     __block CGFloat duration = 0;
-    [self.animationArray removeAllObjects];
-    NSMutableArray <DWAnimation *>* array = animations.mutableCopy;
-    [array enumerateObjectsUsingBlock:^(DWAnimation * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        DWAnimation * new = [[DWAnimation alloc] initAnimationWithContent:obj.layer animationKey:[NSString stringWithFormat:@"DWAnimationGroup%lu",(unsigned long)idx] beginTime:beginTime duration:obj.duration animations:@[obj.animation]];
-        new.completion = obj.completion;
-        [self.animationArray addObject:new];
-        if (obj.duration > duration) {
-            duration = obj.duration;
+    [self.beginTimes removeAllObjects];
+    [self.animations enumerateObjectsUsingBlock:^(DWAnimationAbstraction * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        CGFloat actualDuration = [[obj valueForKey:@"actualDuration"] floatValue];
+        
+        if (actualDuration > duration) {
+            duration = actualDuration;
+            self.lastAnimation = obj;
         }
+        
+        if (!self.firstAnimation || self.firstAnimation.beginTime > obj.beginTime) {
+            self.firstAnimation = obj;
+        }
+        
+        [self.beginTimes setValue:@(obj.beginTime) forKey:[NSString stringWithFormat:@"%p",obj]];
     }];
+    
+    __weak typeof(self)weakSelf = self;
+    DWAnimationCallback firstStart = self.firstAnimation.animationStart;
+    self.firstAnimation.animationStart = ^(__kindof DWAnimationAbstraction *ani) {
+        [super setStatus:DWAnimationStatusPlaying];
+        if (weakSelf.animationStart) {
+            weakSelf.animationStart(weakSelf);
+        }
+        if (firstStart) {
+            firstStart(ani);
+        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:DWAnimationPlayStartNotification object:@{@"animation":self}];
+    };
+    
+    DWAnimationCallback lastCompletion = self.lastAnimation.completion;
+    self.lastAnimation.completion = ^(__kindof DWAnimationAbstraction *ani) {
+        if (weakSelf.completion) {
+            weakSelf.completion(weakSelf);
+        }
+        if (lastCompletion) {
+            lastCompletion(ani);
+        }
+        [super setStatus:DWAnimationStatusFinished];
+        [[NSNotificationCenter defaultCenter] postNotificationName:DWAnimationPlayFinishNotification object:@{@"animation":self}];
+    };
+    
     self.duration = duration;
 }
 
--(void)setBeginTime:(CGFloat)beginTime
-{
+-(void)setBeginTime:(CGFloat)beginTime {
     [super setBeginTime:beginTime];
-    [self handleAnimationArrayWithAnimations:self.animations withBeginTime:beginTime];
+    [self handleActualDuration];
 }
 
 -(void)start
 {
-    [self.animationArray enumerateObjectsUsingBlock:^(DWAnimation * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [self.animations enumerateObjectsUsingBlock:^(DWAnimation * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        CGFloat beginTime = [[self.beginTimes valueForKey:[NSString stringWithFormat:@"%p",obj]] floatValue];
+        obj.beginTime = beginTime + self.beginTime;
         [obj start];
     }];
 }
 
 -(void)resume
 {
-    [self.animationArray enumerateObjectsUsingBlock:^(DWAnimation * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [self.animations enumerateObjectsUsingBlock:^(DWAnimation * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         [obj resume];
     }];
+    [super setStatus:DWAnimationStatusPlaying];
 }
 
 -(void)suspend
 {
-    [self.animationArray enumerateObjectsUsingBlock:^(DWAnimation * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [self.animations enumerateObjectsUsingBlock:^(DWAnimation * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         [obj suspend];
     }];
+    [super setStatus:DWAnimationStatusSuspended];
 }
 
 -(void)remove
 {
-    [self.animationArray enumerateObjectsUsingBlock:^(DWAnimation * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [self.animations enumerateObjectsUsingBlock:^(DWAnimation * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        CGFloat beginTime = [[self.beginTimes valueForKey:[NSString stringWithFormat:@"%p",obj]] floatValue];
+        obj.beginTime = beginTime;
         [obj remove];
     }];
+    [super setStatus:DWAnimationStatusRemoved];
 }
 
--(NSMutableArray *)animationArray
-{
-    if (!_animationArray) {
-        _animationArray = [NSMutableArray array];
+-(void)handleActualDuration {
+    self.actualDuration = self.beginTime + self.duration;
+}
+
+-(NSMutableDictionary *)beginTimes {
+    if (!_beginTimes) {
+        _beginTimes = [NSMutableDictionary dictionary];
     }
-    return _animationArray;
+    return _beginTimes;
 }
 
 @end

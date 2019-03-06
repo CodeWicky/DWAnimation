@@ -54,14 +54,6 @@ typedef NS_ENUM(NSInteger ,DWAnimationSpringType) {
     DWAnimationSpringTypeBackgroundColor///背景色震荡动画
 };
 
-typedef NS_ENUM(NSInteger ,DWAnimationStatus) {
-    DWAnimationStatusReadyToShow,///具备播放条件状态
-    DWAnimationStatusPlaying,///播放状态
-    DWAnimationStatusSuspended,///暂停状态
-    DWAnimationStatusFinished,///播放完成状态
-    DWAnimationStatusRemoved///移除状态
-};
-
 ///动画播放完成通知
 #define DWAnimationPlayFinishNotification @"DWAnimationPlayFinishNotification"
 
