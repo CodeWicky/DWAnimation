@@ -69,7 +69,7 @@
     return [DWAnimation createResetAnimationWithContent:self animationKey:animationKey beginTime:beginTime duration:duration];
 }
 
-+(void)dw_StartAnimations:(__kindof NSArray<DWAnimation *> *)animations playMode:(DWAnimationPlayMode)playMode
++(void)dw_StartAnimations:(__kindof NSArray<__kindof DWAnimationAbstraction *> *)animations playMode:(DWAnimationPlayMode)playMode
 {
     [DWAnimationManager startAnimations:animations playMode:playMode];
 }

@@ -29,6 +29,7 @@
 #import "DWAnimationMaker.h"
 #import "DWAnimationManager.h"
 @class DWAnimation;
+@class DWAnimationAbstraction;
 @interface UIView (DWAnimation)
 
 ///以block形式为自身创建动画(移动，缩放，旋转，透明度，圆角，边框宽度，边框颜色，阴影颜色，阴影偏移量，阴影透明度，阴影路径，阴影圆角，背景图，背景色)
@@ -225,6 +226,6 @@
 /**
  animations     以DWAnimation对象组成的数组
  */
-+(void)dw_StartAnimations:(__kindof NSArray<DWAnimation *> *)animations playMode:(DWAnimationPlayMode)playMode;
++(void)dw_StartAnimations:(__kindof NSArray<__kindof DWAnimationAbstraction *> *)animations playMode:(DWAnimationPlayMode)playMode;
 
 @end

@@ -15,6 +15,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "DWAnimationMaker.h"
 #import "DWAnimationManager.h"
+@class DWAnimationAbstraction;
 @class DWAnimation;
 @interface CALayer (DWAnimation)
 
@@ -212,6 +213,6 @@
 /*
  animations     以DWAnimation对象组成的数组
  */
-+(void)dw_StartAnimations:(__kindof NSArray<DWAnimation *> *)animations playMode:(DWAnimationPlayMode)playMode;
++(void)dw_StartAnimations:(__kindof NSArray<__kindof DWAnimationAbstraction *> *)animations playMode:(DWAnimationPlayMode)playMode;
 
 @end
