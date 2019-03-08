@@ -14,8 +14,7 @@
 @implementation DWAnimationManager
 
 ///按顺序执行一组动画
-+(void)startSingleAnimations:(__kindof NSArray<__kindof DWAnimationAbstraction *> *)animations
-{
++(void)startSingleAnimations:(__kindof NSArray<__kindof DWAnimationAbstraction *> *)animations {
     if (!animations.count) {
         return;
     }
@@ -29,8 +28,7 @@
 }
 
 ///并发执行不同view的动画
-+(void)startMultiAnimations:(__kindof NSArray<__kindof DWAnimationAbstraction *> *)animations
-{
++(void)startMultiAnimations:(__kindof NSArray<__kindof DWAnimationAbstraction *> *)animations {
     NSMutableArray * arr = [NSMutableArray array];
     NSMutableDictionary * dic = [NSMutableDictionary dictionary];
     
@@ -62,8 +60,7 @@
 }
 
 ///根据不同的模式播放动画
-+(void)startAnimations:(__kindof NSArray<__kindof DWAnimationAbstraction *> *)animations playMode:(DWAnimationPlayMode)playMode
-{
++(void)startAnimations:(__kindof NSArray<__kindof DWAnimationAbstraction *> *)animations playMode:(DWAnimationPlayMode)playMode {
     switch (playMode) {
         case DWAnimationPlayModeSingle:
             [DWAnimationManager startSingleAnimations:animations];

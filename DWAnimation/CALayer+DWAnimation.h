@@ -15,37 +15,45 @@
 #import <QuartzCore/QuartzCore.h>
 #import "DWAnimationMaker.h"
 #import "DWAnimationManager.h"
-@class DWAnimationAbstraction;
-@class DWAnimation;
+#import "DWAnimation.h"
 @interface CALayer (DWAnimation)
 
-///以block形式为自身创建动画(移动，缩放，旋转，透明度，圆角，边框宽度，边框颜色，阴影颜色，阴影偏移量，阴影透明度，阴影路径，阴影圆角，背景图，背景色)
 /**
- animationKey       动画的标识，可为nil
- animationCreater   创建动画的回调Block
+ 以block形式为自身创建动画(移动，缩放，旋转，透明度，圆角，边框宽度，边框颜色，阴影颜色，阴影偏移量，阴影透明度，阴影路径，阴影圆角，背景图，背景色)
+
+ @param animationKey 动画的标识，可为nil
+ @param animationCreater 创建动画的回调Block
+ @return 返回动画实例
  */
 -(DWAnimation *)dw_CreateAnimationWithKey:(NSString *)animationKey
                          animationCreater:(void(^)(DWAnimationMaker * maker))animationCreater;
 
-///以数组形式为自身创建动画
+
 /**
- duration           动画时长
- animationKey       动画的标识，可为nil
- animations         动画数组，由CAAnimation及其派生类组成
+ 以数组形式为自身创建动画
+
+ @param animationKey 动画时长
+ @param beginTime 动画延迟时间
+ @param duration 动画的标识，可为nil
+ @param animations 动画数组，由CAAnimation及其派生类组成
+ @return 返回动画实例
  */
 -(DWAnimation *)dw_CreateAnimationWithAnimationKey:(NSString *)animationKey
                                          beginTime:(CGFloat)beginTime
                                           duration:(CGFloat)duration
                                         animations:(__kindof NSArray<CAAnimation *> *)animations;
 
-///以多个状态及时间间隔为自身创建连续动画
+
 /**
- animationType      创建的动画类型
- animationKey       动画的标识
- beginTime          动画延迟时间
- values             动画的状态值数组
- timeIntervals      动画每两个相邻状态间的时间间隔数组
- transition         各个动画状态节点间是否平滑过渡
+ 以多个状态及时间间隔为自身创建连续动画
+
+ @param animationType 创建的动画类型
+ @param animationKey 动画的标识
+ @param beginTime 动画延迟时间
+ @param values 动画的状态值数组
+ @param timeIntervals 动画每两个相邻状态间的时间间隔数组
+ @param transition 各个动画状态节点间是否平滑过渡
+ @return 返回动画实例
  
  注：
  animationType的默认属性为DWAnimationTypeMove
@@ -63,13 +71,15 @@
                                          transition:(BOOL)transition;
 
 
-///以贝塞尔曲线为自身创建移动动画
 /**
- animationKey       动画的标识，可为nil
- beginTime          动画延时时长
- duration           动画时长
- bezierPath         运动轨迹，不可为nil
- autoRotate         跟随路径自动旋转
+ 以贝塞尔曲线为自身创建移动动画
+
+ @param animationKey 动画的标识，可为nil
+ @param beginTime 动画延时时长
+ @param duration 动画时长
+ @param bezierPath 运动轨迹，不可为nil
+ @param autoRotate 跟随路径自动旋转
+ @return 返回动画实例
  */
 -(DWAnimation *)dw_CreateAnimationWithAnimationKey:(NSString *)animationKey
                                          beginTime:(CGFloat)beginTime
@@ -77,17 +87,20 @@
                                         bezierPath:(UIBezierPath *)bezierPath
                                         autoRotate:(BOOL)autoRotate;
 
-///为自身创建弧线动画
+
 /**
- animationKey       动画的标识，可为nil
- beginTime          动画延时时长
- duration           动画时长
- center             弧线圆心
- radius             弧线半径
- startAngle         弧线的起始角度
- endAngle           弧线的终止角度
- clockwise          是否为顺时针
- autoRotate         是否跟随弧线自动旋转
+ 为自身创建弧线动画
+
+ @param animationKey 动画的标识，可为nil
+ @param beginTime 动画延时时长
+ @param duration 动画时长
+ @param center 弧线圆心
+ @param radius 弧线半径
+ @param startAngle 弧线的起始角度
+ @param endAngle 弧线的终止角度
+ @param clockwise 是否为顺时针
+ @param autoRotate 是否跟随弧线自动旋转
+ @return 返回动画实例
  */
 -(DWAnimation *)dw_CreateAnimationWithAnimationKey:(NSString *)animationKey
                                          beginTime:(CGFloat)beginTime
@@ -99,18 +112,20 @@
                                          clockwise:(BOOL)clockwise
                                         autoRotate:(BOOL)autoRotate;
 
-///为自身创建震荡动画
+
 /**
- 即改变属性有震荡效果
- 
- animationKey       动画的标识，可为nil
- beginTime          动画延时时长
- fromValue          起始值：可为nil或MAXFLOAT或CGPointNull的对象形态，若为nil或MAXFLOAT或CGPointNull的对象形态，则以当前状态作为初始状态
- toValue            终止值：不可为nil
- mass               惯性系数：影响震荡幅度，需大于0。想实现默认效果请传1。
- stiffness          刚性系数：影响震荡速度，需大于0。想实现默认效果请传100。
- damping            阻尼系数：影响震荡停止速度，需大于0。想实现默认效果请传10。
- initialVelocity    初始速度：可正可负，负则先做反向运动，随后正向。想实现默认效果请传0。
+ 为自身创建震荡动画
+
+ @param animationKey 动画的标识，可为nil
+ @param springingType 动画类型
+ @param beginTime 动画延时时长
+ @param fromValue 起始值：可为nil或MAXFLOAT或CGPointNull的对象形态，若为nil或MAXFLOAT或CGPointNull的对象形态，则以当前状态作为初始状态
+ @param toValue 终止值：不可为nil
+ @param mass 惯性系数：影响震荡幅度，需大于0。想实现默认效果请传1。
+ @param stiffness 刚性系数：影响震荡速度，需大于0。想实现默认效果请传100。
+ @param damping 阻尼系数：影响震荡停止速度，需大于0。想实现默认效果请传10。
+ @param initialVelocity 初始速度：可正可负，负则先做反向运动，随后正向。想实现默认效果请传0。
+ @return 返回动画实例
  
  注：fromValue与toValue，除DWAnimationSpringTypeMove应为NSValue类型外，其他均应为NSNumber类型数据
  */
@@ -124,18 +139,19 @@
                                            damping:(CGFloat)damping
                                    initialVelocity:(CGFloat)initialVelocity;
 
-///创建特殊属性动画
+
 /**
- 即为指定属性（包括CALayer及其子类所有支持动画的属性）添加动画
- 
- animationKey       动画的标识，可为nil
- keyPath            将要添加动画的属性名
- beginTime          动画延时时长
- fromValue          起始值：可以为动画类型所对应的空类型。若为空，则默认当前状态为初始状态
- toValue            终止值：不可为nil
- duration           动画时长
- timingFunctionName 动画节奏模式，可选值：@"linear", @"easeIn", @"easeOut" ,
+ 创建特殊属性动画，即为指定属性（包括CALayer及其子类所有支持动画的属性）添加动画
+
+ @param keyPath 将要添加动画的属性名
+ @param animationKey 动画的标识，可为nil
+ @param beginTime 动画延时时长
+ @param duration 动画时长
+ @param fromValue 起始值：可以为动画类型所对应的空类型。若为空，则默认当前状态为初始状态
+ @param toValue 终止值：不可为nil
+ @param timingFunctionName 动画节奏模式，可选值：@"linear", @"easeIn", @"easeOut" ,
  @"easeInEaseOut" 和 @"default"。也可使用其对应的常量形式，如kCAMediaTimingFunctionLinear
+ @return 返回动画实例
  
  注：
  1.fromValue与toValue，均为UIKit中对象类型，如NSValue/NSNumber/UIColor/UIBezierPath/UIImage等等对应的对象类型。
@@ -149,17 +165,18 @@
                                       toValue:(id)toValue
                            timingFunctionName:(NSString *)timingFunctionName;
 
-///创建景深旋转动画
+
 /**
- 即具有透视效果的换轴旋转动画
- 
- animationKey       动画的标识，可为nil
- beginTime          动画延时时长
- duration           动画时长
- rotateStartAngle   旋转起始角度
- rotateEndAngle     旋转终止角度
- rotateAxis         旋转轴
- deep               景深系数
+ 创建景深旋转动画，即具有透视效果的换轴旋转动画
+
+ @param animationKey 动画的标识，可为nil
+ @param beginTime 动画延时时长
+ @param duration 动画时长
+ @param startAngle 旋转起始角度
+ @param endAngle 旋转终止角度
+ @param rotateAxis 旋转轴
+ @param deep 景深系数
+ @return 返回动画实例
  
  注：
  1.旋转角度为角度制
@@ -174,16 +191,17 @@
                                         rotateAxis:(Axis)rotateAxis
                                               deep:(CGFloat)deep;
 
-///创建拟合锚点改变动画
+
 /**
- 以曲线旋转动画拟合改变锚点后的旋转动画
- 
- animationKey           动画的标识，可为nil
- beginTime              动画延时时长
- duration               动画时长
- rotateStartAngle       旋转起始角度
- rotateEndAngle         旋转终止角度
- simulateChangeAnchor   拟合的改变后锚点
+ 创建拟合锚点改变动画，以曲线旋转动画拟合改变锚点后的旋转动画
+
+ @param animationKey 动画的标识，可为nil
+ @param beginTime 动画延时时长
+ @param duration 动画时长
+ @param startAngle 旋转起始角度
+ @param endAngle 旋转终止角度
+ @param anchor 拟合的改变后锚点
+ @return 返回动画实例
  
  注：
  1.旋转角度为角度制
@@ -197,11 +215,13 @@
                               simulateChangeAnchor:(CGPoint)anchor;
 
 
-///恢复动画
-/*
- animationKey   动画的标识，可为nil
- beginTime      动画延迟时间
- duration       动画时长
+/**
+ 恢复动画
+
+ @param animationKey 动画的标识，可为nil
+ @param beginTime 动画延迟时间
+ @param duration 动画时长
+ @return 返回动画实例
  
  注：特殊属性动画不在恢复动画范围内，请自行恢复。
  */
@@ -209,9 +229,12 @@
                                               beginTime:(CGFloat)beginTime
                                                duration:(CGFloat)duration;
 
-///按顺序执行一组动画
-/*
- animations     以DWAnimation对象组成的数组
+
+/**
+ 按顺序执行一组动画
+
+ @param animations 以DWAnimation对象组成的数组
+ @param playMode 播放模式
  */
 +(void)dw_StartAnimations:(__kindof NSArray<__kindof DWAnimationAbstraction *> *)animations playMode:(DWAnimationPlayMode)playMode;
 

@@ -9,23 +9,19 @@
 #import "DWAnimationAbstraction.h"
 
 @implementation DWAnimationAbstraction
--(void)start
-{
+-(void)start {
     ///override this method
 }
 
--(void)suspend
-{
+-(void)suspend {
     ///override this method
 }
 
--(void)resume
-{
+-(void)resume {
     ///override this method
 }
 
--(void)remove
-{
+-(void)remove {
     ///override this method
 }
 @end

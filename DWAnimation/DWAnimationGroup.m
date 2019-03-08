@@ -23,8 +23,7 @@
 
 @implementation DWAnimationGroup
 
--(instancetype)initWithAnimations:(__kindof NSArray<DWAnimationAbstraction *> *)animations
-{
+-(instancetype)initWithAnimations:(__kindof NSArray<DWAnimationAbstraction *> *)animations {
     self = [super init];
     if (self) {
         self.animations = animations;
@@ -33,8 +32,7 @@
     return self;
 }
 
--(void)setAnimations:(NSMutableArray<DWAnimation *> *)animations
-{
+-(void)setAnimations:(NSMutableArray<DWAnimation *> *)animations {
     _animations = animations;
     [self handleAnimationsInfo];
     [self handleActualDuration];
@@ -92,8 +90,7 @@
     [self handleActualDuration];
 }
 
--(void)start
-{
+-(void)start {
     [self.animations enumerateObjectsUsingBlock:^(DWAnimation * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         CGFloat beginTime = [[self.beginTimes valueForKey:[NSString stringWithFormat:@"%p",obj]] floatValue];
         obj.beginTime = beginTime + self.beginTime;
@@ -101,24 +98,21 @@
     }];
 }
 
--(void)resume
-{
+-(void)resume {
     [self.animations enumerateObjectsUsingBlock:^(DWAnimation * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         [obj resume];
     }];
     [super setStatus:DWAnimationStatusPlaying];
 }
 
--(void)suspend
-{
+-(void)suspend {
     [self.animations enumerateObjectsUsingBlock:^(DWAnimation * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         [obj suspend];
     }];
     [super setStatus:DWAnimationStatusSuspended];
 }
 
--(void)remove
-{
+-(void)remove {
     [self.animations enumerateObjectsUsingBlock:^(DWAnimation * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         CGFloat beginTime = [[self.beginTimes valueForKey:[NSString stringWithFormat:@"%p",obj]] floatValue];
         obj.beginTime = beginTime;

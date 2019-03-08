@@ -52,17 +52,28 @@ typedef NS_ENUM(NSInteger ,DWAnimationStatus) {
 
 #pragma mark ---动画控制方法---
 
-///开始播放动画
+/**
+ 开始播放动画
+ */
 -(void)start;
 
-///暂停动画
+
+/**
+ 暂停动画
+ */
 -(void)suspend;
 
-///恢复动画
+
+/**
+ 恢复动画
+ */
 -(void)resume;
 
-///移除动画
+
 /**
+ 移除动画
+ 
+ 注：
  若要移除，请确保初始化时animationKey正确
  移除仅移除调用移除方法的动画实例，将返回动画的上一状态
  */

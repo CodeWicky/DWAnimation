@@ -31,9 +31,15 @@ typedef NS_ENUM(NSInteger , DWAnimationPlayMode) {
 
 @interface DWAnimationManager : NSObject
 
-///按顺序执行一组动画
-/*
- animations     以DWAnimation对象组成的数组
+/**
+ 按顺序执行一组动画
+
+ @param animations 动画数组
+ @param playMode 播放模式
+ 
+ 注：
+ 1.DWAnimationPlayModeSingle模式下所有animation按数组顺序串行播放
+ 2.DWAnimationPlayModeMulti模式下所有相同layer的动画按数组顺序穿行播放，不同layer动画间并行播放，所有animationGroup并行播放
  */
 +(void)startAnimations:(__kindof NSArray<__kindof DWAnimationAbstraction *> *)animations playMode:(DWAnimationPlayMode)playMode;
 @end

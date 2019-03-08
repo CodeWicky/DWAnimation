@@ -30,9 +30,7 @@ return nil;\
 #pragma mark ------构造方法------
 
 ///以block形式创建动画
--(instancetype)initAnimationWithContent:(id)content
-                           animationKey:(NSString *)animationKey
-                       animationCreater:(void(^)(DWAnimationMaker * maker))animationCreater {
+-(instancetype)initAnimationWithContent:(id)content animationKey:(NSString *)animationKey animationCreater:(void(^)(DWAnimationMaker * maker))animationCreater {
     IllegalContentReturnNil
     if (self = [super init]) {
         _layer = layerFromContent(content);
